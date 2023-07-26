@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../TUTORIALES/div"
+		},
+		{
+			"path": "../../../../../TUTORIALES/Glowing Cards Gradient"
+		},
+		{
+			"path": "../../../../../TUTORIALES/ICONS-PAGE"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "div",
+		"editor.fontSize": 20
+	}
+}
