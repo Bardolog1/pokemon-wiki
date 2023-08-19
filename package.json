@@ -1,8 +1,8 @@
 {
-  "name": "pokemon-wiki",
-  "description": "Webcomponent pokemon-wiki following open-wc recommendations",
+  "name": "poke-lit-app",
+  "description": "Explore the Pokémon World: Embark on an exciting journey with our web app built using Lit Element. Dive into the fascinating universe of Pokémon as you browse through a collection of these magical creatures sourced from the PokeAPI. With a clean and user-friendly interface, you can easily navigate and discover various Pokémon species, each accompanied by their distinct details. Catch a glimpse of their names, types, abilities, and more. Immerse yourself in nostalgia and adventure as you explore the diverse world of Pokémon in this interactive web application",
   "license": "MIT",
-  "author": "pokemon-wiki",
+  "author": "Libardo-Lozano",
   "version": "0.0.0",
   "scripts": {
     "lint": "eslint --ext .js,.html . --ignore-path .gitignore && prettier \"**/*.js\" --check --ignore-path .gitignore",
