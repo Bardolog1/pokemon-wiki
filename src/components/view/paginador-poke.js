@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
-import './listar-pokemon';
+import './listar-pokemon.js';
 
 
 export class PaginadorPoke extends LitElement {

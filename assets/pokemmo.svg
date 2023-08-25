@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="250"
+   height="250"
+   viewBox="0 0 23.4375 23.4375"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="pokemmo.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.2363281"
+     inkscape:cx="256"
+     inkscape:cy="154.89415"
+     inkscape:window-width="1600"
+     inkscape:window-height="829"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <ellipse
+     cx="11.70564"
+     cy="11.743555"
+     fill="none"
+     stroke="#ffffff"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="circle1"
+     rx="4.2205958"
+     ry="4.2362838"
+     style="stroke-width:0.528554" />
+  <path
+     fill="none"
+     stroke="#ffffff"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     d="m 0.54216361,13.734607 c 0.93380679,5.337718 5.57646219,9.393959 11.16347539,9.393959 5.587014,0 10.22967,-4.056241 11.163477,-9.393959 h -4.595174 c -0.849395,2.833016 -3.471441,4.892908 -6.568303,4.892908 -3.0968616,0 -5.7189067,-2.059892 -6.5683017,-4.892908 z M 0.536891,9.7630918 C 1.4706947,4.4200793 6.1186258,0.35854239 11.705639,0.35854239 c 5.587014,0 10.234946,4.06153691 11.168753,9.40454941 H 18.279218 C 17.429822,6.924782 14.807777,4.8595937 11.705639,4.8595937 c -3.1021372,0 -5.7241824,2.0651883 -6.5735774,4.9034981 z"
+     id="path1"
+     style="stroke-width:0.528554" />
+</svg>

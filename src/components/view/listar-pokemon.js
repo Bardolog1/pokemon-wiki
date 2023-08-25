@@ -1,16 +1,19 @@
 import { LitElement, html, css } from 'lit-element';
-import '../API/data-manager'
+import '../API/data-manager';
+import './card-poke'
 
 
 
 export class ListarPokemon extends LitElement {
 
-  static  properties= {
+  static get properties() {
+    return{
     inicio:{type:Number},
     fin:{type:Number},
     pokes:{type:Array},
     visibleContent:{type:Boolean},
-    card:{type:Array},
+    card:{type:Array}
+    };
 
   }
 
@@ -41,7 +44,6 @@ export class ListarPokemon extends LitElement {
 
   _getEventLoad(){
     this.addEventListener('ok-pokes',()=>{
-      console.log('ok-pokes');
       this.visibleContent = true;
      });
   }
@@ -59,7 +61,7 @@ export class ListarPokemon extends LitElement {
 
 
 
-  //== manejo de evento click a card selecionada ===//
+  //= = manejo de evento click a card selecionada ===//
   _getElements(element){
     return this.renderRoot.querySelectorAll(element);
   }
@@ -85,13 +87,13 @@ export class ListarPokemon extends LitElement {
 
   alr(e){
 
-    let id = e.target.getAttribute("id");
+    const id = e.target.getAttribute("id");
     this._getSelected(id);
 
   }
 
   _flipCard(e){
-    let cardFlip = e.target.parentElement.parentElement.parentElement.parentElement;
+    const cardFlip = e.target.parentElement.parentElement.parentElement.parentElement;
     if(cardFlip.classList.contains("scaff")){
       if(cardFlip.classList.contains("flip")){
         cardFlip.classList.remove("flip");
@@ -105,14 +107,14 @@ export class ListarPokemon extends LitElement {
 
 
 
-  //===== Fin===//
+  //= ==== Fin===//
 
  // ===  templates  === //
 
- get dateTemplate(){
+/* get dateTemplate(){
   return html` ${this.pokes.map( pokemon =>
   html`
-    <div class="scaff" id= ${pokemon.id} >
+   <!-- <div class="scaff" id= ${pokemon.id} >
 
       <div class="containerCard">
         <div id="card" class="card">
@@ -145,7 +147,7 @@ export class ListarPokemon extends LitElement {
         </div>
       </div>
 
-    </div>
+    </div>-->
 
         `)}
 
@@ -154,10 +156,12 @@ export class ListarPokemon extends LitElement {
     ;
 }
 
-// === FIN === //
+// === FIN === // */
 
 // === renderizado === //
-static styles = css`
+static get styles() {
+
+  return css`
 :host{
     display: inline-block;
     background:transparent;
@@ -377,21 +381,16 @@ static styles = css`
   }
 
 
-  @keyframes brightness {
-    100%{
-      transform: rotate(-45deg) translate(0, 450px);
-    }
-
-  }
-
 
 `;
+}
 
 render(){
   return html`
     <data-manager pokeInicio=${this.inicio} pokefin=${this.fin}></data-manager>
     <div class="container" id="container">
-      ${ this.visibleContent?this.dateTemplate:""}
+     <!-- ${ this.visibleContent?this.dateTemplate:""}-->
+     <card-poke/>
     </div>
 
   `;

@@ -3,6 +3,7 @@ import  './components/view/paginador-poke'
 
 
 export class PokemonWiki extends LitElement {
+
   static get properties() {
     return {
       apiOk: { type: Boolean },
@@ -13,12 +14,16 @@ export class PokemonWiki extends LitElement {
       last: { type: Number },
     };
   }
-  static styles = css`
+
+  static get styles(){
+
+
+    return css`
+
     :host {
       display:block;
       cursor: url(../assets/poke2.png), auto;
     }
-
 
     .container{
       width: 100%;
@@ -28,9 +33,9 @@ export class PokemonWiki extends LitElement {
       place-items: center;
 
     }
+  `;
 
-
-`;
+}
 
 
 render() {
