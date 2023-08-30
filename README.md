@@ -1,68 +1,58 @@
-<p align="center">
-  <img src="pokedex-icon.png" alt="Pokedex Icon" width="150">
-</p>
-Pokedex con Lit Element y Poke API 🌟
+# 🌟 Pokédex Interactiva 🌟
 
-¡Bienvenido a la Pokedex interactiva y atractiva creada con Lit Element y la Poke API! Explora el emocionante mundo de los Pokémon con una interfaz inmersiva y funcionalidades emocionantes.
-<p align="center">
-  <img src="demo.gif" alt="Pokedex Demo">
-</p>
-🚀 Características
+¡Explora el mundo de los Pokémon de manera interactiva y visualmente atractiva!
 
-    Visualiza información detallada de tus Pokémon favoritos en tarjetas interactivas.
-    Navega sin esfuerzo a través de los resultados con la funcionalidad de paginación.
-    Sumérgete en una experiencia de usuario llamativa y agradable.
-    Consultas a la Poke API para datos actualizados y precisos.
+![Pokédex Screenshot](screenshot.png)
 
-🛠️ Instalación
+## 📖 Visión General
 
-    Clona este repositorio en tu máquina local:
+Bienvenido a la Pokédex Interactiva, una aplicación emocionante construida con Lit Element y alimentada por la PokéAPI. ¡Sumérgete en el mundo de los Pokémon y explora sus detalles de manera inmersiva!
 
-    bash
+## ✨ Funcionalidades
 
-git clone https://github.com/tu-usuario/pokedex-lit-element.git
+- Explora una lista de Pokémon con tarjetas interactivas. 🎮
+- Navega fácilmente con la paginación. 🔄
+- Haz clic en una tarjeta para ver estadísticas detalladas. 📊
+- Descubre las evoluciones y más información al explorar la Pokédex. 🌐
 
-Navega al directorio del proyecto:
+## 📸 Capturas de Pantalla
 
-bash
+_Inserta aquí capturas de pantalla de tu aplicación en acción._
 
-cd pokedex-lit-element
+## 🛠️ Instalación
 
-Instala las dependencias:
+1. Clona este repositorio.
+2. Instala las dependencias con `npm install`.
 
-bash
+## 🚀 Uso
 
-    npm install
+1. Ejecuta `npm start` para iniciar la aplicación en modo de desarrollo.
+2. Abre tu navegador y ve a `http://localhost:3000` para explorar la Pokédex.
 
-🚀 Uso
+## 👥 Contribución
 
-    Inicia el servidor de desarrollo:
+¡Todas las contribuciones son bienvenidas! Si deseas contribuir a este proyecto:
 
-    bash
+1. Haz un fork de este repositorio.
+2. Crea una rama para tu nueva característica (`git checkout -b feature/nueva-caracteristica`).
+3. Realiza tus cambios y commitea (`git commit -m "Añadir nueva característica"`).
+4. Sube tus cambios a tu repositorio (`git push origin feature/nueva-caracteristica`).
+5. Abre un Pull Request aquí.
 
-    npm run start
+## 🗺️ Roadmap
 
-    Abre tu navegador web y dirígete a http://localhost:8080 para explorar la Pokedex.
+- **0.2.0**: Agregar estadísticas en el reverso de las tarjetas.
+- **0.3.0**: Implementar visualización de evoluciones.
+- **0.4.0**: Añadir información adicional al clic en la imagen de la Pokédex.
 
-📝 Funcionalidades Pendientes
+## 📞 Contacto
 
-    📊 Ver estadísticas detalladas al reverso de la tarjeta del Pokémon.
-    🌟 Explorar las evoluciones y obtener información adicional al hacer clic en el botón de la imagen de la Pokédex.
+¿Preguntas o comentarios? ¡Hablemos!
 
-🤝 Contribuciones
+Nombre: Libardo Lozano Gambasica
+Correo Electrónico: liloga.dev@gmail.com
 
-¡Tus contribuciones son más que bienvenidas! Si tienes ideas o mejoras, abre un problema o envía una solicitud de extracción.
-👏 Créditos
+## 📄 Licencia
 
-Este proyecto fue creado por Tu Nombre.
-📄 Licencia
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
-Overview
-
-La Pokedex con Lit Element y la Poke API te ofrece una experiencia intuitiva para explorar los Pokémon de manera rápida y fácil. ¡Prepárate para embarcarte en una aventura Pokémon emocionante!
-Shortcuts
-
-    🎮 Navegación Rápida: Usa la funcionalidad de paginación para explorar diferentes páginas de resultados.
-    🎉 Interfaz Atractiva: Disfruta de una interfaz visualmente atractiva con tarjetas interactivas.
-    🔍 Información Detallada: Haciendo clic en cada tarjeta podrás ver información detallada del Pokémon.
