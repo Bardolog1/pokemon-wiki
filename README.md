@@ -1,4 +1,10 @@
 <p align="center">
+  <img src="pokedex-icon.png" alt="Pokedex Icon" width="150">
+</p>
+Pokedex con Lit Element y Poke API 🌟
+
+¡Bienvenido a la Pokedex interactiva y atractiva creada con Lit Element y la Poke API! Explora el emocionante mundo de los Pokémon con una interfaz inmersiva y funcionalidades emocionantes.
+<p align="center">
   <img src="demo.gif" alt="Pokedex Demo">
 </p>
 🚀 Características
