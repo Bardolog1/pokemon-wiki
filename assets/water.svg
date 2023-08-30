@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="250"
+   height="250"
+   viewBox="0 0 250 250"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="water.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.2363281"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-width="1600"
+     inkscape:window-height="829"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <g
+     id="g188"
+     transform="matrix(2.2773601,0,0,1.7530419,-400.5926,-287.63004)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="M 1.7094385,0.14782969 C 1.1973062,0.13178283 0.62546516,0.08325538 -3.4218751e-5,-1.1953125e-4 -16.570018,-2.1131174 -33.808667,-9.2307161 -47.932653,-19.350706 c -49.043951,-35.141965 -32.695324,-92.303664 17.015626,-86.409674 21.0189788,2.446 32.695465,19.016607 32.2514655,35.475591 -0.2229998,8.673991 -3.6697733,15.23631 -11.0097659,24.133301 -13.2339866,15.791984 -5.0053696,33.472807 11.4536135,42.5917981 4.1842459,2.3353726 3.5160785,3.8198476 -0.068848,3.70751959 z M -20.018589,-45.373656 c 3.224996,0 5.783203,-3.225008 5.783203,-7.229004 0,-4.113996 -2.558207,-7.340332 -5.783203,-7.340332 -3.224997,0 -5.781739,3.226336 -5.781739,7.340332 0,4.003996 2.556742,7.229004 5.781739,7.229004 z m 7.674316,-15.124512 c 1.222999,0 2.223633,-1.223275 2.223633,-2.780273 0,-1.445999 -1.000634,-2.668946 -2.223633,-2.668946 -1.222999,0 -2.113769,1.222947 -2.113769,2.668946 0,1.556998 0.89077,2.780273 2.113769,2.780273 z"
+       transform="matrix(1.3333333,0,0,-1.3333333,278.89653,165.1932)"
+       id="path1" />
+  </g>
+</svg>
