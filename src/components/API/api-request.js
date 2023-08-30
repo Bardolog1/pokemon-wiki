@@ -2,22 +2,67 @@ import { LitElement } from 'lit-element';
 
 export class ApiRequest extends LitElement {
 
-  //popiedaddes que va a usar el componente
   static properties = {
     url: { type: String },
-    metod: { type: String },
-    pokeFin: { type: Number },
-    pokeInicio: { type: Number },
-    resp: { type: Array },
+    method: { type: String },
   };
 
-  //constructor donde inicializo las propiedades
   constructor() {
     super();
-    this.resp = [];
-    this.url = 'https://pokeapi.co/api/v2/pokemon/';
-    this.metod = 'GET';
+    this.url = '';
+    this.method = 'GET';
   }
+
+  async executeRequest(type) {
+    try {
+      const response = await fetch(this.url, { method: this.method });
+      const data = await response.json();
+      this._generateEvents(type, data);
+    } catch (error) {
+      this._generateErrorEvent(error);
+    }
+  }
+
+  _generateErrorEvent(error) {
+    this.dispatchEvent(new CustomEvent('request-error', {
+      detail: { error },
+      bubbles: true,
+    }));
+  }
+
+
+  _generateEvents( type,data){
+    this.dispatchEvent(new CustomEvent( (('request-').concat(type)), {
+      detail: { data },
+      bubbles: true,
+    })
+  );
+}
+
+  _getBasicsPokemon(url){
+    this.url=url;
+    this.method ='GET';
+    this.executeRequest('basics');
+  }
+
+
+  _getPagePokes(url) {
+    this.url = url;
+    this.method = 'GET';
+    return this.executeRequest('list-pokes');
+  }
+
+  _getPokemonEndpoint(url) {
+    this.url = url;
+    this.method = 'GET';
+    return this.executeRequest('pokemon-first-data');
+  }
+
+
+
+}
+customElements.define('api-request', ApiRequest);
+/*
 
   //metodo del ciclo de vida de un webComponent en lit
   // este metodo inicia luego del constructor y despues de tener los valores asignados de las propiedades
@@ -39,7 +84,6 @@ export class ApiRequest extends LitElement {
       new CustomEvent(event, {
         detail: { data },
         bubbles: true,
-        composed: true,
       })
     );
   }
@@ -179,5 +223,5 @@ export class ApiRequest extends LitElement {
     });
     return datoPokemon;
   }
-}
-customElements.define('api-request', ApiRequest);
+
+*/
