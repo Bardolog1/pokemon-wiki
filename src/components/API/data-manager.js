@@ -1,42 +1,136 @@
-import { LitElement, html } from 'lit-element';
-import './api-request';
+import { LitElement } from 'lit-element';
+import { ApiRequest } from './api-request';
 
 
 export class DataManager extends LitElement {
 
-  static properties = {
-    wiki:{type: Array},
-    poke:{type: Array},
-    pokeInicio:{type: Number},
-    pokefin:{type: Number},
+  constructor(){
+    super();
   }
 
-  constructor(){
+  async _getCountResults(){
+    try{
+
+      const api =  new ApiRequest;
+
+      api.addEventListener('request-basics', event => {
+        this._dmNotifyEvent('results-total',event.detail.data.count);
+      });
+
+      await api._getBasicsPokemon('https://pokeapi.co/api/v2/pokemon');
+
+    }catch{
+      console.error(error);
+    }
+
+  }
+
+
+
+  async _getPagesListPoke(dataPages) {
+
+    if (!dataPages) return;
+
+    const { results_page, page } = dataPages;
+    const offset = (results_page * page) - results_page;
+    const limit = results_page;
+    const url = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`;
+
+    try {
+      const api = new ApiRequest();
+
+      api.addEventListener('request-list-pokes', async (event) => {
+        const data = event.detail.data;
+        const pokemonPromises = data.results.map(element => this._getPokeFirstDetail(element.url));
+
+        try {
+          const pokemonList = await Promise.all(pokemonPromises);
+          this._dmNotifyEvent('list-of-pokemons', pokemonList);
+        } catch (error) {
+          console.error(error);
+        }
+      });
+
+      await api._getPagePokes(url);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+
+  async _getPokeFirstDetail(url) {
+    return new Promise((resolve, reject) => {
+      const api = new ApiRequest();
+
+      api.addEventListener('request-pokemon-first-data', event => {
+        const detail = event.detail.data;
+        const pokemon = this._constructPokefirst(detail);
+        resolve(pokemon);
+      });
+
+      api.addEventListener('request-error', event => {
+        reject(event.detail.error);
+      });
+
+      api._getPokemonEndpoint(url);
+    });
+  }
+
+  _constructPokefirst(detail) {
+    const imgURL = (
+      detail.sprites.other.dream_world.front_default ||
+      detail.sprites.other['official-artwork'].front_default ||
+      detail.sprites.other.home.front_default ||
+      detail.sprites.front_default
+    );
+
+    return {
+      id: detail.id,
+      name: detail.name,
+      exp: detail.base_experience,
+      img: imgURL || '---',
+      type: detail.types.map(type => type.type.name),
+      stats: {
+        hp: detail.stats[0]?.base_stat || '---',
+        attack: detail.stats[1]?.base_stat || '---',
+        defense: detail.stats[2]?.base_stat || '---',
+        special_attack: detail.stats[3]?.base_stat || '---',
+        special_defense: detail.stats[4]?.base_stat || '---',
+        speed: detail.stats[5]?.base_stat || '---',
+      },
+      height: detail.height,
+      weight: detail.weight,
+    };
+  }
+
+  _dmNotifyEvent(type, data) {
+    this.dispatchEvent(new CustomEvent(`notify-data-${type}`, {
+      detail: { data },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+}
+customElements.define('data-manager', DataManager);
+/*
+
+constructor(){
     super();
     this.wiki=[];
     this.pokeInicio=1;
     this.pokefin=16;
   }
 
-  firstUpdated(){
-    this._getEventPoke();
-    this._getEventLoad();
-  }
 
-//=== metodos de escucha de eventos y disparador de eventos ====//
-
-  _getEventPoke(){
+   _getEventPoke(){
     this.addEventListener('api-poke', (res)=>{
       this._datFormat(res.detail.data);
     });
   }
 
-  _getEventLoad(){
-    this.addEventListener('api-poke-ok', ()=>{
-      console.log('ok-pokes');
-      this._sendPoke('ok-pokes', "OK");
-    });
-  }
+
 
   _sendPoke(event, pokeDex){
     this.dispatchEvent(new CustomEvent(event, {
@@ -46,7 +140,6 @@ export class DataManager extends LitElement {
     }));
   }
 
-  //===fin ===//
 
   _datFormat(pokemon){
 
@@ -63,10 +156,11 @@ export class DataManager extends LitElement {
           ? pokemon.sprites.other.home.front_default
           : pokemon.sprites.front_default,
         exp: pokemon.base_experience,
-        type: {
-          tip1: pokemon.types[0].type.name,
-          tip2: pokemon.types[1] ? pokemon.types[1].type.name : '---',
-        },
+        type: pokemon.types.map(type=>{
+            return type.type.name;
+        })
+
+        ,
         abilities: {
           habi1: pokemon.abilities[0]
             ? pokemon.abilities[0].ability.name
@@ -136,15 +230,12 @@ export class DataManager extends LitElement {
           special_attack:pokemon.stats[3].base_stat?pokemon.stats[3].base_stat:"---",
           special_defense:pokemon.stats[4].base_stat?pokemon.stats[4].base_stat:"---",
           speed:pokemon.stats[5].base_stat?pokemon.stats[5].base_stat:"---",
-        }
+        },
+        height: pokemon.height,
+        weight:pokemon.weight,
+
       }
+      console.log(poke.type);
     this._sendPoke('poke-send', poke);  // disparo el evento con los datos del pokemon ya con el formato y  depurando solo los datos necesarios
   }
-
-  render() {
-    return html`
-      <api-request pokeInicio=${this.pokeInicio} pokefin=${this.pokefin}></api-request>
-   `;
-  }
-}
-customElements.define('data-manager', DataManager);
+*/
