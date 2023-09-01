@@ -1,4 +1,4 @@
-import { LitElement } from 'lit-element';
+import { LitElement } from 'lit';
 import { ApiRequest } from './api-request';
 
 
@@ -89,7 +89,7 @@ export class DataManager extends LitElement {
       id: detail.id,
       name: detail.name,
       exp: detail.base_experience,
-      img: imgURL || '---',
+      img: imgURL || null,
       type: detail.types.map(type => type.type.name),
       stats: {
         hp: detail.stats[0]?.base_stat || '---',

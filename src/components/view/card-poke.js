@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 export class CardPoke extends LitElement {
 
@@ -165,7 +165,9 @@ export class CardPoke extends LitElement {
   }
 
   _renderPokedex(){
-    console.log("he abierto la pokedex para el pokemon: ",this.pokemon.name);
+
+
+
   }
 
   static get styles(){
@@ -185,7 +187,7 @@ export class CardPoke extends LitElement {
         overflow: inherit;
         background: transparent;
         border-radius:1em;
-        cursor: url(../../../assets/poke1.png), auto;
+        cursor: url('../../../assets/poke1.png'), auto;
         transition: 0.3 all;
       }
 
@@ -609,7 +611,7 @@ export class CardPoke extends LitElement {
               <div class="back-container">
                 <img class="img-back" src="../../../assets/${this.getTypeNameForSVG(pokemon?.type?.[0])}.svg" alt="" />
               </div>
-              <img src="${pokemon.img ? pokemon.img : "../assets/R.png"}" alt="${pokemon.name}"/>
+              <img src="${ pokemon.img || "../../../assets/unknown-poke.png"}" alt="${pokemon.name}"/>
             </div>
             <div class="info-container">
               <h2>${pokemon.name.toUpperCase()}</h2>

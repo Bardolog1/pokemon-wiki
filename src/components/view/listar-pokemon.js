@@ -1,7 +1,6 @@
-import { LitElement, html, css } from 'lit-element';
-import '../API/data-manager';
-import './card-poke';
+import { LitElement, html, css } from 'lit';
 import { CardPoke } from './card-poke';
+import './loading-poke';
 
 
 
@@ -17,7 +16,10 @@ export class ListarPokemon extends LitElement {
       },
       visibleContent : {
         type: Boolean,
-
+        attribute: 'visible-content',
+        hasChanged(newV, oldV){
+          return newV !== oldV;
+        },
       }
     };
 
@@ -31,33 +33,39 @@ export class ListarPokemon extends LitElement {
 
   updated(props) {
     super.updated && super.updated(props);
+    if (props.has('pokemons')) {
+      this.visibleContent = true;
   }
-
+}
 
   get dateTemplate() {
+    this.visibleContent = true;
     return html`
-    ${this.pokemons?.map((pokemon) => {
+    ${
+
+      this.pokemons?.map((pokemon) => {
       const card = new CardPoke;
       card.pokemon = pokemon;
       card.render();
       return card;
-    })}
+    })
+    }
   `;
   }
+
+
 
   static get styles() {
 
     return css`
   :host{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: baseline;
-    overflow-y: scroll;
-    scrollbar-width: none;
-
-
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      align-items: center;
+      overflow-y: scroll;
+      scrollbar-width: none;
 
     }
 
@@ -97,25 +105,50 @@ export class ListarPokemon extends LitElement {
 
 
     card-poke{
-      max-width: calc(33.33% - 20px); /* Ajusta el porcentaje y el espacio entre elementos según tu diseño */
-  box-sizing: border-box;
-  margin: 10px; /* Ajusta el margen entre elementos según tu diseño */
-  view-timeline-name: --card;
-  view-timeline-axis: block;
-  animation-timeline: --card;
-  animation-name: show;
-  animation-range: entry 50% cover 80% exit 100%;
+      max-width: calc(33.33% - 20px);
+      box-sizing: border-box;
+      margin: 10px;
+      view-timeline-name: --card;
+      view-timeline-axis: block;
+      animation-timeline: --card;
+      animation-name: show;
+      animation-range: entry 50% cover 80% exit 100%;
       //animation-fill-mode: both;
 
 
     }
+
+
+
+    @media (max-width: 1024px) {
+      card-poke{
+        max-width: calc(50% - 20px);
+      }
+    }
+
+
+    @media (max-width: 768px) {
+      card-poke{
+        max-width: calc(50% - 20px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      card-poke{
+        max-width: calc(100% - 20px);
+      }
+    }
+
+
 
   `;
   }
 
   render() {
     return html`
-    ${this.dateTemplate}
+    ${
+      this.visibleContent ? this.dateTemplate : html`<loading-poke></loading-poke>`
+      }
 
   `;
   }

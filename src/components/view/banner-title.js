@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 
 export class BannerTitle extends LitElement {
   static properties = {
@@ -34,7 +34,7 @@ export class BannerTitle extends LitElement {
 
    @font-face {
       font-family: 'Pokemon Solid';
-      src: url('../../../assets/fonts/Pokemon-Solid.ttf') format('truetype');
+      src: url(../../../assets/fonts/Pokemon-Solid.ttf) format('truetype');
       /*font-weight: normal;
       font-style: normal;*/
     }

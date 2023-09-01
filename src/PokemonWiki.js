@@ -1,9 +1,10 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
 import  './components/view/banner-title'
 import  './components/view/listar-pokemon'
 import './components/view/paginador-poke'
 import './components/view/navbar-buttons'
 import { DataManager } from './components/API/data-manager';
+
 
 
 
@@ -33,6 +34,11 @@ export class PokemonWiki extends LitElement {
         pokemonList:{
           type: Array,
           attribute:false
+        },
+        isLoadingData:{
+          type:Boolean,
+          attribute:false,
+          value:false,
         }
     };
   }
@@ -110,7 +116,7 @@ export class PokemonWiki extends LitElement {
      navbar-buttons{
       height: 0px;
       //background: rgba(200,90,180, 0.8);
-            position:relative;
+      position:relative;
 
 
      }
@@ -140,12 +146,14 @@ _getResults(pages, visiblePages, visibleResults, currentPage){
 }
 
 async _getPokemonList(dataPage){
+  const list = this.renderRoot.getElementById('list');
+  list.visibleContent = false;
   const dm =  new DataManager();
-
   dm.addEventListener('notify-data-list-of-pokemons', (e)=>{
     this.pokemonList = e.detail.data;
-    const list = this.renderRoot.getElementById('list');
+
     list.pokemons = e.detail.data;
+
   })
   await dm._getPagesListPoke(dataPage);
 }
@@ -173,10 +181,12 @@ render() {
 
         ></paginador-poke>
 
-        <listar-pokemon
+          <listar-pokemon
           id="list"
 
-        ></listar-pokemon>
+          ></listar-pokemon>
+
+
 
 
       </div>
