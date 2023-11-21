@@ -1,4 +1,6 @@
 # 🌟 Pokédex Interactiva 🌟
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9d73e7ed-8113-4f35-9641-6b31b9171646/deploy-status)](https://app.netlify.com/sites/pokedex-lit/deploys)
+
 
 ¡Explora el mundo de los Pokémon de manera interactiva y visualmente atractiva!
 
