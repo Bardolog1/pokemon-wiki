@@ -2,7 +2,8 @@
 
 ¡Explora el mundo de los Pokémon de manera interactiva y visualmente atractiva!
 
-![Pokédex Screenshot](screenshot.png)
+![PokeScreen](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/ca4811f3-19fa-46b0-beeb-a64d3cc308d3)
+
 
 ## 📖 Visión General
 
@@ -17,7 +18,8 @@ Bienvenido a la Pokédex Interactiva, una aplicación emocionante construida con
 
 ## 📸 Capturas de Pantalla
 
-_Inserta aquí capturas de pantalla de tu aplicación en acción._
+![PokeScreen](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/f6cceea7-9358-44f2-be24-2ca4ce27d750)
+
 
 ## 🛠️ Instalación
 
