@@ -116,6 +116,230 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/API/api-request.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ApiRequest",
+          "members": [
+            {
+              "kind": "method",
+              "name": "executeRequest",
+              "parameters": [
+                {
+                  "name": "type"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_generateErrorEvent",
+              "parameters": [
+                {
+                  "name": "error"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_generateEvents",
+              "parameters": [
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "data"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getBasicsPokemon",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getPagePokes",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getPokemonEndpoint",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "url",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "privacy": "public",
+              "attribute": "url"
+            },
+            {
+              "kind": "field",
+              "name": "method",
+              "type": {
+                "text": "string"
+              },
+              "default": "'GET'",
+              "privacy": "public",
+              "attribute": "method"
+            }
+          ],
+          "events": [
+            {
+              "name": "request-error",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "url",
+              "fieldName": "url"
+            },
+            {
+              "name": "method",
+              "fieldName": "method"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "tagName": "api-request",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ApiRequest",
+          "declaration": {
+            "name": "ApiRequest",
+            "module": "src/components/API/api-request.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "api-request",
+          "declaration": {
+            "name": "ApiRequest",
+            "module": "src/components/API/api-request.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/API/data-manager.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DataManager",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_getCountResults"
+            },
+            {
+              "kind": "method",
+              "name": "_getPagesListPoke",
+              "parameters": [
+                {
+                  "name": "dataPages"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_getPokeFirstDetail",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_constructPokefirst",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_dmNotifyEvent",
+              "parameters": [
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "data"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "tagName": "data-manager",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DataManager",
+          "declaration": {
+            "name": "DataManager",
+            "module": "src/components/API/data-manager.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "data-manager",
+          "declaration": {
+            "name": "DataManager",
+            "module": "src/components/API/data-manager.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/view/banner-title.js",
       "declarations": [
         {
@@ -647,230 +871,6 @@
           "declaration": {
             "name": "PaginadorPoke",
             "module": "src/components/view/paginador-poke.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/API/api-request.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "ApiRequest",
-          "members": [
-            {
-              "kind": "method",
-              "name": "executeRequest",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateErrorEvent",
-              "parameters": [
-                {
-                  "name": "error"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateEvents",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getBasicsPokemon",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPagePokes",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPokemonEndpoint",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "url",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "privacy": "public",
-              "attribute": "url"
-            },
-            {
-              "kind": "field",
-              "name": "method",
-              "type": {
-                "text": "string"
-              },
-              "default": "'GET'",
-              "privacy": "public",
-              "attribute": "method"
-            }
-          ],
-          "events": [
-            {
-              "name": "request-error",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "url",
-              "fieldName": "url"
-            },
-            {
-              "name": "method",
-              "fieldName": "method"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "api-request",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ApiRequest",
-          "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "api-request",
-          "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/API/data-manager.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "DataManager",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_getCountResults"
-            },
-            {
-              "kind": "method",
-              "name": "_getPagesListPoke",
-              "parameters": [
-                {
-                  "name": "dataPages"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPokeFirstDetail",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_constructPokefirst",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_dmNotifyEvent",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
-            }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "data-manager",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DataManager",
-          "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "data-manager",
-          "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
           }
         }
       ]

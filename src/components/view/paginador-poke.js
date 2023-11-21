@@ -94,19 +94,19 @@ export class PaginadorPoke extends LitElement {
     }
 
     .icon.icon-first {
-      background-image: url('../../../assets/first.svg');
+      background-image: url('assets/first.svg');
     }
 
     .icon.icon-end {
-      background-image: url('../../../assets/first.svg');
+      background-image: url('assets/first.svg');
     }
 
     .icon.icon-next {
-      background-image: url('../../../assets/next.svg');
+      background-image: url('assets/next.svg');
     }
 
     .icon.icon-back {
-      background-image: url('../../../assets/next.svg');
+      background-image: url('assets/next.svg');
     }
 
 

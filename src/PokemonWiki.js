@@ -66,13 +66,13 @@ export class PokemonWiki extends LitElement {
 
     @font-face {
       font-family: 'PokemonFont';
-      src: url('../assets/fonts/Pokemon-Solid.ttf') format('truetype');
+      src: url('assets/fonts/Pokemon-Solid.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
 
     .container{
-      cursor: url(../assets/poke2.png), auto;
+      cursor: url(assets/poke2.png), auto;
       width: 100vw;
       height: 100vh;
       position:relative;
