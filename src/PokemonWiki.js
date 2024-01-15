@@ -66,7 +66,7 @@ export class PokemonWiki extends LitElement {
 
     @font-face {
       font-family: 'PokemonFont';
-      src: url('assets/fonts/Pokemon-Solid.ttf') format('truetype');
+      src: url(assets/fonts/Pokemon-Solid.ttf) format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -83,36 +83,25 @@ export class PokemonWiki extends LitElement {
     }
 
     banner-title{
-      //background: rgba(255,255,0,0.5);
       width:100%;
       height: 30%;
       position:relative;
-
     }
 
     paginador-poke{
       width:100%;
-      //background: rgba(0,0,255,0.5);
       position:relative;
-
-
     }
 
     listar-pokemon{
       width:100%;
       height:60%;
-      //background:rgba(0,255,255,0.5);
       position:relative;
-
-
       }
 
      navbar-buttons{
       height: 0px;
-      //background: rgba(200,90,180, 0.8);
-            position:relative;
-
-
+      position:relative;
      }
   `;
 

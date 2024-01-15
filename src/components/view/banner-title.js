@@ -33,8 +33,8 @@ export class BannerTitle extends LitElement {
   static styles = css`
 
    @font-face {
-      font-family: 'Pokemon Solid';
-      src: url('assets/fonts/Pokemon-Solid.ttf') format('truetype');
+      font-family:'Pokemon Solid';
+      src: url(assets/fonts/Pokemon-Solid.ttf) format('truetype');
       /*font-weight: normal;
       font-style: normal;*/
     }
