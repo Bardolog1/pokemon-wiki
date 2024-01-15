@@ -3,7 +3,7 @@ import babel from '@rollup/plugin-babel';
 import html from '@web/rollup-plugin-html';
 import { terser } from 'rollup-plugin-terser';
 import { generateSW } from 'rollup-plugin-workbox';
-import copy from 'rollup-plugin-copy'; // Agregar esta línea
+import copy from 'rollup-plugin-copy'; 
 import path from 'path';
 
 export default {
