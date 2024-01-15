@@ -8,7 +8,7 @@ export class BannerTitle extends LitElement {
       },
       logo:{
         type:String,
-        attibute:'logo'
+        attribute:'logo'
       },
       descriptiontext:{
         type:String,
@@ -34,7 +34,7 @@ export class BannerTitle extends LitElement {
 
    @font-face {
     font-family: 'PokemonFont';
-    src: url(assets/fonts/Pokemon-Solid.ttf) format('truetype');
+    src: url(../assets/fonts/Pokemon-Solid.ttf) format('truetype');
       /*font-weight: normal;
       font-style: normal;*/
     }
