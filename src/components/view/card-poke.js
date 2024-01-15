@@ -185,7 +185,7 @@ export class CardPoke extends LitElement {
         overflow: inherit;
         background: transparent;
         border-radius:1em;
-        cursor: url(assets/poke1.png), auto;
+        cursor: url(../assets/poke1.png), auto;
         transition: 0.3 all;
       }
 
@@ -599,17 +599,17 @@ export class CardPoke extends LitElement {
           <div class="card">
             <div class="buttons-container" >
               <div class="button button-pokedex" @click=${this._renderPokedex}>
-                <img src="assets/pokegenie.svg" alt="pokedex">
+                <img src="../assets/pokegenie.svg" alt="pokedex">
               </div>
               <div class="button button-flip" @click=${this.toggleFlip}>
-                <img src="assets/phone-flip.svg" alt="flip" >
+                <img src="../assets/phone-flip.svg" alt="flip" >
               </div>
             </div>
             <div class="image-container" >
               <div class="back-container">
-                <img class="img-back" src="assets/${this.getTypeNameForSVG(pokemon?.type?.[0])}.svg" alt="" />
+                <img class="img-back" src="../assets/${this.getTypeNameForSVG(pokemon?.type?.[0])}.svg" alt="" />
               </div>
-              <img src="${pokemon.img ? pokemon.img : "assets/R.png"}" alt="${pokemon.name}"/>
+              <img src="${pokemon.img ? pokemon.img : "../assets/R.png"}" alt="${pokemon.name}"/>
             </div>
             <div class="info-container">
               <h2>${pokemon.name.toUpperCase()}</h2>
@@ -623,7 +623,7 @@ export class CardPoke extends LitElement {
               <div class="character-container">
                 <div class="character">
                     <span class="title">
-                      <img src="assets/weight-outline.svg"  alt="weight">
+                      <img src="../assets/weight-outline.svg"  alt="weight">
                       Weight
                     </span>
                     <div class="character-info">
@@ -634,7 +634,7 @@ export class CardPoke extends LitElement {
                 </div>
                 <div class="character">
                   <span class="title">
-                    <img src="assets/tapemeasure.svg" alt="height">
+                    <img src="../assets/tapemeasure.svg" alt="height">
                     Height
                   </span>
                   <div class="character-info">
@@ -652,10 +652,10 @@ export class CardPoke extends LitElement {
           <div class="card">
             <div class="buttons-container" >
               <div class="button button-pokedex" @click=${this._renderPokedex}>
-                <img src="assets/pokegenie.svg" alt="pokedex">
+                <img src="../assets/pokegenie.svg" alt="pokedex">
               </div>
               <div class="button button-flip" @click=${this.toggleFlip}>
-                <img src="assets/phone-flip.svg" alt="flip" >
+                <img src="../assets/phone-flip.svg" alt="flip" >
               </div>
             </div>
 

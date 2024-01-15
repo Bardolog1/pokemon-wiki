@@ -70,7 +70,7 @@ export class NavbarButtons extends LitElement{
       position:absolute;
       top:0;
       left:0;
-      background-image: url('assets/NicePng_pokedex-png_2285786.png');
+      background-image: url('../assets/NicePng_pokedex-png_2285786.png');
     }
 
     `;
