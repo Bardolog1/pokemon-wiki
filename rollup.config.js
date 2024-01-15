@@ -1,9 +1,9 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import html from '@web/rollup-plugin-html';
-import { importMetaAssets } from '@web/rollup-plugin-import-meta-assets';
 import { terser } from 'rollup-plugin-terser';
 import { generateSW } from 'rollup-plugin-workbox';
+import copy from 'rollup-plugin-copy'; // Agregar esta línea
 import path from 'path';
 
 export default {
@@ -18,19 +18,15 @@ export default {
   preserveEntrySignatures: false,
 
   plugins: [
-    /** Enable using HTML as rollup entrypoint */
     html({
       minify: true,
       injectServiceWorker: true,
       serviceWorkerPath: 'dist/sw.js',
     }),
-    /** Resolve bare module imports */
     nodeResolve(),
-    /** Minify JS */
     terser(),
-    /** Bundle assets references via import.meta.url */
-    importMetaAssets({
-      include: 'assets/**/*',
+    copy({
+      targets: [{ src: 'assets/**/*', dest: 'dist/assets/' }],
     }),
     /** Compile JS to a lower language target */
     babel({
@@ -71,11 +67,8 @@ export default {
     /** Create and inject a service worker */
     generateSW({
       navigateFallback: '/index.html',
-      // where to output the generated sw
       swDest: path.join('dist', 'sw.js'),
-      // directory to match patterns against to be precached
       globDirectory: path.join('dist'),
-      // cache any html js and css by default
       globPatterns: ['**/*.{html,js,css,webmanifest}'],
       skipWaiting: true,
       clientsClaim: true,

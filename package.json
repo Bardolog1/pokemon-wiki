@@ -9,7 +9,7 @@
     "test:watch": "web-test-runner --watch",
     "storybook": "npm run analyze -- --exclude dist && web-dev-server -c .storybook/server.mjs",
     "storybook:build": "npm run analyze -- --exclude dist && build-storybook",
-    "build": "rimraf dist && rollup -c rollup.config.js && npm run analyze -- --exclude dist", 
+    "build": "rimraf dist && rollup -c rollup.config.js && npm run analyze -- --exclude dist",
     "start:build": "web-dev-server --root-dir dist --app-index index.html --open",
     "analyze": "cem analyze --litelement",
     "start": "web-dev-server"
@@ -38,9 +38,9 @@
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.60.0",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-workbox": "^6.2.0"
   },
-
   "customElements": "custom-elements.json"
 }
