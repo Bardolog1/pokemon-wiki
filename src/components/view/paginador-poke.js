@@ -1,8 +1,20 @@
 import { LitElement, html, css } from 'lit-element';
 
 
+const EVENTS_CLICK = {
+  FIRST: 'first-click',
+  END: 'end-click',
+  BACK: 'back-click',
+  NEXT: 'next-click',
+  NUMBER: 'number-click',
+}
+
 export class PaginadorPoke extends LitElement {
   static styles = css`
+  
+    :host {
+      user-select: none;
+    }
 
     .vertical {
       border-left: 1px solid #fff;
@@ -140,6 +152,7 @@ export class PaginadorPoke extends LitElement {
       results: {
         type: Number,
         attribute:'results',
+        value:0,
         hasChanged(newP, oldP){
           return newP !== oldP;
         }
@@ -287,7 +300,7 @@ export class PaginadorPoke extends LitElement {
   _firstClick() {
     if (!this._firstDisabled) {
       this.currentPage = 1;
-      this.dispatchEvent(new CustomEvent('first-click', {
+      this.dispatchEvent(new CustomEvent(EVENTS_CLICK.FIRST, {
         bubbles: true,
         detail: {
           page:this.currentPage,
@@ -303,7 +316,7 @@ export class PaginadorPoke extends LitElement {
     if (!this._endDisabled) {
       this.currentPage = this.pages;
       this.dispatchEvent(
-        new CustomEvent('end-click', {
+        new CustomEvent(EVENTS_CLICK.END, {
         bubbles: true,
         detail: {
           page:this.currentPage,
@@ -317,7 +330,7 @@ export class PaginadorPoke extends LitElement {
 
   _backClick() {
     this.dispatchEvent(
-      new CustomEvent('back-click', {
+      new CustomEvent(EVENTS_CLICK.BACK, {
         bubbles: true,
         detail: {
           page:this.currentPage - 1,
@@ -331,7 +344,7 @@ export class PaginadorPoke extends LitElement {
 
   _nextClick() {
     this.dispatchEvent(
-      new CustomEvent('next-click', {
+      new CustomEvent(EVENTS_CLICK.NEXT, {
         bubbles: true,
         detail: {
           page:this.currentPage + 1,
@@ -345,7 +358,7 @@ export class PaginadorPoke extends LitElement {
 
   _clickNumber(e) {
     this.dispatchEvent(
-      new CustomEvent('number-click', {
+      new CustomEvent(EVENTS_CLICK.NUMBER, {
         bubbles: true,
         detail: {
           page:Number(e.currentTarget.textContent),

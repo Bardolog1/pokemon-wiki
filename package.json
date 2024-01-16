@@ -15,6 +15,7 @@
     "start": "web-dev-server"
   },
   "dependencies": {
+    "chart.js": "^4.4.1",
     "lit": "^2.0.2"
   },
   "devDependencies": {
