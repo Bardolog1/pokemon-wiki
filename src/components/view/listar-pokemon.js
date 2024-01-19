@@ -22,19 +22,26 @@ export class ListarPokemon extends LitElement {
     super();
     this.visibleContent = false;
   }
+ 
 
   updated(props) {
     super.updated && super.updated(props);
+    this._listenRenderPokedexWithPokemon();
   }
 
+  _listenRenderPokedexWithPokemon() {
+    const cards = this.renderRoot.querySelectorAll("card-poke");
+    console.log(cards);
+    cards.forEach((card) => {
+      card.addEventListener("render-pokedex", (e) => {
+        console.log(e.detail);
+      });
+    });
+  }
+  
   get dateTemplate() {
     return html`
-      ${this.pokemons?.map((pokemon) => {
-        const card = new CardPoke();
-        card.pokemon = pokemon;
-        card.render();
-        return card;
-      })}
+      ${this.pokemons?.map((pokemon) => html`<card-poke .pokemon=${pokemon}></card-poke>`)}
     `;
   }
 

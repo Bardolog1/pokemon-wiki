@@ -34,6 +34,7 @@ export class NavbarButtons extends LitElement {
       .pokedex-button:hover {
         background: rgba(200, 200, 200, 0.8);
         transition: 0.5s all ease-in-out;
+        cursor: url(assets/hand.png), auto;
       }
 
       .pokedex-button:hover > .icon {
@@ -73,7 +74,19 @@ export class NavbarButtons extends LitElement {
 
   render() {
     return html`
-      <button class="pokedex-button">
+      <button class="pokedex-button" 
+      @click="${() => {
+        this.dispatchEvent(
+          new CustomEvent("pokedex-visible", {
+            bubbles: true,
+            detail: {
+              page: "pokedex",
+              
+            },
+          })
+        );
+      }}"
+      >
         <i class="icon icon-first"></i>
       </button>
     `;

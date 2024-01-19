@@ -3,6 +3,7 @@ import "./components/view/banner-title";
 import "./components/view/listar-pokemon";
 import "./components/view/paginador-poke";
 import "./components/view/navbar-buttons";
+import "./components/view/pokedex-view";
 import { DataManager } from "./components/API/data-manager";
 
 const events = [
@@ -50,6 +51,8 @@ export class PokemonWiki extends LitElement {
   constructor() {
     super();
     this._getResults(0, 5, 60, 1);
+    
+    
   }
 
   _listenerChangedPage() {
@@ -63,16 +66,15 @@ export class PokemonWiki extends LitElement {
 
   firstUpdated() {
     this._listenerChangedPage();
+    this.listenButtonPokedex();
+    this.listenButtonClosePokedex();
+    
+
   }
+  
 
   static get styles() {
     return css`
-      @font-face {
-        font-family: "PokemonFont";
-        src: url(../assets/fonts/Pokemon-Solid.ttf) format("truetype");
-        font-weight: normal;
-        font-style: normal;
-      }
 
       .container {
         cursor: url(assets/poke2.png), auto;
@@ -106,6 +108,15 @@ export class PokemonWiki extends LitElement {
         height: 0px;
         position: relative;
       }
+      
+      
+      .pokedex-scale-in {
+        display: flex;
+      }
+      
+      .pokedex-scale-out {
+        display: none;
+      }
     `;
   }
 
@@ -125,6 +136,8 @@ export class PokemonWiki extends LitElement {
       });
     });
   }
+  
+  
 
   async _getPokemonList(dataPage) {
     const dm = new DataManager();
@@ -137,6 +150,47 @@ export class PokemonWiki extends LitElement {
     await dm._getPagesListPoke(dataPage);
   }
 
+  
+  openPokedex() {
+    const pokedex = this.renderRoot.querySelector("pokedex-view");
+  
+    if (pokedex.visible) {
+     pokedex.visible = !pokedex.visible;
+      setTimeout(() => {
+        
+      }, 500);
+        pokedex.classList.remove("pokedex-scale-in");
+        pokedex.classList.add("pokedex-scale-out");
+      
+    } else {
+      pokedex.visible = !pokedex.visible;
+      setTimeout(() => {  
+        pokedex.classList.remove("pokedex-scale-out");
+      }, 500);
+      pokedex.classList.add("pokedex-scale-in");
+      
+
+    }
+    
+  }
+
+  listenButtonPokedex() {
+    const pokedexButton = this.renderRoot.querySelector(".pokedex-button");
+    pokedexButton.addEventListener("pokedex-visible", () => {
+    
+      this.openPokedex();
+      console.log("openPokedex");
+    });
+  }
+  
+  listenButtonClosePokedex() {
+    const pokedexButton = this.renderRoot.querySelector("#pokedex-view");
+    pokedexButton.addEventListener("pokedex-not-visible", () => {
+      this.openPokedex();
+      console.log("closePokedex");
+    });
+  }
+
   render() {
     return html`
       <div class="container">
@@ -145,9 +199,7 @@ export class PokemonWiki extends LitElement {
           title="PokeDex with PokéAPI & Lit"
           logo-2="https://lit.dev/images/logo.svg#flame"
         ></banner-title>
-
-        <navbar-buttons></navbar-buttons>
-
+        <navbar-buttons class="pokedex-button"></navbar-buttons>
         <paginador-poke
           id="paginator"
           pages="${this.pages}"
@@ -156,8 +208,8 @@ export class PokemonWiki extends LitElement {
           current-page="${this.currentPage}"
           visible-results="${this.visibleResults}"
         ></paginador-poke>
-
         <listar-pokemon id="list"></listar-pokemon>
+        <pokedex-view id="pokedex-view"></pokedex-view>
       </div>
     `;
   }

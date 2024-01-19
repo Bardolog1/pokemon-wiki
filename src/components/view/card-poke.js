@@ -163,7 +163,7 @@ export class CardPoke extends LitElement {
   }
 
   _renderPokedex() {
-    window.dispatchEvent(
+    this.dispatchEvent(
       new CustomEvent("render-pokedex", {
         detail: this.pokemon,
       })

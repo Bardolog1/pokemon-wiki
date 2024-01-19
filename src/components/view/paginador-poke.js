@@ -46,6 +46,7 @@ export class PaginadorPoke extends LitElement {
       background: rgba(200, 200, 200, 0.8);
       transform: scale(1.1);
       transition: 0.1s all ease-in-out;
+      cursor: url(assets/hand.png), auto;
     }
 
     .pagination-button:active  {
@@ -61,9 +62,11 @@ export class PaginadorPoke extends LitElement {
     }
 
     .number:hover{
+      cursor: url(assets/hand.png), auto;
       background: rgba(200, 200, 200, 0.8);
       transform: scale(1.1);
       transition: 0.1s all ease-in-out;
+     
     }
 
 
@@ -84,7 +87,6 @@ export class PaginadorPoke extends LitElement {
       margin: 0 10px;
       padding: 8px;
       border-radius:20%;
-      cursor: pointer;
       background: rgba(255,255,255,0.5);
 
     }
