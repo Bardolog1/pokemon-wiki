@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css } from "lit";
 import "../API/data-manager";
 import "./card-poke";
 import { CardPoke } from "./card-poke";

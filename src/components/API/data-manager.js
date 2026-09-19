@@ -1,4 +1,4 @@
-import { LitElement } from "lit-element";
+import { LitElement } from "lit";
 import { ApiRequest } from "./api-request";
 
 const URL = "https://pokeapi.co/api/v2/pokemon";

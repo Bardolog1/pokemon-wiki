@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css } from "lit";
 import "./components/view/banner-title";
 import "./components/view/listar-pokemon";
 import "./components/view/paginador-poke";
