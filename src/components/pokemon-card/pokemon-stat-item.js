@@ -9,8 +9,15 @@ export class PokemonStatItem extends LitElement {
   };
 
   static styles = css`
+    :host {
+      display: block;
+      flex: 1 1 50%;
+      box-sizing: border-box;
+      min-width: 0;
+    }
     .character {
-      width: 50%;
+      width: 100%;
+      box-sizing: border-box;
     }
     .character .title {
       display: block;
