@@ -1380,6 +1380,65 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/services/api/poke-api.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokeApi",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#request",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getCount",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPage",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemon",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokeApi",
+          "declaration": {
+            "name": "PokeApi",
+            "module": "src/services/api/poke-api.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokemon-list/pokemon-list.js",
       "declarations": [
         {
@@ -1468,65 +1527,6 @@
           "declaration": {
             "name": "Default",
             "module": "src/components/pokemon-list/pokemon-list.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/services/api/poke-api.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokeApi",
-          "members": [
-            {
-              "kind": "method",
-              "name": "#request",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getCount",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getPage",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getPokemon",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokeApi",
-          "declaration": {
-            "name": "PokeApi",
-            "module": "src/services/api/poke-api.js"
           }
         }
       ]
