@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/pokemon-wiki.js",
+      "path": "src/main.js",
       "declarations": [],
       "exports": [
         {
@@ -12,14 +12,20 @@
           "name": "pokemon-wiki",
           "declaration": {
             "name": "PokemonWiki",
-            "module": "/src/PokemonWiki.js"
+            "module": "/src/app/pokemon-wiki.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/PokemonWiki.js",
+      "path": "src/test-setup.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/app/pokemon-wiki.js",
       "declarations": [
         {
           "kind": "class",
@@ -32,7 +38,7 @@
             },
             {
               "kind": "method",
-              "name": "_getResults",
+              "name": "_init",
               "parameters": [
                 {
                   "name": "pages"
@@ -56,6 +62,20 @@
                   "name": "dataPage"
                 }
               ]
+            },
+            {
+              "kind": "field",
+              "name": "dataManager",
+              "default": "new PokemonDataManager()"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public"
             },
             {
               "kind": "field",
@@ -90,7 +110,7 @@
           ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "pokemon-wiki",
           "customElement": true
@@ -102,14 +122,14 @@
           "name": "PokemonWiki",
           "declaration": {
             "name": "PokemonWiki",
-            "module": "src/PokemonWiki.js"
+            "module": "src/app/pokemon-wiki.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/banner-title.js",
+      "path": "src/components/banner-title/banner-title.js",
       "declarations": [
         {
           "kind": "class",
@@ -173,7 +193,7 @@
           ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "banner-title",
           "customElement": true
@@ -185,7 +205,7 @@
           "name": "BannerTitle",
           "declaration": {
             "name": "BannerTitle",
-            "module": "src/components/view/banner-title.js"
+            "module": "src/components/banner-title/banner-title.js"
           }
         },
         {
@@ -193,7 +213,505 @@
           "name": "banner-title",
           "declaration": {
             "name": "BannerTitle",
-            "module": "src/components/view/banner-title.js"
+            "module": "src/components/banner-title/banner-title.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/navbar-buttons/navbar-buttons.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "NavbarButtons",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "navbar-buttons",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "NavbarButtons",
+          "declaration": {
+            "name": "NavbarButtons",
+            "module": "src/components/navbar-buttons/navbar-buttons.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "navbar-buttons",
+          "declaration": {
+            "name": "NavbarButtons",
+            "module": "src/components/navbar-buttons/navbar-buttons.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-list.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ListarPokemon",
+          "members": [
+            {
+              "kind": "field",
+              "name": "dateTemplate"
+            },
+            {
+              "kind": "field",
+              "name": "visibleContent",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "visibleContent"
+            },
+            {
+              "kind": "field",
+              "name": "pokemons",
+              "privacy": "public",
+              "attribute": "pokemons"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemons",
+              "fieldName": "pokemons"
+            },
+            {
+              "name": "visibleContent",
+              "fieldName": "visibleContent"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "listar-pokemon",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ListarPokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "listar-pokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PaginationButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_onClick"
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "rotate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "rotate"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "disabled"
+            }
+          ],
+          "events": [
+            {
+              "name": "button-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "fieldName": "icon"
+            },
+            {
+              "name": "rotate",
+              "fieldName": "rotate"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationButton",
+          "declaration": {
+            "name": "PaginationButton",
+            "module": "src/components/pagination/pagination-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination-button",
+          "declaration": {
+            "name": "PaginationButton",
+            "module": "src/components/pagination/pagination-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination-numbers.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PaginationNumbers",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_onClickNumber",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "numbers",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "numbers"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "current-page"
+            },
+            {
+              "kind": "field",
+              "name": "limit",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "limit"
+            }
+          ],
+          "events": [
+            {
+              "name": "number-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "numbers",
+              "fieldName": "numbers"
+            },
+            {
+              "name": "current-page",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "limit",
+              "fieldName": "limit"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination-numbers",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationNumbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination/pagination-numbers.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination-numbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination/pagination-numbers.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_firstDisabled"
+            },
+            {
+              "kind": "field",
+              "name": "_endDisabled"
+            },
+            {
+              "kind": "method",
+              "name": "_dispatchNav",
+              "parameters": [
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "page"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onFirst"
+            },
+            {
+              "kind": "method",
+              "name": "_onEnd"
+            },
+            {
+              "kind": "method",
+              "name": "_onBack"
+            },
+            {
+              "kind": "method",
+              "name": "_onNext"
+            },
+            {
+              "kind": "method",
+              "name": "_onNumberClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "results",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "results"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "current-page"
+            },
+            {
+              "kind": "field",
+              "name": "pages",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "pages"
+            },
+            {
+              "kind": "field",
+              "name": "visiblePages",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "visible-pages"
+            },
+            {
+              "kind": "field",
+              "name": "visibleResults",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "visible-results"
+            }
+          ],
+          "events": [
+            {
+              "name": "type",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "current-page",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "pages",
+              "fieldName": "pages"
+            },
+            {
+              "name": "results",
+              "fieldName": "results"
+            },
+            {
+              "name": "visible-pages",
+              "fieldName": "visiblePages"
+            },
+            {
+              "name": "visible-results",
+              "fieldName": "visibleResults"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/pagination/pagination.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination",
+          "declaration": {
+            "name": "Pagination",
+            "module": "src/components/pagination/pagination.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination.utils.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "calcPages",
+          "parameters": [
+            {
+              "name": "{ results, pages, visibleResults, visiblePages, currentPage }"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getNumberList",
+          "parameters": [
+            {
+              "name": "{ currentPage, visiblePages }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "calcPages",
+          "declaration": {
+            "name": "calcPages",
+            "module": "src/components/pagination/pagination.utils.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getNumberList",
+          "declaration": {
+            "name": "getNumberList",
+            "module": "src/components/pagination/pagination.utils.js"
           }
         }
       ]
@@ -290,7 +808,7 @@
           ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "card-poke",
           "customElement": true
@@ -317,334 +835,16 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/listar-pokemon.js",
+      "path": "src/services/data-managers/pokemon-data-manager.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "ListarPokemon",
-          "members": [
-            {
-              "kind": "field",
-              "name": "dateTemplate"
-            },
-            {
-              "kind": "field",
-              "name": "visibleContent",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "visibleContent"
-            },
-            {
-              "kind": "field",
-              "name": "pokemons",
-              "privacy": "public",
-              "attribute": "pokemons"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemons",
-              "fieldName": "pokemons"
-            },
-            {
-              "name": "visibleContent",
-              "fieldName": "visibleContent"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "listar-pokemon",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ListarPokemon",
-          "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/view/listar-pokemon.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "listar-pokemon",
-          "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/view/listar-pokemon.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/view/navbar-buttons.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "NavbarButtons",
-          "members": [],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "navbar-buttons",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "NavbarButtons",
-          "declaration": {
-            "name": "NavbarButtons",
-            "module": "src/components/view/navbar-buttons.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "navbar-buttons",
-          "declaration": {
-            "name": "NavbarButtons",
-            "module": "src/components/view/navbar-buttons.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/view/paginador-poke.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PaginadorPoke",
+          "name": "PokemonDataManager",
           "members": [
             {
               "kind": "method",
-              "name": "calcPages"
-            },
-            {
-              "kind": "field",
-              "name": "_getNumberList"
-            },
-            {
-              "kind": "field",
-              "name": "_getLimit"
-            },
-            {
-              "kind": "field",
-              "name": "_firstDisabled",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "_endDisabled",
-              "privacy": "public"
-            },
-            {
-              "kind": "method",
-              "name": "_numberTpl",
-              "parameters": [
-                {
-                  "name": "myNumbers"
-                },
-                {
-                  "name": "limit"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_firstClick"
-            },
-            {
-              "kind": "method",
-              "name": "_endClick"
-            },
-            {
-              "kind": "method",
-              "name": "_backClick"
-            },
-            {
-              "kind": "method",
-              "name": "_nextClick"
-            },
-            {
-              "kind": "method",
-              "name": "_clickNumber",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "results",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "results"
-            },
-            {
-              "kind": "field",
-              "name": "currentPage",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "current-page"
-            },
-            {
-              "kind": "field",
-              "name": "pages",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "pages"
-            },
-            {
-              "kind": "field",
-              "name": "visiblePages",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "visible-pages"
-            },
-            {
-              "kind": "field",
-              "name": "visibleResults",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "visible-results"
-            },
-            {
-              "kind": "field",
-              "name": "_mobile",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "_numbers",
-              "privacy": "public"
-            }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "current-page",
-              "fieldName": "currentPage"
-            },
-            {
-              "name": "pages",
-              "fieldName": "pages"
-            },
-            {
-              "name": "results",
-              "fieldName": "results"
-            },
-            {
-              "name": "visible-pages",
-              "fieldName": "visiblePages"
-            },
-            {
-              "name": "visible-results",
-              "fieldName": "visibleResults"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "paginador-poke",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginadorPoke",
-          "declaration": {
-            "name": "PaginadorPoke",
-            "module": "src/components/view/paginador-poke.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "paginador-poke",
-          "declaration": {
-            "name": "PaginadorPoke",
-            "module": "src/components/view/paginador-poke.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/API/api-request.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "ApiRequest",
-          "members": [
-            {
-              "kind": "method",
-              "name": "executeRequest",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateErrorEvent",
-              "parameters": [
-                {
-                  "name": "error"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateEvents",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getBasicsPokemon",
+              "name": "getResultsCount",
               "parameters": [
                 {
                   "name": "url"
@@ -653,117 +853,16 @@
             },
             {
               "kind": "method",
-              "name": "_getPagePokes",
+              "name": "getPokemonPage",
               "parameters": [
                 {
-                  "name": "url"
+                  "name": "{ baseUrl, page, resultsPerPage }"
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "_getPokemonEndpoint",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "url",
-              "type": {
-                "text": "string"
-              },
-              "default": "\"\"",
-              "privacy": "public",
-              "attribute": "url"
-            },
-            {
-              "kind": "field",
-              "name": "method",
-              "privacy": "public",
-              "attribute": "method"
-            }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "url",
-              "fieldName": "url"
-            },
-            {
-              "name": "method",
-              "fieldName": "method"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "api-request",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ApiRequest",
-          "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "api-request",
-          "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/API/data-manager.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "DataManager",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_getCountResults"
-            },
-            {
-              "kind": "method",
-              "name": "_getPagesListPoke",
-              "parameters": [
-                {
-                  "name": "dataPages"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPokeFirstDetail",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_constructPokefirst",
+              "name": "#toPokemon",
               "parameters": [
                 {
                   "name": "detail"
@@ -771,48 +870,79 @@
               ]
             },
             {
-              "kind": "method",
-              "name": "_dmNotifyEvent",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
+              "kind": "field",
+              "name": "api",
+              "default": "api"
             }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "data-manager",
-          "customElement": true
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DataManager",
+          "name": "PokemonDataManager",
           "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
+            "name": "PokemonDataManager",
+            "module": "src/services/data-managers/pokemon-data-manager.js"
           }
-        },
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/api/poke-api.js",
+      "declarations": [
         {
-          "kind": "custom-element-definition",
-          "name": "data-manager",
+          "kind": "class",
+          "description": "",
+          "name": "PokeApi",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#request",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getCount",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPage",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemon",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokeApi",
           "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
+            "name": "PokeApi",
+            "module": "src/services/api/poke-api.js"
           }
         }
       ]

@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../components/banner-title/banner-title.js";
 import "../components/pokemon-list/pokemon-list.js";
-import "../components/view/paginador-poke.js";
+import "../components/pagination/pagination.js";
 import "../components/navbar-buttons/navbar-buttons.js";
 import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
 
@@ -94,7 +94,7 @@ export class PokemonWiki extends LitElement {
         position: relative;
       }
 
-      paginador-poke {
+      pagination {
         width: 100%;
         position: relative;
       }
@@ -158,14 +158,14 @@ export class PokemonWiki extends LitElement {
 
         <navbar-buttons></navbar-buttons>
 
-        <paginador-poke
+        <pagination
           id="paginator"
           pages="${this.pages}"
           results="${this.elements ? this.elements : 0}"
           visible-pages="${this.visiblePages}"
           current-page="${this.currentPage}"
           visible-results="${this.visibleResults}"
-        ></paginador-poke>
+        ></pagination>
 
         ${this.error ? html`<p class="error">${this.error}</p>` : ""}
 
