@@ -651,6 +651,409 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-card.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonCard",
+          "members": [
+            {
+              "kind": "method",
+              "name": "toggleFlip"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPokedex"
+            },
+            {
+              "kind": "field",
+              "name": "flipped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "flipped"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "type": {
+                "text": "object"
+              },
+              "default": "{}",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "flipped",
+              "fieldName": "flipped"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonCard",
+          "declaration": {
+            "name": "PokemonCard",
+            "module": "src/components/pokemon-card/pokemon-card.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-card",
+          "declaration": {
+            "name": "PokemonCard",
+            "module": "src/components/pokemon-card/pokemon-card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-card.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "frontStyles",
+          "default": "css`\n  .containerCard {\n    place-items: center;\n    position: absolute;\n    min-width: 100%;\n    min-height: 100%;\n    backface-visibility: hidden;\n    border-radius: 1em;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    text-align: center;\n    transform: rotateY(0deg);\n    transform-style: preserve-3d;\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\n    overflow: hidden;\n  }\n\n  .containerCard::before {\n    content: \"\";\n    position: absolute;\n    width: 450px;\n    height: 35px;\n    top: 0;\n    right: 35px;\n    transition: 0.1s ease-in-out;\n    background: transparent;\n    transform: rotate(-45deg) translate(0, -100px);\n  }\n\n  .containerCard:hover {\n    overflow: hidden;\n    display: grid;\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\n  }\n\n  .containerCard:hover::before {\n    background: linear-gradient(50deg, #00ff59, #02b3ff);\n    animation: brightness 1.9s;\n  }\n\n  .containerCard .card {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    width: 15.5rem;\n    height: 21.5rem;\n    background: transparent;\n    border-radius: 0.8em;\n    color: transparent;\n    transition: 0.1s ease-in-out;\n    z-index: 999;\n    overflow: hidden;\n  }\n\n  .containerCard:hover .card {\n    background: #171614;\n    overflow: hidden;\n  }\n\n  .containerCard .card .buttons-container {\n    display: none;\n    position: absolute;\n    top: 0;\n    left: 10%;\n    width: 80%;\n    height: 10%;\n    z-index: 100;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCard:hover .buttons-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCard .card .buttons-container .button {\n    height: 100%;\n    width: 10%;\n  }\n\n  .containerCard .card .buttons-container .button img {\n    width: 100%;\n    height: 100%;\n  }\n\n  .containerCard:hover .image-container {\n    position: relative;\n    margin-top: 0px;\n    display: block;\n    height: 10rem;\n  }\n\n  .containerCard:hover .image-container::before {\n    content: \"\";\n    width: 150%;\n    height: 250%;\n    border-radius: 50%;\n    background: var(--gradient-background);\n    position: absolute;\n    top: -170%;\n    left: -25%;\n    z-index: 1;\n  }\n\n  .containerCard:hover .image-container::after {\n    content: \"\";\n    width: 150%;\n    height: 250%;\n    border-radius: 50%;\n    background: rgba(255, 255, 255, 0.4);\n\n    position: absolute;\n    top: -170%;\n    left: -25%;\n    z-index: 5;\n  }\n\n  .containerCard .card img {\n    position: absolute;\n    max-width: 100%;\n    height: 13rem;\n    transition: 0.3s ease-in-out;\n    top: 35%;\n    left: 0%;\n    z-index: 9999;\n  }\n\n  .containerCard:hover img {\n    position: relative;\n    top: 10%;\n    transition: all 0.3s ease-in-out 0s;\n    z-index: 10;\n    height: 9rem;\n    width: 9rem;\n  }\n\n  .containerCard:hover .back-container {\n    width: 100%;\n    height: 80%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n    align-items: center;\n    z-index: 9;\n  }\n\n  .containerCard .img-back {\n    display: none;\n  }\n\n  .containerCard:hover .img-back {\n    display: block;\n    opacity: 0.5;\n    width: 6rem;\n    height: 7rem;\n  }\n\n  .containerCard .card h2 {\n    display: block;\n    font-weight: 500;\n    text-align: start;\n    width: 90%;\n    margin: 0.5rem;\n    margin-top: 1rem;\n    margin-bottom: 0.3rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #f2f2f2;\n    font-size: 1.2rem;\n  }\n\n  .containerCard .card .info-container {\n    display: none;\n    flex-direction: column;\n    justify-content: space-evenly;\n    align-items: center;\n  }\n\n  .containerCard:hover .card .info-container {\n    display: flex;\n  }\n\n  .containerCard .id-exp-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n  }\n\n  .containerCard .card .poke-id {\n    width: 50%;\n    text-align: left;\n    display: inline-block;\n    font-size: 0.8rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #7a7a7a;\n  }\n\n  .containerCard .card .poke-exp {\n    width: 50%;\n    text-align: right;\n    display: inline-block;\n    font-size: 0.8rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #7a7a7a;\n  }\n\n  .containerCard .type-container {\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n  }\n\n  .containerCard .character-container {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n  }\n`"
+        },
+        {
+          "kind": "variable",
+          "name": "backStyles",
+          "default": "css`\n  .containerCardBack {\n    display: grid;\n    place-items: center;\n    position: absolute;\n    backface-visibility: hidden;\n    min-width: 255px;\n    min-height: 355px;\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\n    border-radius: 1em;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    text-align: center;\n    overflow: hidden;\n    transform: rotateY(180deg);\n    transform-style: preserve-3d;\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\n  }\n  .containerCardBack .card {\n    display: block;\n    place-items: center;\n    width: 247px;\n    height: 347px;\n    background: #171614;\n    border-radius: 0.8em;\n    z-index: 1;\n    color: transparent;\n    align-content: center;\n    transition: 1s ease;\n  }\n  .containerCardBack h5 {\n    color: #306db4;\n    font-size: 20px;\n    margin-bottom: 6px;\n    margin-top: 10px;\n  }\n\n  .containerCardBack h6 {\n    color: #fff;\n    font-size: 15px;\n    margin-bottom: 6px;\n    margin-top: 10px;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    margin-left: 5%;\n    margin-right: 5%;\n  }\n  canvas {\n    margin-top: 5%;\n    width: 100%;\n    height: 100%;\n  }\n  .containerCardBack .card .buttons-container {\n    display: none;\n    position: absolute;\n    top: 5%;\n    left: 10%;\n    width: 80%;\n    height: 10%;\n    z-index: 100;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCardBack:hover .buttons-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCardBack .card .buttons-container .button {\n    height: 100%;\n    width: 10%;\n  }\n\n  .containerCardBack .card .buttons-container .button img {\n    width: 100%;\n    height: 100%;\n  }\n`"
+        },
+        {
+          "kind": "variable",
+          "name": "sharedStyles",
+          "default": "css`\n  :host {\n    user-select: none;\n    height: 100%;\n    margin: 0 1rem;\n  }\n\n  .scaff {\n    display: inline-block;\n    position: relative;\n    min-width: 16rem;\n    min-height: 22rem;\n    overflow: inherit;\n    background: transparent;\n    border-radius: 1em;\n    cursor: url(assets/poke1.png), auto;\n    transition: 0.3 all;\n  }\n\n  .scaff.flipped > .containerCard {\n    transform: rotateY(-180deg);\n  }\n\n  .scaff.flipped > .containerCardBack {\n    transform: rotateY(0deg);\n  }\n\n  @keyframes brightness {\n    100% {\n      transform: rotate(-45deg) translate(0, 450px);\n    }\n  }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "frontStyles",
+          "declaration": {
+            "name": "frontStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "backStyles",
+          "declaration": {
+            "name": "backStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "sharedStyles",
+          "declaration": {
+            "name": "sharedStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-flip-buttons.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonFlipButtons",
+          "members": [],
+          "events": [
+            {
+              "name": "pokedex-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "flip-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-flip-buttons",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonFlipButtons",
+          "declaration": {
+            "name": "PokemonFlipButtons",
+            "module": "src/components/pokemon-card/pokemon-flip-buttons.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-flip-buttons",
+          "declaration": {
+            "name": "PokemonFlipButtons",
+            "module": "src/components/pokemon-card/pokemon-flip-buttons.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-stat-item.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonStatItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "icon",
+              "privacy": "public",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "attribute": "value"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "fieldName": "icon"
+            },
+            {
+              "name": "label",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "fieldName": "value"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-stat-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonStatItem",
+          "declaration": {
+            "name": "PokemonStatItem",
+            "module": "src/components/pokemon-card/pokemon-stat-item.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-stat-item",
+          "declaration": {
+            "name": "PokemonStatItem",
+            "module": "src/components/pokemon-card/pokemon-stat-item.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-stats-chart.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonStatsChart",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#draw"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "type": {
+                "text": "object"
+              },
+              "default": "{}",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "visible"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "visible",
+              "fieldName": "visible"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-stats-chart",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonStatsChart",
+          "declaration": {
+            "name": "PokemonStatsChart",
+            "module": "src/components/pokemon-card/pokemon-stats-chart.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-stats-chart",
+          "declaration": {
+            "name": "PokemonStatsChart",
+            "module": "src/components/pokemon-card/pokemon-stats-chart.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-type-badge.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "TYPES_COLORS",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  normal: [\"#f48b1fff\", \"#f3b81aff\"],\n  fire: [\"#f37021ff\", \"#f3b81aff\"],\n  water: [\"#0b87b3ff\", \"#20afdfff\"],\n  electric: [\"#f3961fff\", \"#f3b81aff\"],\n  grass: [\"#459f46ff\", \"#57b947ff\"],\n  ice: [\"#20afdfff\", \"#66cef6ff\"],\n  fighting: [\"#8e191bff\", \"#b81f25ff\"],\n  poison: [\"#8e191bff\", \"#b81f25ff\"],\n  ground: [\"#5b3513ff\", \"#77421aff\"],\n  flying: [\"#0b87b3ff\", \"#20afdfff\"],\n  psychic: [\"#b11f83ff\", \"#c03995ff\"],\n  bug: [\"#459f46ff\", \"#57b947ff\"],\n  rock: [\"#917f6cff\", \"#a69f96ff\"],\n  ghost: [\"#15110cff\", \"#403b35ff\"],\n  dragon: [\"#459f46ff\", \"#57b947ff\"],\n  dark: [\"#360928ff\", \"#712158ff\"],\n  steel: [\"#352514ff\", \"#523e28ff\"],\n  fairy: [\"#f7ac36ff\", \"#f3b81aff\"],\n  unknown: [\"#15110cff\", \"#403b35ff\"],\n}"
+        },
+        {
+          "kind": "function",
+          "name": "getTypeColors",
+          "parameters": [
+            {
+              "name": "type"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonTypeBadge",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#name",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-badge",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TYPES_COLORS",
+          "declaration": {
+            "name": "TYPES_COLORS",
+            "module": "src/components/pokemon-card/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getTypeColors",
+          "declaration": {
+            "name": "getTypeColors",
+            "module": "src/components/pokemon-card/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PokemonTypeBadge",
+          "declaration": {
+            "name": "PokemonTypeBadge",
+            "module": "src/components/pokemon-card/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-badge",
+          "declaration": {
+            "name": "PokemonTypeBadge",
+            "module": "src/components/pokemon-card/pokemon-type-badge.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokemon-list/pokemon-list.js",
       "declarations": [
         {
@@ -658,10 +1061,6 @@
           "description": "",
           "name": "ListarPokemon",
           "members": [
-            {
-              "kind": "field",
-              "name": "dateTemplate"
-            },
             {
               "kind": "field",
               "name": "visibleContent",
@@ -712,123 +1111,6 @@
           "declaration": {
             "name": "ListarPokemon",
             "module": "src/components/pokemon-list/pokemon-list.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/view/card-poke.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "CardPoke",
-          "members": [
-            {
-              "kind": "method",
-              "name": "toggleFlip"
-            },
-            {
-              "kind": "method",
-              "name": "getTypeColors",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTypeNameForSVG",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderTypeContainer"
-            },
-            {
-              "kind": "method",
-              "name": "_renderPokedex"
-            },
-            {
-              "kind": "field",
-              "name": "flipped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "flipped"
-            },
-            {
-              "kind": "field",
-              "name": "pokemon",
-              "type": {
-                "text": "object"
-              },
-              "default": "{}",
-              "privacy": "public",
-              "attribute": "pokemon"
-            },
-            {
-              "kind": "field",
-              "name": "firstType",
-              "privacy": "public",
-              "attribute": "firstType"
-            },
-            {
-              "kind": "field",
-              "name": "typeColors",
-              "privacy": "public",
-              "attribute": "typeColors"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemon",
-              "fieldName": "pokemon"
-            },
-            {
-              "name": "firstType",
-              "fieldName": "firstType"
-            },
-            {
-              "name": "typeColors",
-              "fieldName": "typeColors"
-            },
-            {
-              "name": "flipped",
-              "fieldName": "flipped"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "card-poke",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CardPoke",
-          "declaration": {
-            "name": "CardPoke",
-            "module": "src/components/view/card-poke.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "card-poke",
-          "declaration": {
-            "name": "CardPoke",
-            "module": "src/components/view/card-poke.js"
           }
         }
       ]
