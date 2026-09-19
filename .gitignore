@@ -26,3 +26,6 @@ custom-elements.json
 ## out-of-scope scratch file (see spec: docs/superpowers/specs/2026-09-18-modernize-and-restructure-design.md)
 /poke.js
 
+## storybook
+*storybook.log
+storybook-static

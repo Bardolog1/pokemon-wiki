@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "analyze": "cem analyze --litelement --globs \"src/**/*.js\"",
     "test": "vitest run --coverage --passWithNoTests",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
@@ -30,7 +32,12 @@
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "vite": "^8.3.0",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.1",
+    "storybook": "^10.6.0",
+    "@storybook/web-components-vite": "^10.6.0",
+    "@chromatic-com/storybook": "latest",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0"
   },
   "customElements": "custom-elements.json"
 }
