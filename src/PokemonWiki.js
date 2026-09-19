@@ -3,8 +3,9 @@ import "./components/view/banner-title";
 import "./components/view/listar-pokemon";
 import "./components/view/paginador-poke";
 import "./components/view/navbar-buttons";
-import { DataManager } from "./components/API/data-manager";
+import { PokemonDataManager } from "./services/data-managers/pokemon-data-manager.js";
 
+const POKE_API_BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 const events = [
   "number-click",
   "next-click",
@@ -12,10 +13,6 @@ const events = [
   "end-click",
   "first-click",
 ];
-const EVENTS_LISTENERS = {
-  RESULT: "notify-data-results-total",
-  LIST: "notify-data-list-of-pokemons",
-};
 
 export class PokemonWiki extends LitElement {
   static get properties() {
@@ -44,12 +41,18 @@ export class PokemonWiki extends LitElement {
         type: Array,
         attribute: false,
       },
+      error: {
+        type: String,
+        attribute: false,
+      },
     };
   }
 
   constructor() {
     super();
-    this._getResults(0, 5, 60, 1);
+    this.dataManager = new PokemonDataManager();
+    this.error = null;
+    this._init(0, 5, 60, 1);
   }
 
   _listenerChangedPage() {
@@ -109,32 +112,39 @@ export class PokemonWiki extends LitElement {
     `;
   }
 
-  _getResults(pages, visiblePages, visibleResults, currentPage) {
-    const dm = new DataManager();
-    dm._getCountResults();
-    dm.addEventListener(EVENTS_LISTENERS.RESULT, (e) => {
+  async _init(pages, visiblePages, visibleResults, currentPage) {
+    try {
       this.pages = pages;
-      this.elements = Number(e.detail.data);
+      this.elements = await this.dataManager.getResultsCount(POKE_API_BASE_URL);
       this.visiblePages = visiblePages;
       this.visibleResults = visibleResults;
       this.currentPage = currentPage;
-      this._getPokemonList({
+      await this._getPokemonList({
         page: this.currentPage,
         results_page: this.visibleResults,
         total: this.elements,
       });
-    });
+    } catch (error) {
+      this.error = error.message;
+    }
   }
 
   async _getPokemonList(dataPage) {
-    const dm = new DataManager();
+    if (!dataPage) return;
 
-    dm.addEventListener(EVENTS_LISTENERS.LIST, (e) => {
-      this.pokemonList = e.detail.data;
+    try {
+      const pokemonList = await this.dataManager.getPokemonPage({
+        baseUrl: POKE_API_BASE_URL,
+        page: dataPage.page,
+        resultsPerPage: dataPage.results_page,
+      });
+      this.pokemonList = pokemonList;
+      this.error = null;
       const list = this.renderRoot.getElementById("list");
-      list.pokemons = e.detail.data;
-    });
-    await dm._getPagesListPoke(dataPage);
+      list.pokemons = pokemonList;
+    } catch (error) {
+      this.error = error.message;
+    }
   }
 
   render() {
@@ -156,6 +166,8 @@ export class PokemonWiki extends LitElement {
           current-page="${this.currentPage}"
           visible-results="${this.visibleResults}"
         ></paginador-poke>
+
+        ${this.error ? html`<p class="error">${this.error}</p>` : ""}
 
         <listar-pokemon id="list"></listar-pokemon>
       </div>
