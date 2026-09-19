@@ -1,9 +1,9 @@
 import { LitElement, html, css } from "lit";
-import "./components/view/banner-title";
-import "./components/view/listar-pokemon";
-import "./components/view/paginador-poke";
-import "./components/view/navbar-buttons";
-import { PokemonDataManager } from "./services/data-managers/pokemon-data-manager.js";
+import "../components/banner-title/banner-title.js";
+import "../components/pokemon-list/pokemon-list.js";
+import "../components/view/paginador-poke.js";
+import "../components/navbar-buttons/navbar-buttons.js";
+import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
 
 const POKE_API_BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 const events = [

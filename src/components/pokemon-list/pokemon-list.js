@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
-import "./card-poke";
-import { CardPoke } from "./card-poke";
+import "../view/card-poke.js";
+import { CardPoke } from "../view/card-poke.js";
 
 export class ListarPokemon extends LitElement {
   static get properties() {
