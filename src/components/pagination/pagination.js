@@ -156,4 +156,4 @@ export class Pagination extends LitElement {
     `;
   }
 }
-customElements.define("pagination", Pagination);
+customElements.define("pagination-nav", Pagination);

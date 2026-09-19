@@ -94,7 +94,7 @@ export class PokemonWiki extends LitElement {
         position: relative;
       }
 
-      pagination {
+      pagination-nav {
         width: 100%;
         position: relative;
       }
@@ -158,14 +158,14 @@ export class PokemonWiki extends LitElement {
 
         <navbar-buttons></navbar-buttons>
 
-        <pagination
+        <pagination-nav
           id="paginator"
           pages="${this.pages}"
           results="${this.elements ? this.elements : 0}"
           visible-pages="${this.visiblePages}"
           current-page="${this.currentPage}"
           visible-results="${this.visibleResults}"
-        ></pagination>
+        ></pagination-nav>
 
         ${this.error ? html`<p class="error">${this.error}</p>` : ""}
 
