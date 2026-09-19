@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "rimraf dist && vite build && npm run analyze -- --exclude dist",
+    "build": "rimraf dist && vite build && npm run analyze -- --globs \"src/**/*.js\" --exclude dist",
     "preview": "vite preview",
-    "analyze": "cem analyze --litelement"
+    "analyze": "cem analyze --litelement --globs \"src/**/*.js\""
   },
   "dependencies": {
     "chart.js": "^4.4.1",
