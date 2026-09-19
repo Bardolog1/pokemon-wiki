@@ -256,73 +256,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-list/pokemon-list.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "ListarPokemon",
-          "members": [
-            {
-              "kind": "field",
-              "name": "dateTemplate"
-            },
-            {
-              "kind": "field",
-              "name": "visibleContent",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "visibleContent"
-            },
-            {
-              "kind": "field",
-              "name": "pokemons",
-              "privacy": "public",
-              "attribute": "pokemons"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemons",
-              "fieldName": "pokemons"
-            },
-            {
-              "name": "visibleContent",
-              "fieldName": "visibleContent"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "listar-pokemon",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ListarPokemon",
-          "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/pokemon-list/pokemon-list.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "listar-pokemon",
-          "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/pokemon-list/pokemon-list.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/pagination/pagination-button.js",
       "declarations": [
         {
@@ -651,7 +584,7 @@
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "pagination",
+          "tagName": "pagination-nav",
           "customElement": true
         }
       ],
@@ -666,7 +599,7 @@
         },
         {
           "kind": "custom-element-definition",
-          "name": "pagination",
+          "name": "pagination-nav",
           "declaration": {
             "name": "Pagination",
             "module": "src/components/pagination/pagination.js"
@@ -712,6 +645,73 @@
           "declaration": {
             "name": "getNumberList",
             "module": "src/components/pagination/pagination.utils.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-list.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ListarPokemon",
+          "members": [
+            {
+              "kind": "field",
+              "name": "dateTemplate"
+            },
+            {
+              "kind": "field",
+              "name": "visibleContent",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "visibleContent"
+            },
+            {
+              "kind": "field",
+              "name": "pokemons",
+              "privacy": "public",
+              "attribute": "pokemons"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemons",
+              "fieldName": "pokemons"
+            },
+            {
+              "name": "visibleContent",
+              "fieldName": "visibleContent"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "listar-pokemon",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ListarPokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "listar-pokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
           }
         }
       ]
@@ -835,61 +835,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/services/data-managers/pokemon-data-manager.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokemonDataManager",
-          "members": [
-            {
-              "kind": "method",
-              "name": "getResultsCount",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getPokemonPage",
-              "parameters": [
-                {
-                  "name": "{ baseUrl, page, resultsPerPage }"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "#toPokemon",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "api",
-              "default": "api"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokemonDataManager",
-          "declaration": {
-            "name": "PokemonDataManager",
-            "module": "src/services/data-managers/pokemon-data-manager.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/services/api/poke-api.js",
       "declarations": [
         {
@@ -943,6 +888,61 @@
           "declaration": {
             "name": "PokeApi",
             "module": "src/services/api/poke-api.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/data-managers/pokemon-data-manager.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonDataManager",
+          "members": [
+            {
+              "kind": "method",
+              "name": "getResultsCount",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ baseUrl, page, resultsPerPage }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#toPokemon",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "api",
+              "default": "api"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonDataManager",
+          "declaration": {
+            "name": "PokemonDataManager",
+            "module": "src/services/data-managers/pokemon-data-manager.js"
           }
         }
       ]
