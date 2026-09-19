@@ -219,6 +219,7 @@ export const frontStyles = css`
     display: flex;
     flex-direction: row;
     justify-content: start;
+    gap: 0.2rem;
   }
 
   .containerCard .character-container {
