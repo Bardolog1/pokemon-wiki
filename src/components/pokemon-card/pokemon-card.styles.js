@@ -1,0 +1,347 @@
+// src/components/pokemon-card/pokemon-card.styles.js
+import { css } from "lit";
+
+export const frontStyles = css`
+  .containerCard {
+    place-items: center;
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    backface-visibility: hidden;
+    border-radius: 1em;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-align: center;
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .containerCard::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 35px;
+    top: 0;
+    right: 35px;
+    transition: 0.1s ease-in-out;
+    background: transparent;
+    transform: rotate(-45deg) translate(0, -100px);
+  }
+
+  .containerCard:hover {
+    overflow: hidden;
+    display: grid;
+    background: linear-gradient(50deg, #2a5a3b, #1e4886);
+  }
+
+  .containerCard:hover::before {
+    background: linear-gradient(50deg, #00ff59, #02b3ff);
+    animation: brightness 1.9s;
+  }
+
+  .containerCard .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 15.5rem;
+    height: 21.5rem;
+    background: transparent;
+    border-radius: 0.8em;
+    color: transparent;
+    transition: 0.1s ease-in-out;
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  .containerCard:hover .card {
+    background: #171614;
+    overflow: hidden;
+  }
+
+  .containerCard .card .buttons-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 80%;
+    height: 10%;
+    z-index: 100;
+    transition: 2s ease-in-out;
+  }
+
+  .containerCard:hover .buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    transition: 2s ease-in-out;
+  }
+
+  .containerCard .card .buttons-container .button {
+    height: 100%;
+    width: 10%;
+  }
+
+  .containerCard .card .buttons-container .button img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .containerCard:hover .image-container {
+    position: relative;
+    margin-top: 0px;
+    display: block;
+    height: 10rem;
+  }
+
+  .containerCard:hover .image-container::before {
+    content: "";
+    width: 150%;
+    height: 250%;
+    border-radius: 50%;
+    background: var(--gradient-background);
+    position: absolute;
+    top: -170%;
+    left: -25%;
+    z-index: 1;
+  }
+
+  .containerCard:hover .image-container::after {
+    content: "";
+    width: 150%;
+    height: 250%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+
+    position: absolute;
+    top: -170%;
+    left: -25%;
+    z-index: 5;
+  }
+
+  .containerCard .card img {
+    position: absolute;
+    max-width: 100%;
+    height: 13rem;
+    transition: 0.3s ease-in-out;
+    top: 35%;
+    left: 0%;
+    z-index: 9999;
+  }
+
+  .containerCard:hover img {
+    position: relative;
+    top: 10%;
+    transition: all 0.3s ease-in-out 0s;
+    z-index: 10;
+    height: 9rem;
+    width: 9rem;
+  }
+
+  .containerCard:hover .back-container {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+  }
+
+  .containerCard .img-back {
+    display: none;
+  }
+
+  .containerCard:hover .img-back {
+    display: block;
+    opacity: 0.5;
+    width: 6rem;
+    height: 7rem;
+  }
+
+  .containerCard .card h2 {
+    display: block;
+    font-weight: 500;
+    text-align: start;
+    width: 90%;
+    margin: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: #f2f2f2;
+    font-size: 1.2rem;
+  }
+
+  .containerCard .card .info-container {
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .containerCard:hover .card .info-container {
+    display: flex;
+  }
+
+  .containerCard .id-exp-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    margin: 0 0.5rem 0.5rem;
+  }
+
+  .containerCard .card .poke-id {
+    width: 50%;
+    text-align: left;
+    display: inline-block;
+    font-size: 0.8rem;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: #7a7a7a;
+  }
+
+  .containerCard .card .poke-exp {
+    width: 50%;
+    text-align: right;
+    display: inline-block;
+    font-size: 0.8rem;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: #7a7a7a;
+  }
+
+  .containerCard .type-container {
+    width: 90%;
+    margin: 0 0.5rem 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  .containerCard .character-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 90%;
+    margin: 0 0.5rem 0.5rem;
+  }
+`;
+
+export const backStyles = css`
+  .containerCardBack {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    backface-visibility: hidden;
+    min-width: 255px;
+    min-height: 355px;
+    background: linear-gradient(50deg, #2a5a3b, #1e4886);
+    border-radius: 1em;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-align: center;
+    overflow: hidden;
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  .containerCardBack .card {
+    display: block;
+    place-items: center;
+    width: 247px;
+    height: 347px;
+    background: #171614;
+    border-radius: 0.8em;
+    z-index: 1;
+    color: transparent;
+    align-content: center;
+    transition: 1s ease;
+  }
+  .containerCardBack h5 {
+    color: #306db4;
+    font-size: 20px;
+    margin-bottom: 6px;
+    margin-top: 10px;
+  }
+
+  .containerCardBack h6 {
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  canvas {
+    margin-top: 5%;
+    width: 100%;
+    height: 100%;
+  }
+  .containerCardBack .card .buttons-container {
+    display: none;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    width: 80%;
+    height: 10%;
+    z-index: 100;
+    transition: 2s ease-in-out;
+  }
+
+  .containerCardBack:hover .buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    transition: 2s ease-in-out;
+  }
+
+  .containerCardBack .card .buttons-container .button {
+    height: 100%;
+    width: 10%;
+  }
+
+  .containerCardBack .card .buttons-container .button img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+export const sharedStyles = css`
+  :host {
+    user-select: none;
+    height: 100%;
+    margin: 0 1rem;
+  }
+
+  .scaff {
+    display: inline-block;
+    position: relative;
+    min-width: 16rem;
+    min-height: 22rem;
+    overflow: inherit;
+    background: transparent;
+    border-radius: 1em;
+    cursor: url(assets/poke1.png), auto;
+    transition: 0.3 all;
+  }
+
+  .scaff.flipped > .containerCard {
+    transform: rotateY(-180deg);
+  }
+
+  .scaff.flipped > .containerCardBack {
+    transform: rotateY(0deg);
+  }
+
+  @keyframes brightness {
+    100% {
+      transform: rotate(-45deg) translate(0, 450px);
+    }
+  }
+`;

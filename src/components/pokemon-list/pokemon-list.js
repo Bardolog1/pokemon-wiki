@@ -1,6 +1,5 @@
 import { LitElement, html, css } from "lit";
-import "../view/card-poke.js";
-import { CardPoke } from "../view/card-poke.js";
+import "../pokemon-card/pokemon-card.js";
 
 export class ListarPokemon extends LitElement {
   static get properties() {
@@ -24,17 +23,6 @@ export class ListarPokemon extends LitElement {
 
   updated(props) {
     super.updated && super.updated(props);
-  }
-
-  get dateTemplate() {
-    return html`
-      ${this.pokemons?.map((pokemon) => {
-        const card = new CardPoke();
-        card.pokemon = pokemon;
-        card.render();
-        return card;
-      })}
-    `;
   }
 
   static get styles() {
@@ -78,7 +66,7 @@ export class ListarPokemon extends LitElement {
         }
       }
 
-      card-poke {
+      pokemon-card {
         max-width: calc(33.33% - 20px);
         box-sizing: border-box;
         margin: 10px;
@@ -93,7 +81,11 @@ export class ListarPokemon extends LitElement {
   }
 
   render() {
-    return html` ${this.dateTemplate} `;
+    return html`
+      ${this.pokemons?.map(
+        (pokemon) => html`<pokemon-card .pokemon=${pokemon}></pokemon-card>`,
+      )}
+    `;
   }
 }
 customElements.define("listar-pokemon", ListarPokemon);
