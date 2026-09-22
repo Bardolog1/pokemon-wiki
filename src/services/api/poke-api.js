@@ -1,20 +1,31 @@
-const GET = 'GET';
+const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 
 export class PokeApi {
   async #request(url) {
-    const response = await fetch(url, { method: GET });
+    const response = await fetch(url, { method: "GET" });
+    if (!response.ok) {
+      throw new Error(`PokeApi request failed with status ${response.status} for ${url}`);
+    }
     return response.json();
   }
 
-  async getCount(url) {
-    return this.#request(url);
+  async getPokemonCount() {
+    return this.#request(BASE_URL);
   }
 
-  async getPage(url) {
-    return this.#request(url);
+  async getPokemonPage({ offset, limit }) {
+    const list = await this.#request(`${BASE_URL}?offset=${offset}&limit=${limit}`);
+    return Promise.all(list.results.map((entry) => this.#request(entry.url)));
   }
 
-  async getPokemon(url) {
-    return this.#request(url);
+  async getPokemon(query) {
+    return this.#request(`${BASE_URL}/${String(query).toLowerCase()}`);
+  }
+
+  async getPokemonFullEntry(query) {
+    const pokemon = await this.getPokemon(query);
+    const species = await this.#request(pokemon.species.url);
+    const evolutionChain = await this.#request(species.evolution_chain.url);
+    return { pokemon, species, evolutionChain };
   }
 }

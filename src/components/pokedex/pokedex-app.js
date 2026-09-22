@@ -96,10 +96,7 @@ export class PokedexApp extends LitElement {
     this.activeView = 0;
 
     try {
-      this.pokemon = await this.entryDataManager.getFullEntry({
-        baseUrl: "https://pokeapi.co/api/v2/pokemon",
-        query: query,
-      });
+      this.pokemon = await this.entryDataManager.getFullEntry({ query });
       this.searchValue = "";
     } catch (err) {
       if (err.message === "LimitExceeded") {
