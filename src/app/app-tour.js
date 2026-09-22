@@ -15,7 +15,9 @@ import "driver.js/dist/driver.css";
  * forzar ese estado ANTES de pedirle a driver.js que resuelva y resalte el
  * elemento del paso siguiente, y usa `element` como función (no como
  * referencia fija) para que se recalcule recién cuando ese elemento ya
- * existe.
+ * existe. También cierra la pokedex al salir de esa sección (paso de
+ * favoritos), porque de ahí en adelante el tour vuelve a mostrar la página
+ * principal y el modal taparía todo.
  */
 export function startAppTour(pokemonWikiEl) {
   const root = pokemonWikiEl.renderRoot;
@@ -26,6 +28,10 @@ export function startAppTour(pokemonWikiEl) {
 
   function getPokedexApp() {
     return navbar?.shadowRoot?.querySelector("pokedex-app") ?? null;
+  }
+
+  function pokedexShadow(selector) {
+    return getPokedexApp()?.shadowRoot?.querySelector(selector) ?? null;
   }
 
   async function openPokedex() {
@@ -59,14 +65,6 @@ export function startAppTour(pokemonWikiEl) {
     await firstCard.updateComplete;
   }
 
-  // Qué estado necesita cada índice de paso antes de poder mostrarse.
-  // (índice -> función async que deja el DOM listo para ese paso)
-  const stepRequirements = {
-    2: openPokedex,
-    3: openPokedex,
-    7: () => flipCard(true),
-  };
-
   const steps = [
     {
       element: () => root.querySelector("banner-title"),
@@ -83,22 +81,67 @@ export function startAppTour(pokemonWikiEl) {
           "Hacé click acá para abrir la Pokédex. También podés arrastrar este ícono y soltarlo sobre cualquier carta para abrirla directo con ese Pokémon.",
       },
     },
+    // A partir de acá la pokedex está abierta y encendida (ver
+    // stepRequirements[2] = openPokedex).
     {
-      element: () => getPokedexApp()?.shadowRoot?.querySelector(".screen-bezel"),
+      element: () => pokedexShadow(".power-btn"),
+      popover: {
+        title: "Encendido",
+        description: "Este botón prende y apaga la Pokédex.",
+      },
+    },
+    {
+      element: () => pokedexShadow(".screen-bezel"),
       popover: {
         title: "La pantalla",
-        description:
-          "Escribí un número o nombre con el teclado y tocá GO para buscar. Usá PREV/NEXT para ir al Pokémon anterior o siguiente sin escribir nada.",
+        description: "Acá se muestra la información del Pokémon que busques o navegues.",
       },
     },
     {
-      element: () => getPokedexApp()?.shadowRoot?.querySelector(".red-bezel-btn"),
+      element: () => pokedexShadow(".grid-buttons"),
       popover: {
-        title: "Sonido y navegación",
-        description:
-          "El punto rojo reproduce el grito del Pokémon actual. El D-pad de la izquierda cambia entre las vistas (stats, movimientos, descripción, evoluciones) y hace scroll dentro de la pantalla.",
+        title: "Teclado numérico",
+        description: "Escribí el número del Pokémon que querés buscar (hasta 7 dígitos).",
       },
     },
+    {
+      element: () => pokedexShadow(".middle-controls .white-btns"),
+      popover: {
+        title: "DEL y GO",
+        description: "DEL borra el último dígito. GO ejecuta la búsqueda con lo que escribiste.",
+      },
+    },
+    {
+      element: () => pokedexShadow(".yellow-btn"),
+      popover: {
+        title: "Reiniciar",
+        description: "Limpia la búsqueda actual y vuelve a la pantalla de inicio.",
+      },
+    },
+    {
+      element: () => pokedexShadow(".d-pad"),
+      popover: {
+        title: "D-pad",
+        description:
+          "Izquierda/derecha cambia entre las vistas del Pokémon (stats, movimientos, descripción, evoluciones). Arriba/abajo hace scroll dentro de la pantalla.",
+      },
+    },
+    {
+      element: () => pokedexShadow(".red-bezel-btn"),
+      popover: {
+        title: "Sonido",
+        description: "Reproduce el grito del Pokémon que estés viendo.",
+      },
+    },
+    {
+      element: () => pokedexShadow(".bottom-controls"),
+      popover: {
+        title: "Anterior / Siguiente",
+        description: "Navegá al Pokémon anterior o siguiente sin tener que escribir su número.",
+      },
+    },
+    // A partir de acá se cierra la pokedex (stepRequirements en el índice
+    // de este paso = closePokedex) y volvemos a la página principal.
     {
       element: () => root.querySelector(".favorites-toggle"),
       popover: {
@@ -122,6 +165,7 @@ export function startAppTour(pokemonWikiEl) {
           "Pasá el mouse para ver nombre, tipo, peso y altura. La estrella la marca como favorita, y el ícono de pokedex la abre ya precargada.",
       },
     },
+    // Última: se flippea la card (stepRequirements en este índice).
     {
       element: () => firstCard,
       popover: {
@@ -131,6 +175,13 @@ export function startAppTour(pokemonWikiEl) {
       },
     },
   ];
+
+  // índice de paso -> función async que deja el DOM listo antes de mostrarlo
+  const stepRequirements = {
+    2: openPokedex,
+    10: closePokedex,
+    13: () => flipCard(true),
+  };
 
   async function cleanup() {
     await closePokedex();
