@@ -11,8 +11,6 @@ export class PokedexApp extends LitElement {
     pokemon: { type: Object },
     isLoading: { type: Boolean },
     error: { type: Boolean },
-    limitError: { type: Boolean },
-    maxLimitCount: { type: Number },
     activeView: { type: Number },
     yellowFlash: { type: Boolean },
   };
@@ -27,8 +25,6 @@ export class PokedexApp extends LitElement {
     this.pokemon = null;
     this.isLoading = false;
     this.error = false;
-    this.limitError = false;
-    this.maxLimitCount = 0;
     this.activeView = 0;
     this.yellowFlash = false;
 
@@ -72,7 +68,6 @@ export class PokedexApp extends LitElement {
     }
     this.pokemon = null;
     this.error = false;
-    this.limitError = false;
     this.triggerYellowFlash();
   }
 
@@ -80,7 +75,6 @@ export class PokedexApp extends LitElement {
     this.searchValue = "";
     this.pokemon = null;
     this.error = false;
-    this.limitError = false;
     this.isLoading = false;
     this.activeView = 0;
     if (this.isOn) this.triggerYellowFlash();
@@ -91,7 +85,6 @@ export class PokedexApp extends LitElement {
 
     this.isLoading = true;
     this.error = false;
-    this.limitError = false;
     this.pokemon = null;
     this.activeView = 0;
 
@@ -99,12 +92,7 @@ export class PokedexApp extends LitElement {
       this.pokemon = await this.entryDataManager.getFullEntry({ query });
       this.searchValue = "";
     } catch (err) {
-      if (err.message === "LimitExceeded") {
-        this.limitError = true;
-        this.maxLimitCount = err.maxCount || 1025;
-      } else {
-        this.error = true;
-      }
+      this.error = true;
     } finally {
       this.isLoading = false;
     }
@@ -203,8 +191,6 @@ export class PokedexApp extends LitElement {
             .pokemon=${this.pokemon}
             .isLoading=${this.isLoading}
             .error=${this.error}
-            .limitError=${this.limitError}
-            .maxLimitCount=${this.maxLimitCount}
             .activeView=${this.activeView}
             .isOn=${this.isOn}
           ></pokedex-screen>
