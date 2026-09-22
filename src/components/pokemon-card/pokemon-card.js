@@ -12,6 +12,7 @@ export class PokemonCard extends LitElement {
   static properties = {
     pokemon: { type: Object, attribute: "pokemon" },
     flipped: { type: Boolean },
+    forceHover: { type: Boolean },
     dragOver: { type: Boolean, state: true },
   };
 
@@ -20,6 +21,7 @@ export class PokemonCard extends LitElement {
   constructor() {
     super();
     this.flipped = false;
+    this.forceHover = false;
     this.pokemon = {};
     this.dragOver = false;
   }
@@ -72,7 +74,7 @@ export class PokemonCard extends LitElement {
         @dragleave=${this._onDragLeave}
         @drop=${this._onDrop}
       >
-        <div class="containerCard">
+        <div class="containerCard ${this.forceHover ? "force-hover" : ""}">
           <div class="card">
             <div class="top-toolbar">
               <pokemon-pokedex-button @pokedex-click=${this._renderPokedex}></pokemon-pokedex-button>
