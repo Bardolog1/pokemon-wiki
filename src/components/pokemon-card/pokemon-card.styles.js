@@ -332,6 +332,13 @@ export const sharedStyles = css`
     transition: 0.3 all;
   }
 
+  /* Mientras se arrastra el ícono de la pokedex sobre la card, se anula el
+     :hover para que no se abra/expanda mientras se suelta el ícono. */
+  .scaff.drag-over .containerCard,
+  .scaff.drag-over .containerCardBack {
+    pointer-events: none;
+  }
+
   .scaff.flipped > .containerCard {
     transform: rotateY(-180deg);
   }

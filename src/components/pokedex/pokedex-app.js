@@ -46,6 +46,17 @@ export class PokedexApp extends LitElement {
     }
   }
 
+  // Se invoca desde afuera (navbar-buttons) cuando se pide abrir la pokedex
+  // ya precargada con un pokemon puntual (click en el ícono de una card, o
+  // soltar el ícono de la pokedex sobre una card).
+  openWithPokemon(pokemon) {
+    this.isOpen = true;
+    this.isOn = true;
+    if (pokemon?.id) {
+      this.executeSearch(String(pokemon.id));
+    }
+  }
+
   triggerYellowFlash() {
     this.yellowFlash = true;
     setTimeout(() => {
