@@ -191,16 +191,24 @@ export function startAppTour(pokemonWikiEl) {
     },
   ];
 
-  // índice de paso -> función async que deja el DOM listo antes de mostrarlo
-  const stepRequirements = {
-    2: openPokedex,
-    10: closePokedex,
-    13: () => forceHover(true),
-    14: async () => {
-      await forceHover(false);
-      await flipCard(true);
-    },
-  };
+  const POKEDEX_FIRST_STEP = 2;
+  const POKEDEX_LAST_STEP = 9;
+  const HOVER_STEP = 13;
+  const FLIP_STEP = 14;
+
+  // Calcula y aplica el estado exacto que le corresponde a un índice de
+  // paso, sea que se llegue a él avanzando o retrocediendo — así "Anterior"
+  // también deja la pokedex/card como ese paso las necesita, no solo
+  // "Siguiente".
+  async function prepareForIndex(index) {
+    if (index >= POKEDEX_FIRST_STEP && index <= POKEDEX_LAST_STEP) {
+      await openPokedex();
+    } else {
+      await closePokedex();
+    }
+    await forceHover(index === HOVER_STEP);
+    await flipCard(index === FLIP_STEP);
+  }
 
   async function cleanup() {
     await closePokedex();
@@ -215,10 +223,12 @@ export function startAppTour(pokemonWikiEl) {
     prevBtnText: "Anterior",
     doneBtnText: "Listo",
     onNextClick: async () => {
-      const nextIndex = tourObj.getActiveIndex() + 1;
-      const prepare = stepRequirements[nextIndex];
-      if (prepare) await prepare();
+      await prepareForIndex(tourObj.getActiveIndex() + 1);
       tourObj.moveNext();
+    },
+    onPrevClick: async () => {
+      await prepareForIndex(tourObj.getActiveIndex() - 1);
+      tourObj.movePrevious();
     },
     onCloseClick: () => {
       tourObj.destroy();
