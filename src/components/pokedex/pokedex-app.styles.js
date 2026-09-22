@@ -81,7 +81,17 @@ export const styles = css`
   .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }
 
   .bezel-bottom { display: flex; justify-content: space-between; width: 200px; margin-top: 10px; }
-  .red-bezel-btn { width: 18px; height: 18px; background-color: var(--dex-red); border-radius: 50%; border: 2px solid var(--dex-border); }
+  .red-bezel-btn {
+    width: 18px;
+    height: 18px;
+    background-color: var(--dex-red);
+    border-radius: 50%;
+    border: 2px solid var(--dex-border);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .red-bezel-btn:hover { filter: brightness(1.15); }
+  .red-bezel-btn:active { transform: scale(0.88); }
   .speaker-grill { display: flex; flex-direction: column; gap: 4px; }
   .speaker-line { width: 30px; height: 3px; background-color: var(--dex-border); }
 

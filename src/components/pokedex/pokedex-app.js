@@ -13,6 +13,7 @@ export class PokedexApp extends LitElement {
     error: { type: Boolean },
     activeView: { type: Number },
     yellowFlash: { type: Boolean },
+    isPlayingCry: { type: Boolean },
   };
 
   static styles = [styles];
@@ -27,8 +28,24 @@ export class PokedexApp extends LitElement {
     this.error = false;
     this.activeView = 0;
     this.yellowFlash = false;
+    this.isPlayingCry = false;
 
     this.entryDataManager = new PokedexEntryDataManager();
+  }
+
+  // Se dispara con el botón rojo bajo la pantalla; mientras suena, el lente
+  // azul titila (reusa la misma animación "blinking" del estado de carga).
+  playCry() {
+    if (!this.isOn || !this.pokemon?.cry || this.isPlayingCry) return;
+
+    const audio = new Audio(this.pokemon.cry);
+    this.isPlayingCry = true;
+    const stop = () => {
+      this.isPlayingCry = false;
+    };
+    audio.addEventListener("ended", stop);
+    audio.addEventListener("error", stop);
+    audio.play().catch(stop);
   }
 
   toggleOpen() {
@@ -184,7 +201,7 @@ export class PokedexApp extends LitElement {
       <div class="left-half">
         <div class="top-sensor-area">
           <div class="lens-container">
-            <div class="main-lens ${this.isLoading ? "blinking" : ""}"></div>
+            <div class="main-lens ${this.isLoading || this.isPlayingCry ? "blinking" : ""}"></div>
           </div>
           <div class="mini-leds ${this.isLoading ? "loading-sequence" : ""}">
             <div class="led red"></div>
@@ -206,7 +223,11 @@ export class PokedexApp extends LitElement {
             .isOn=${this.isOn}
           ></pokedex-screen>
           <div class="bezel-bottom">
-            <div class="red-bezel-btn"></div>
+            <div
+              class="red-bezel-btn"
+              @click="${this.playCry}"
+              title="Reproducir sonido del Pokémon"
+            ></div>
             <div class="speaker-grill">
               <div class="speaker-line"></div>
               <div class="speaker-line"></div>
