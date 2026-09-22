@@ -3,7 +3,7 @@ import { LitElement, html, css } from "lit";
 import "./pokemon-type-badge.js";
 import "./pokemon-stat-item.js";
 import "./pokemon-flip-buttons.js";
-import "./pokemon-stats-chart.js";
+import "./pokemon-type-matchups.js";
 import { frontStyles, backStyles, sharedStyles } from "./pokemon-card.styles.js";
 import { getTypeColors } from "./pokemon-type-badge.js";
 
@@ -117,9 +117,9 @@ export class PokemonCard extends LitElement {
               @pokedex-click=${this._renderPokedex}
               @flip-click=${this.toggleFlip}
             ></pokemon-flip-buttons>
-            <h5>Pokemon Stats</h5>
+            <h5>Matriz de Tipos</h5>
             <h6>${pokemon.name.toUpperCase()}</h6>
-            <pokemon-stats-chart .pokemon=${pokemon} .visible=${flipped}></pokemon-stats-chart>
+            <pokemon-type-matchups .type=${pokemon.type}></pokemon-type-matchups>
           </div>
         </div>
       </div>

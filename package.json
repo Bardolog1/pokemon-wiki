@@ -16,13 +16,16 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
-    "chart.js": "^4.4.1",
     "lit": "^2.0.2"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "latest",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@open-wc/eslint-config": "^8.0.2",
     "@open-wc/testing": "^3.1.6",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/web-components-vite": "^10.6.0",
     "@vitest/coverage-v8": "^5.0.1",
     "deepmerge": "^4.2.2",
     "eslint-config-prettier": "^8.3.0",
@@ -31,13 +34,9 @@
     "lint-staged": "^10.5.4",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.1",
     "storybook": "^10.6.0",
-    "@storybook/web-components-vite": "^10.6.0",
-    "@chromatic-com/storybook": "latest",
-    "@storybook/addon-a11y": "^10.6.0",
-    "@storybook/addon-docs": "^10.6.0"
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
   },
   "customElements": "custom-elements.json"
 }
