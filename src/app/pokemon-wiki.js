@@ -150,8 +150,7 @@ export class PokemonWiki extends LitElement {
       <div class="container">
         <banner-title
           logo="https://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png/revision/latest?cb=20160319183155"
-          title="PokeDex with PokéAPI & Lit"
-          logo-2="https://lit.dev/images/logo.svg#flame"
+          title="Pokédex Interactiva"
         ></banner-title>
 
         <navbar-buttons></navbar-buttons>

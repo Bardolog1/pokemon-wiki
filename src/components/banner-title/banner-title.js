@@ -70,11 +70,9 @@ export class BannerTitle extends LitElement {
         <img class="logo" src="${this.logo}" alt="${this.descriptiontext}" />
         <p class="title">
           ${this.titleText}
-          <img
-            class="title-logo"
-            src="${this.secundLogo}"
-            alt="${this.descriptiontext}"
-          />
+          ${this.secundLogo
+            ? html`<img class="title-logo" src="${this.secundLogo}" alt="${this.descriptiontext}" />`
+            : ""}
         </p>
       </div>
     `;
