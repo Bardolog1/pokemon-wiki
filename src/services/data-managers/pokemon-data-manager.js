@@ -17,6 +17,11 @@ export class PokemonDataManager {
     return details.map((detail) => this.#toPokemon(detail));
   }
 
+  async getPokemonByIds(ids) {
+    const details = await Promise.all(ids.map((id) => this.api.getPokemon(id)));
+    return details.map((detail) => this.#toPokemon(detail));
+  }
+
   #toPokemon(detail) {
     const img =
       detail.sprites.other?.dream_world?.front_default ||

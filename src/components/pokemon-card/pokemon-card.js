@@ -2,8 +2,9 @@
 import { LitElement, html, css } from "lit";
 import "./pokemon-type-badge.js";
 import "./pokemon-stat-item.js";
-import "./pokemon-flip-buttons.js";
+import "./pokemon-pokedex-button.js";
 import "./pokemon-type-matchups.js";
+import "./pokemon-favorite-button.js";
 import { frontStyles, backStyles, sharedStyles } from "./pokemon-card.styles.js";
 import { getTypeColors } from "./pokemon-type-badge.js";
 
@@ -65,6 +66,7 @@ export class PokemonCard extends LitElement {
       <div
         class="scaff ${flipped ? "flipped" : ""} ${this.dragOver ? "drag-over" : ""}"
         id=${pokemon.id || 0}
+        @click=${this.toggleFlip}
         @dragenter=${this._onDragEnter}
         @dragover=${this._onDragOver}
         @dragleave=${this._onDragLeave}
@@ -72,11 +74,10 @@ export class PokemonCard extends LitElement {
       >
         <div class="containerCard">
           <div class="card">
-            <pokemon-flip-buttons
-              class="buttons-container"
-              @pokedex-click=${this._renderPokedex}
-              @flip-click=${this.toggleFlip}
-            ></pokemon-flip-buttons>
+            <div class="top-toolbar">
+              <pokemon-pokedex-button @pokedex-click=${this._renderPokedex}></pokemon-pokedex-button>
+              <pokemon-favorite-button pokemon-id=${pokemon.id}></pokemon-favorite-button>
+            </div>
             <div class="image-container">
               <div class="back-container">
                 <img class="img-back" src="assets/${firstType}.svg" alt="" />
@@ -112,11 +113,10 @@ export class PokemonCard extends LitElement {
 
         <div class="containerCardBack">
           <div class="card">
-            <pokemon-flip-buttons
-              class="buttons-container"
-              @pokedex-click=${this._renderPokedex}
-              @flip-click=${this.toggleFlip}
-            ></pokemon-flip-buttons>
+            <div class="top-toolbar">
+              <pokemon-pokedex-button @pokedex-click=${this._renderPokedex}></pokemon-pokedex-button>
+              <pokemon-favorite-button pokemon-id=${pokemon.id}></pokemon-favorite-button>
+            </div>
             <h5>Matriz de Tipos</h5>
             <h6>${pokemon.name.toUpperCase()}</h6>
             <pokemon-type-matchups .type=${pokemon.type}></pokemon-type-matchups>
