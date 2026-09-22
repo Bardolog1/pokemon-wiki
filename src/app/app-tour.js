@@ -34,6 +34,9 @@ export function startAppTour(pokemonWikiEl) {
     await navbar.updateComplete;
     const pokedexApp = getPokedexApp();
     if (pokedexApp) {
+      // isOpen = tapa del dispositivo abierta; isOn = encendido. Son dos
+      // estados distintos (ver pokedex-app.js) y el tour necesita ambos.
+      pokedexApp.isOpen = true;
       pokedexApp.isOn = true;
       await pokedexApp.updateComplete;
     }
@@ -44,6 +47,7 @@ export function startAppTour(pokemonWikiEl) {
     const pokedexApp = getPokedexApp();
     if (pokedexApp) {
       pokedexApp.isOn = false;
+      pokedexApp.isOpen = false;
     }
     navbar.isOpen = false;
     await navbar.updateComplete;
