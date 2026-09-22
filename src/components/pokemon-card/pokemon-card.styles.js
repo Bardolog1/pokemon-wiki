@@ -60,7 +60,7 @@ export const frontStyles = css`
     overflow: hidden;
   }
 
-  .containerCard .card .buttons-container {
+  .containerCard .card .top-toolbar {
     display: none;
     position: absolute;
     top: 0;
@@ -71,7 +71,7 @@ export const frontStyles = css`
     transition: 2s ease-in-out;
   }
 
-  .containerCard:hover .buttons-container {
+  .containerCard:hover .top-toolbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -79,14 +79,9 @@ export const frontStyles = css`
     transition: 2s ease-in-out;
   }
 
-  .containerCard .card .buttons-container .button {
+  .containerCard .card .top-toolbar pokemon-pokedex-button {
     height: 100%;
     width: 10%;
-  }
-
-  .containerCard .card .buttons-container .button img {
-    width: 100%;
-    height: 100%;
   }
 
   .containerCard:hover .image-container {
@@ -287,7 +282,7 @@ export const backStyles = css`
     margin-top: 8%;
     width: 90%;
   }
-  .containerCardBack .card .buttons-container {
+  .containerCardBack .card .top-toolbar {
     display: none;
     position: absolute;
     top: 5%;
@@ -298,7 +293,7 @@ export const backStyles = css`
     transition: 2s ease-in-out;
   }
 
-  .containerCardBack:hover .buttons-container {
+  .containerCardBack:hover .top-toolbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -306,14 +301,9 @@ export const backStyles = css`
     transition: 2s ease-in-out;
   }
 
-  .containerCardBack .card .buttons-container .button {
+  .containerCardBack .card .top-toolbar pokemon-pokedex-button {
     height: 100%;
     width: 10%;
-  }
-
-  .containerCardBack .card .buttons-container .button img {
-    width: 100%;
-    height: 100%;
   }
 `;
 

@@ -4,6 +4,7 @@ import "../components/pokemon-list/pokemon-list.js";
 import "../components/pagination/pagination.js";
 import "../components/navbar-buttons/navbar-buttons.js";
 import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
+import { favoritesStore } from "../services/favorites-store.js";
 
 const events = [
   "number-click",
@@ -44,6 +45,10 @@ export class PokemonWiki extends LitElement {
         type: String,
         attribute: false,
       },
+      favoritesOnly: {
+        type: Boolean,
+        attribute: false,
+      },
     };
   }
 
@@ -51,7 +56,21 @@ export class PokemonWiki extends LitElement {
     super();
     this.dataManager = new PokemonDataManager();
     this.error = null;
+    this.favoritesOnly = false;
+    this._onFavoritesChange = () => {
+      if (this.favoritesOnly) this._loadFavorites();
+    };
     this._init(0, 5, 60, 1);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    favoritesStore.addEventListener("change", this._onFavoritesChange);
+  }
+
+  disconnectedCallback() {
+    favoritesStore.removeEventListener("change", this._onFavoritesChange);
+    super.disconnectedCallback();
   }
 
   _listenerChangedPage() {
@@ -96,6 +115,42 @@ export class PokemonWiki extends LitElement {
       pagination-nav {
         width: 100%;
         position: relative;
+      }
+
+      pagination-nav.hidden {
+        display: none;
+      }
+
+      .favorites-toggle {
+        background: rgba(255, 255, 255, 0.6);
+        border: none;
+        border-radius: 100px;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      .favorites-toggle:hover {
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      .favorites-toggle.active {
+        background: #ffcb04;
+      }
+
+      .empty-favorites {
+        color: #fff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        font-size: 1rem;
+      }
+
+      .error {
+        color: #fff;
+        background: rgba(180, 30, 30, 0.85);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
       }
 
       listar-pokemon {
@@ -145,6 +200,32 @@ export class PokemonWiki extends LitElement {
     }
   }
 
+  async _loadFavorites() {
+    try {
+      const ids = favoritesStore.getIds();
+      const pokemonList = ids.length > 0 ? await this.dataManager.getPokemonByIds(ids) : [];
+      this.pokemonList = pokemonList;
+      this.error = null;
+      const list = this.renderRoot.getElementById("list");
+      list.pokemons = pokemonList;
+    } catch (error) {
+      this.error = error.message;
+    }
+  }
+
+  toggleFavoritesOnly() {
+    this.favoritesOnly = !this.favoritesOnly;
+    if (this.favoritesOnly) {
+      this._loadFavorites();
+    } else {
+      this._getPokemonList({
+        page: this.currentPage,
+        results_page: this.visibleResults,
+        total: this.elements,
+      });
+    }
+  }
+
   render() {
     return html`
       <div class="container">
@@ -155,8 +236,18 @@ export class PokemonWiki extends LitElement {
 
         <navbar-buttons></navbar-buttons>
 
+        <button
+          type="button"
+          class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
+          @click="${this.toggleFavoritesOnly}"
+          aria-pressed="${this.favoritesOnly}"
+        >
+          ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
+        </button>
+
         <pagination-nav
           id="paginator"
+          class="${this.favoritesOnly ? "hidden" : ""}"
           pages="${this.pages}"
           results="${this.elements ? this.elements : 0}"
           visible-pages="${this.visiblePages}"
@@ -165,6 +256,10 @@ export class PokemonWiki extends LitElement {
         ></pagination-nav>
 
         ${this.error ? html`<p class="error">${this.error}</p>` : ""}
+
+        ${this.favoritesOnly && this.pokemonList?.length === 0
+          ? html`<p class="empty-favorites">Todavía no marcaste ningún Pokémon como favorito.</p>`
+          : ""}
 
         <listar-pokemon id="list"></listar-pokemon>
       </div>
