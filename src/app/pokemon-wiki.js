@@ -121,6 +121,28 @@ export class PokemonWiki extends LitElement {
         display: none;
       }
 
+      .toolbar-row {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .tour-trigger {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.6);
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      .tour-trigger:hover {
+        background: rgba(255, 255, 255, 0.85);
+      }
+
       .favorites-toggle {
         background: rgba(255, 255, 255, 0.6);
         border: none;
@@ -226,6 +248,14 @@ export class PokemonWiki extends LitElement {
     }
   }
 
+  // Carga driver.js recién cuando se pide el tour, para no sumarlo al
+  // bundle inicial de gente que nunca lo usa.
+  async _startTour() {
+    await this.updateComplete;
+    const { startAppTour } = await import("./app-tour.js");
+    startAppTour(this);
+  }
+
   render() {
     return html`
       <div class="container">
@@ -236,14 +266,26 @@ export class PokemonWiki extends LitElement {
 
         <navbar-buttons></navbar-buttons>
 
-        <button
-          type="button"
-          class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
-          @click="${this.toggleFavoritesOnly}"
-          aria-pressed="${this.favoritesOnly}"
-        >
-          ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
-        </button>
+        <div class="toolbar-row">
+          <button
+            type="button"
+            class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
+            @click="${this.toggleFavoritesOnly}"
+            aria-pressed="${this.favoritesOnly}"
+          >
+            ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
+          </button>
+
+          <button
+            type="button"
+            class="tour-trigger"
+            @click="${this._startTour}"
+            aria-label="Ver tutorial de la app"
+            title="Ver tutorial"
+          >
+            ?
+          </button>
+        </div>
 
         <pagination-nav
           id="paginator"
