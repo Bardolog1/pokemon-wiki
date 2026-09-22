@@ -55,7 +55,8 @@ export const frontStyles = css`
   }
 
   .containerCard:hover .card {
-    background: #171614;
+    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),
+      var(--gradient-background);
     overflow: hidden;
   }
 
@@ -253,7 +254,8 @@ export const backStyles = css`
     place-items: center;
     width: 247px;
     height: 347px;
-    background: #171614;
+    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),
+      var(--gradient-background);
     border-radius: 0.8em;
     z-index: 1;
     color: transparent;
@@ -261,8 +263,11 @@ export const backStyles = css`
     transition: 1s ease;
   }
   .containerCardBack h5 {
-    color: #306db4;
-    font-size: 20px;
+    color: #f2f2f2;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     margin-bottom: 6px;
     margin-top: 10px;
   }
@@ -278,10 +283,9 @@ export const backStyles = css`
     margin-left: 5%;
     margin-right: 5%;
   }
-  canvas {
-    margin-top: 5%;
-    width: 100%;
-    height: 100%;
+  pokemon-type-matchups {
+    margin-top: 8%;
+    width: 90%;
   }
   .containerCardBack .card .buttons-container {
     display: none;
