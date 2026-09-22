@@ -26,7 +26,7 @@ export class PokemonCard extends LitElement {
   }
 
   _renderPokedex() {
-    window.dispatchEvent(new CustomEvent("render-pokedex", { detail: this.pokemon }));
+     window.dispatchEvent(new CustomEvent("render-pokedex", { detail: this.pokemon }));
   }
 
   render() {
