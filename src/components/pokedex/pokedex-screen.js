@@ -18,8 +18,6 @@ export class PokedexScreen extends LitElement {
     pokemon: { type: Object },
     isLoading: { type: Boolean },
     error: { type: Boolean },
-    limitError: { type: Boolean },
-    maxLimitCount: { type: Number },
     activeView: { type: Number },
     isOn: { type: Boolean },
   };
@@ -110,22 +108,11 @@ export class PokedexScreen extends LitElement {
       <div class="main-screen ${this.isOn ? "is-on" : ""}">
         <div class="scroll-container">
           ${this.isLoading ? html`<div class="center-msg">BUSCANDO...<br />DATOS...</div>` : ""}
-          ${this.limitError
-            ? html`
-                <div class="center-msg" style="color: #900;">
-                  ¡LÍMITE EXCEDIDO!<br /><br />
-                  EL MÁXIMO DE<br />POKÉMON ES:<br />
-                  <span style="font-size: 14px; margin-top: 4px;">#${this.maxLimitCount}</span>
-                </div>
-              `
-            : ""}
           ${this.error ? html`<div class="center-msg">ERROR:<br />POKÉMON NO<br />ENCONTRADO.</div>` : ""}
-          ${!this.pokemon && !this.isLoading && !this.error && !this.limitError
+          ${!this.pokemon && !this.isLoading && !this.error
             ? html`<div class="center-msg">SYSTEM READY<br />_</div>`
             : ""}
-          ${this.pokemon && !this.isLoading && !this.error && !this.limitError
-            ? this.#renderActiveView()
-            : ""}
+          ${this.pokemon && !this.isLoading && !this.error ? this.#renderActiveView() : ""}
         </div>
       </div>
     `;

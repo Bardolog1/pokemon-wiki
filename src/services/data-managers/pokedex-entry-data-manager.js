@@ -1,24 +1,8 @@
 import { PokeApi } from '../api/poke-api.js';
 
 export class PokedexEntryDataManager {
-  #maxCount = null;
-
   constructor(api = new PokeApi()) {
     this.api = api;
-  }
-
-  /**
-   * Consulta el total de Pokémon registrados en la API
-   */
-  async getMaxPokemonCount() {
-    if (this.#maxCount) return this.#maxCount;
-    try {
-      const data = await this.api.getPokemonCount();
-      this.#maxCount = data.count;
-      return this.#maxCount;
-    } catch (e) {
-      return 1025; // Valor de respaldo si falla la consulta inicial
-    }
   }
 
   async getFullEntry({ query }) {
