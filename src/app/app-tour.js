@@ -65,6 +65,15 @@ export function startAppTour(pokemonWikiEl) {
     await firstCard.updateComplete;
   }
 
+  function cardShadow(selector) {
+    return firstCard?.shadowRoot?.querySelector(selector) ?? null;
+  }
+
+  function matchupGroup(index) {
+    const matchups = cardShadow("pokemon-type-matchups");
+    return matchups?.shadowRoot?.querySelectorAll(".group")?.[index] ?? null;
+  }
+
   async function forceHover(active) {
     if (!firstCard) return;
     firstCard.forceHover = active;
@@ -170,31 +179,67 @@ export function startAppTour(pokemonWikiEl) {
         description: "Así se ve cada Pokémon en la lista, solo la imagen.",
       },
     },
-    // A partir de acá se fuerza el estado hover (stepRequirements en este
-    // índice), ya que la info solo se revela al pasar el mouse.
+    // A partir de acá se fuerza el estado hover (rango HOVER_FIRST_STEP..
+    // HOVER_LAST_STEP), ya que esta info solo se revela al pasar el mouse.
     {
-      element: () => firstCard,
+      element: () => cardShadow(".top-toolbar pokemon-pokedex-button"),
       popover: {
-        title: "Con el mouse encima",
-        description:
-          "Al pasar el mouse se revela nombre, tipo, peso y altura. La estrella marca como favorita, y el ícono de pokedex la abre ya precargada.",
+        title: "Ícono de pokedex",
+        description: "Abre la Pokédex retro ya precargada con este Pokémon.",
       },
     },
-    // Última: se saca el hover forzado y se flippea la card.
     {
-      element: () => firstCard,
+      element: () => cardShadow(".top-toolbar pokemon-favorite-button"),
       popover: {
-        title: "El reverso: Matriz de Tipos",
-        description:
-          "Hacé click en cualquier parte de la carta para darla vuelta y ver contra qué tipos es débil y a cuáles resiste.",
+        title: "Favorito",
+        description: "Marca o desmarca este Pokémon como favorito.",
+      },
+    },
+    {
+      element: () => cardShadow("h2"),
+      popover: {
+        title: "Datos generales",
+        description: "Nombre, número de la Pokédex, experiencia y tipo del Pokémon.",
+      },
+    },
+    {
+      element: () => cardShadow('pokemon-stat-item[icon="weight-outline"]'),
+      popover: {
+        title: "Peso",
+        description: "El peso del Pokémon, en kilogramos.",
+      },
+    },
+    {
+      element: () => cardShadow('pokemon-stat-item[icon="tapemeasure"]'),
+      popover: {
+        title: "Altura",
+        description: "La altura del Pokémon, en metros.",
+      },
+    },
+    // A partir de acá se saca el hover forzado y se flippea la card (rango
+    // FLIP_FIRST_STEP..FLIP_LAST_STEP).
+    {
+      element: () => matchupGroup(0),
+      popover: {
+        title: "Debilidades",
+        description: "Los tipos de ataque contra los que este Pokémon recibe más daño.",
+      },
+    },
+    {
+      element: () => matchupGroup(1),
+      popover: {
+        title: "Resistencias",
+        description: "Los tipos de ataque contra los que este Pokémon recibe menos daño (o es inmune).",
       },
     },
   ];
 
   const POKEDEX_FIRST_STEP = 2;
   const POKEDEX_LAST_STEP = 9;
-  const HOVER_STEP = 13;
-  const FLIP_STEP = 14;
+  const HOVER_FIRST_STEP = 13;
+  const HOVER_LAST_STEP = 17;
+  const FLIP_FIRST_STEP = 18;
+  const FLIP_LAST_STEP = 19;
 
   // Calcula y aplica el estado exacto que le corresponde a un índice de
   // paso, sea que se llegue a él avanzando o retrocediendo — así "Anterior"
@@ -206,8 +251,8 @@ export function startAppTour(pokemonWikiEl) {
     } else {
       await closePokedex();
     }
-    await forceHover(index === HOVER_STEP);
-    await flipCard(index === FLIP_STEP);
+    await forceHover(index >= HOVER_FIRST_STEP && index <= HOVER_LAST_STEP);
+    await flipCard(index >= FLIP_FIRST_STEP && index <= FLIP_LAST_STEP);
   }
 
   async function cleanup() {
