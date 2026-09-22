@@ -45,6 +45,7 @@ export class PokedexEntryDataManager {
       id: pokemon.id,
       name: pokemon.name,
       img: retroImg,
+      cry: pokemon.cries?.latest || pokemon.cries?.legacy || null,
       type: pokemon.types.map(t => t.type.name),
       description: description,
       evolutions: evolutions,
