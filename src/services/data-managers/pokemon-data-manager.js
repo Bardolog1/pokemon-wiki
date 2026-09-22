@@ -5,19 +5,14 @@ export class PokemonDataManager {
     this.api = api;
   }
 
-  async getResultsCount(url) {
-    const data = await this.api.getCount(url);
+  async getResultsCount() {
+    const data = await this.api.getPokemonCount();
     return Number(data.count);
   }
 
-  async getPokemonPage({ baseUrl, page, resultsPerPage }) {
+  async getPokemonPage({ page, resultsPerPage }) {
     const offset = resultsPerPage * page - resultsPerPage;
-    const url = `${baseUrl}?offset=${offset}&limit=${resultsPerPage}`;
-
-    const page_ = await this.api.getPage(url);
-    const details = await Promise.all(
-      page_.results.map((entry) => this.api.getPokemon(entry.url)),
-    );
+    const details = await this.api.getPokemonPage({ offset, limit: resultsPerPage });
 
     return details.map((detail) => this.#toPokemon(detail));
   }

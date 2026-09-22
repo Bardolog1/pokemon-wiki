@@ -5,7 +5,6 @@ import "../components/pagination/pagination.js";
 import "../components/navbar-buttons/navbar-buttons.js";
 import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
 
-const POKE_API_BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 const events = [
   "number-click",
   "next-click",
@@ -115,7 +114,7 @@ export class PokemonWiki extends LitElement {
   async _init(pages, visiblePages, visibleResults, currentPage) {
     try {
       this.pages = pages;
-      this.elements = await this.dataManager.getResultsCount(POKE_API_BASE_URL);
+      this.elements = await this.dataManager.getResultsCount();
       this.visiblePages = visiblePages;
       this.visibleResults = visibleResults;
       this.currentPage = currentPage;
@@ -134,7 +133,6 @@ export class PokemonWiki extends LitElement {
 
     try {
       const pokemonList = await this.dataManager.getPokemonPage({
-        baseUrl: POKE_API_BASE_URL,
         page: dataPage.page,
         resultsPerPage: dataPage.results_page,
       });

@@ -10,10 +10,10 @@ export class PokedexEntryDataManager {
   /**
    * Consulta el total de Pokémon registrados en la API
    */
-  async getMaxPokemonCount(baseUrl) {
+  async getMaxPokemonCount() {
     if (this.#maxCount) return this.#maxCount;
     try {
-      const data = await this.api.getPokemon(`${baseUrl}?limit=1`);
+      const data = await this.api.getPokemonCount();
       this.#maxCount = data.count;
       return this.#maxCount;
     } catch (e) {
@@ -21,7 +21,7 @@ export class PokedexEntryDataManager {
     }
   }
 
-async getFullEntry({ baseUrl, query }) {
+  async getFullEntry({ query }) {
     const numericId = Number(query);
 
     // 1. Validar límites de la PokeAPI
@@ -34,31 +34,12 @@ async getFullEntry({ baseUrl, query }) {
       }
     }
 
-    try {
-      // 2. Obtener datos base del Pokémon (sprites, stats, types, moves)
-      // Usamos this.api si tiene un método genérico, o fetch directo si baseUrl ya es la ruta correcta
-      const pokemonResponse = await fetch(`${baseUrl}/${query.toString().toLowerCase()}`);
-      if (!pokemonResponse.ok) throw new Error('NotFound');
-      const pokemonData = await pokemonResponse.json();
+    // 2-4. PokeApi resuelve internamente pokemon -> especie -> cadena de evolución
+    const { pokemon, species, evolutionChain } = await this.api.getPokemonFullEntry(query);
+    const evolutions = this.#extractEvolutionLine(evolutionChain.chain);
 
-      // 3. Obtener datos de la Especie (para la descripción en la Pokédex)
-      // IMPORTANTE: Usamos la URL que viene dentro de pokemonData para evitar errores de 404 con las formas especiales
-      const speciesResponse = await fetch(pokemonData.species.url);
-      if (!speciesResponse.ok) throw new Error('NotFound');
-      const speciesData = await speciesResponse.json();
-
-      // 4. Obtener datos de Evolución
-      const evoResponse = await fetch(speciesData.evolution_chain.url);
-      const evoData = await evoResponse.json();
-      const evolutions = this.#extractEvolutionLine(evoData.chain);
-
-      // 5. Enviar todo a tu formateador privado
-      return this.#formatPokedexEntry(pokemonData, speciesData, evolutions);
-
-    } catch (error) {
-      // Propagamos el error para que PokedexApp muestre "NOT FOUND" o el error correspondiente
-      throw error;
-    }
+    // 5. Enviar todo a tu formateador privado
+    return this.#formatPokedexEntry(pokemon, species, evolutions);
   }
 
   // --- Métodos Privados ---
