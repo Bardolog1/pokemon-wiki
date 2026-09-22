@@ -11,6 +11,7 @@ export class PokemonCard extends LitElement {
   static properties = {
     pokemon: { type: Object, attribute: "pokemon" },
     flipped: { type: Boolean },
+    dragOver: { type: Boolean, state: true },
   };
 
   static styles = [sharedStyles, frontStyles, backStyles];
@@ -19,6 +20,7 @@ export class PokemonCard extends LitElement {
     super();
     this.flipped = false;
     this.pokemon = {};
+    this.dragOver = false;
   }
 
   toggleFlip() {
@@ -26,7 +28,26 @@ export class PokemonCard extends LitElement {
   }
 
   _renderPokedex() {
-     window.dispatchEvent(new CustomEvent("render-pokedex", { detail: this.pokemon }));
+    window.dispatchEvent(new CustomEvent("render-pokedex", { detail: this.pokemon }));
+  }
+
+  _onDragEnter(e) {
+    e.preventDefault();
+    this.dragOver = true;
+  }
+
+  _onDragOver(e) {
+    e.preventDefault();
+  }
+
+  _onDragLeave() {
+    this.dragOver = false;
+  }
+
+  _onDrop(e) {
+    e.preventDefault();
+    this.dragOver = false;
+    this._renderPokedex();
   }
 
   render() {
@@ -41,7 +62,14 @@ export class PokemonCard extends LitElement {
         }
       </style>
 
-      <div class="scaff ${flipped ? "flipped" : ""}" id=${pokemon.id || 0}>
+      <div
+        class="scaff ${flipped ? "flipped" : ""} ${this.dragOver ? "drag-over" : ""}"
+        id=${pokemon.id || 0}
+        @dragenter=${this._onDragEnter}
+        @dragover=${this._onDragOver}
+        @dragleave=${this._onDragLeave}
+        @drop=${this._onDrop}
+      >
         <div class="containerCard">
           <div class="card">
             <pokemon-flip-buttons
