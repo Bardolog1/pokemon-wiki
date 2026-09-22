@@ -29,13 +29,13 @@ export const frontStyles = css`
     transform: rotate(-45deg) translate(0, -100px);
   }
 
-  .containerCard:hover {
+  .containerCard:hover, .containerCard.force-hover {
     overflow: hidden;
     display: grid;
     background: linear-gradient(50deg, #2a5a3b, #1e4886);
   }
 
-  .containerCard:hover::before {
+  .containerCard:hover::before, .containerCard.force-hover::before {
     background: linear-gradient(50deg, #00ff59, #02b3ff);
     animation: brightness 1.9s;
   }
@@ -54,7 +54,7 @@ export const frontStyles = css`
     overflow: hidden;
   }
 
-  .containerCard:hover .card {
+  .containerCard:hover .card, .containerCard.force-hover .card {
     background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),
       var(--gradient-background);
     overflow: hidden;
@@ -71,7 +71,7 @@ export const frontStyles = css`
     transition: 2s ease-in-out;
   }
 
-  .containerCard:hover .top-toolbar {
+  .containerCard:hover .top-toolbar, .containerCard.force-hover .top-toolbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -84,14 +84,14 @@ export const frontStyles = css`
     width: 10%;
   }
 
-  .containerCard:hover .image-container {
+  .containerCard:hover .image-container, .containerCard.force-hover .image-container {
     position: relative;
     margin-top: 0px;
     display: block;
     height: 10rem;
   }
 
-  .containerCard:hover .image-container::before {
+  .containerCard:hover .image-container::before, .containerCard.force-hover .image-container::before {
     content: "";
     width: 150%;
     height: 250%;
@@ -103,7 +103,7 @@ export const frontStyles = css`
     z-index: 1;
   }
 
-  .containerCard:hover .image-container::after {
+  .containerCard:hover .image-container::after, .containerCard.force-hover .image-container::after {
     content: "";
     width: 150%;
     height: 250%;
@@ -126,7 +126,7 @@ export const frontStyles = css`
     z-index: 9999;
   }
 
-  .containerCard:hover img {
+  .containerCard:hover img, .containerCard.force-hover img {
     position: relative;
     top: 10%;
     transition: all 0.3s ease-in-out 0s;
@@ -135,7 +135,7 @@ export const frontStyles = css`
     width: 9rem;
   }
 
-  .containerCard:hover .back-container {
+  .containerCard:hover .back-container, .containerCard.force-hover .back-container {
     width: 100%;
     height: 80%;
     position: absolute;
@@ -152,7 +152,7 @@ export const frontStyles = css`
     display: none;
   }
 
-  .containerCard:hover .img-back {
+  .containerCard:hover .img-back, .containerCard.force-hover .img-back {
     display: block;
     opacity: 0.5;
     width: 6rem;
@@ -179,7 +179,7 @@ export const frontStyles = css`
     align-items: center;
   }
 
-  .containerCard:hover .card .info-container {
+  .containerCard:hover .card .info-container, .containerCard.force-hover .card .info-container {
     display: flex;
   }
 

@@ -65,6 +65,12 @@ export function startAppTour(pokemonWikiEl) {
     await firstCard.updateComplete;
   }
 
+  async function forceHover(active) {
+    if (!firstCard) return;
+    firstCard.forceHover = active;
+    await firstCard.updateComplete;
+  }
+
   const steps = [
     {
       element: () => root.querySelector("banner-title"),
@@ -161,11 +167,20 @@ export function startAppTour(pokemonWikiEl) {
       element: () => firstCard,
       popover: {
         title: "El frente de la carta",
-        description:
-          "Pasá el mouse para ver nombre, tipo, peso y altura. La estrella la marca como favorita, y el ícono de pokedex la abre ya precargada.",
+        description: "Así se ve cada Pokémon en la lista, solo la imagen.",
       },
     },
-    // Última: se flippea la card (stepRequirements en este índice).
+    // A partir de acá se fuerza el estado hover (stepRequirements en este
+    // índice), ya que la info solo se revela al pasar el mouse.
+    {
+      element: () => firstCard,
+      popover: {
+        title: "Con el mouse encima",
+        description:
+          "Al pasar el mouse se revela nombre, tipo, peso y altura. La estrella marca como favorita, y el ícono de pokedex la abre ya precargada.",
+      },
+    },
+    // Última: se saca el hover forzado y se flippea la card.
     {
       element: () => firstCard,
       popover: {
@@ -180,12 +195,17 @@ export function startAppTour(pokemonWikiEl) {
   const stepRequirements = {
     2: openPokedex,
     10: closePokedex,
-    13: () => flipCard(true),
+    13: () => forceHover(true),
+    14: async () => {
+      await forceHover(false);
+      await flipCard(true);
+    },
   };
 
   async function cleanup() {
     await closePokedex();
     await flipCard(false);
+    await forceHover(false);
   }
 
   const tourObj = driver({
