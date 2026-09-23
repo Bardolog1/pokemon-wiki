@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-view-moves.js";
-import { withScreenBackground } from "./pokedex-story-helpers.js";
+import { withScreenBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 export default {
   title: "Pokedex/Screen Views/Moves",

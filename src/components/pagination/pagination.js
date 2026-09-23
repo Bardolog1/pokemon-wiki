@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
-import "./pagination-button.js";
-import "./pagination-numbers.js";
+import "../pagination-button/pagination-button.js";
+import "../pagination-numbers/pagination-numbers.js";
 import { calcPages, getNumberList } from "./pagination.utils.js";
 
 const EVENTS_CLICK = {

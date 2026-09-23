@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-view-stats.js";
-import { withScreenBackground } from "./pokedex-story-helpers.js";
+import { withScreenBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 export default {
   title: "Pokedex/Screen Views/Stats",

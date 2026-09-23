@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-sensor.js";
-import { withDexBackground } from "./pokedex-story-helpers.js";
+import { withDexBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 export default {
   title: "Pokedex/Sensor (lens + LEDs)",

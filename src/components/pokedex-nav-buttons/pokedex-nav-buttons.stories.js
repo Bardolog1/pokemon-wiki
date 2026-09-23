@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-nav-buttons.js";
-import { withDexBackground } from "./pokedex-story-helpers.js";
+import { withDexBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 export default {
   title: "Pokedex/Nav Buttons (PREV/NEXT)",

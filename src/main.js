@@ -1,3 +1,3 @@
-import { PokemonWiki } from './app/pokemon-wiki.js';
+import { PokemonWiki } from './app/pokemon-wiki/pokemon-wiki.js';
 
 customElements.define('pokemon-wiki', PokemonWiki);

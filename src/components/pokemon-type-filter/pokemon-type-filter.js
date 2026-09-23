@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { TYPES_COLORS, getTypeColors } from "../pokemon-card/pokemon-type-badge.js";
+import { TYPES_COLORS, getTypeColors } from "../pokemon-type-badge/pokemon-type-badge.js";
 
 const TYPE_NAMES = Object.keys(TYPES_COLORS).filter((t) => t !== "unknown");
 
