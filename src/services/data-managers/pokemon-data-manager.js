@@ -3,6 +3,8 @@ import { PokeApi } from '../api/poke-api.js';
 export class PokemonDataManager {
   constructor(api = new PokeApi()) {
     this.api = api;
+    this.pageCache = new Map();
+    this.typeFilterCache = new Map();
   }
 
   async getResultsCount() {
@@ -11,15 +13,52 @@ export class PokemonDataManager {
   }
 
   async getPokemonPage({ page, resultsPerPage }) {
+    const cacheKey = `${page}:${resultsPerPage}`;
+    if (this.pageCache.has(cacheKey)) {
+      return this.pageCache.get(cacheKey);
+    }
+
     const offset = resultsPerPage * page - resultsPerPage;
     const details = await this.api.getPokemonPage({ offset, limit: resultsPerPage });
+    const pokemonList = details.map((detail) => this.#toPokemon(detail));
 
-    return details.map((detail) => this.#toPokemon(detail));
+    this.pageCache.set(cacheKey, pokemonList);
+    return pokemonList;
   }
 
   async getPokemonByIds(ids) {
     const details = await Promise.all(ids.map((id) => this.api.getPokemon(id)));
     return details.map((detail) => this.#toPokemon(detail));
+  }
+
+  // Unión (OR) de Pokémon que tengan al menos uno de los tipos dados, luego
+  // paginada localmente: la PokeAPI no soporta offset/limit en /type/{name},
+  // así que solo se piden los detalles completos de los ids de la página
+  // pedida, no de la lista filtrada entera.
+  async getFilteredPokemonPage({ types, page, resultsPerPage }) {
+    const cacheKey = types.slice().sort().join(",");
+    let names = this.typeFilterCache.get(cacheKey);
+
+    if (!names) {
+      const typeResults = await Promise.all(types.map((t) => this.api.getPokemonByType(t)));
+      const seen = new Set();
+      names = [];
+      typeResults.forEach((typeData) => {
+        typeData.pokemon.forEach(({ pokemon }) => {
+          if (!seen.has(pokemon.name)) {
+            seen.add(pokemon.name);
+            names.push(pokemon.name);
+          }
+        });
+      });
+      this.typeFilterCache.set(cacheKey, names);
+    }
+
+    const offset = resultsPerPage * page - resultsPerPage;
+    const pageNames = names.slice(offset, offset + resultsPerPage);
+    const pokemons = await this.getPokemonByIds(pageNames);
+
+    return { total: names.length, pokemons };
   }
 
   #toPokemon(detail) {

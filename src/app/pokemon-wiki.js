@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../components/banner-title/banner-title.js";
 import "../components/pokemon-list/pokemon-list.js";
+import "../components/pokemon-list/pokemon-type-filter.js";
 import "../components/pagination/pagination.js";
 import "../components/navbar-buttons/navbar-buttons.js";
 import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
@@ -49,6 +50,14 @@ export class PokemonWiki extends LitElement {
         type: Boolean,
         attribute: false,
       },
+      selectedTypes: {
+        type: Array,
+        attribute: false,
+      },
+      filteredTotal: {
+        type: Number,
+        attribute: false,
+      },
     };
   }
 
@@ -57,10 +66,12 @@ export class PokemonWiki extends LitElement {
     this.dataManager = new PokemonDataManager();
     this.error = null;
     this.favoritesOnly = false;
+    this.selectedTypes = [];
+    this.filteredTotal = 0;
     this._onFavoritesChange = () => {
       if (this.favoritesOnly) this._loadFavorites();
     };
-    this._init(0, 5, 60, 1);
+    this._init(0, 5, 20, 1);
   }
 
   connectedCallback() {
@@ -95,6 +106,10 @@ export class PokemonWiki extends LitElement {
         font-style: normal;
       }
 
+      /* La cabecera (banner, favoritos/tour, paginación) ocupa solo el
+         alto que su contenido necesita (flex: 0 0 auto); listar-pokemon se
+         queda con TODO el resto vía flex: 1, en vez de pelear por
+         porcentajes fijos que no dejaban margen para los controles. */
       .container {
         cursor: url(assets/poke2.png), auto;
         width: 100vw;
@@ -102,14 +117,35 @@ export class PokemonWiki extends LitElement {
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
         align-items: center;
+        overflow: hidden;
+        padding-bottom: 0.75rem;
+        box-sizing: border-box;
       }
 
       banner-title {
         width: 100%;
-        height: 30%;
-        position: relative;
+        flex: 0 0 auto;
+      }
+
+      pokemon-type-filter {
+        width: 100%;
+        flex: 0 0 auto;
+        margin-top: 0.3rem;
+      }
+
+      pokemon-type-filter.hidden {
+        display: none;
+      }
+
+      .top-bar {
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0;
       }
 
       pagination-nav {
@@ -162,6 +198,20 @@ export class PokemonWiki extends LitElement {
         background: #ffcb04;
       }
 
+      /* Mismo lenguaje visual que .favorites-toggle/.tour-trigger (píldora
+         translúcida blanca, texto oscuro) en vez de texto plano blanco con
+         sombra — así no se pierde contra el cielo claro del fondo. */
+      .page-info {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.6);
+        color: #1c2e28;
+        border-radius: 100px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin: 0.1rem 0 0;
+      }
+
       .empty-favorites {
         color: #fff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
@@ -177,7 +227,8 @@ export class PokemonWiki extends LitElement {
 
       listar-pokemon {
         width: 100%;
-        height: 60%;
+        flex: 1 1 auto;
+        min-height: 0;
         position: relative;
       }
 
@@ -207,19 +258,41 @@ export class PokemonWiki extends LitElement {
 
   async _getPokemonList(dataPage) {
     if (!dataPage) return;
+    this.currentPage = dataPage.page;
 
     try {
-      const pokemonList = await this.dataManager.getPokemonPage({
-        page: dataPage.page,
-        resultsPerPage: dataPage.results_page,
-      });
-      this.pokemonList = pokemonList;
+      if (this.selectedTypes.length > 0) {
+        const { total, pokemons } = await this.dataManager.getFilteredPokemonPage({
+          types: this.selectedTypes,
+          page: dataPage.page,
+          resultsPerPage: dataPage.results_page,
+        });
+        this.filteredTotal = total;
+        this.pokemonList = pokemons;
+      } else {
+        this.pokemonList = await this.dataManager.getPokemonPage({
+          page: dataPage.page,
+          resultsPerPage: dataPage.results_page,
+        });
+      }
       this.error = null;
       const list = this.renderRoot.getElementById("list");
-      list.pokemons = pokemonList;
+      list.pokemons = this.pokemonList;
     } catch (error) {
       this.error = error.message;
     }
+  }
+
+  // Filtro por tipo: lógica OR (unión de tipos seleccionados). Mutuamente
+  // excluyente con "Mis favoritos" para no tener que combinar ambas fuentes
+  // de datos a la vez.
+  _onTypesChange(e) {
+    this.selectedTypes = e.detail;
+    this.favoritesOnly = false;
+    this._getPokemonList({
+      page: 1,
+      results_page: this.visibleResults,
+    });
   }
 
   async _loadFavorites() {
@@ -238,6 +311,7 @@ export class PokemonWiki extends LitElement {
   toggleFavoritesOnly() {
     this.favoritesOnly = !this.favoritesOnly;
     if (this.favoritesOnly) {
+      this.selectedTypes = [];
       this._loadFavorites();
     } else {
       this._getPokemonList({
@@ -246,6 +320,33 @@ export class PokemonWiki extends LitElement {
         total: this.elements,
       });
     }
+  }
+
+  // Mientras un fetch filtrado está en camino, filteredTotal todavía no se
+  // actualizó (arranca en 0/valor anterior) — sin este fallback a
+  // this.elements, el paginador recibiría un results=0 transitorio que
+  // rompe permanentemente visiblePages/currentPage (ver calcPages: el
+  // clamp que aplica ese 0 nunca se revierte cuando llegan los datos
+  // reales).
+  get _resultsCount() {
+    if (this.selectedTypes.length > 0) {
+      return this.filteredTotal || this.elements || 0;
+    }
+    return this.elements || 0;
+  }
+
+  get _totalPages() {
+    if (!this.visibleResults) return 0;
+    return Math.ceil(this._resultsCount / this.visibleResults);
+  }
+
+  get _rangeStart() {
+    if (this._resultsCount === 0) return 0;
+    return (this.currentPage - 1) * this.visibleResults + 1;
+  }
+
+  get _rangeEnd() {
+    return Math.min(this.currentPage * this.visibleResults, this._resultsCount);
   }
 
   // Carga driver.js recién cuando se pide el tour, para no sumarlo al
@@ -266,42 +367,63 @@ export class PokemonWiki extends LitElement {
 
         <navbar-buttons></navbar-buttons>
 
-        <div class="toolbar-row">
-          <button
-            type="button"
-            class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
-            @click="${this.toggleFavoritesOnly}"
-            aria-pressed="${this.favoritesOnly}"
-          >
-            ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
-          </button>
-
-          <button
-            type="button"
-            class="tour-trigger"
-            @click="${this._startTour}"
-            aria-label="Ver tutorial de la app"
-            title="Ver tutorial"
-          >
-            ?
-          </button>
-        </div>
-
-        <pagination-nav
-          id="paginator"
+        <pokemon-type-filter
           class="${this.favoritesOnly ? "hidden" : ""}"
-          pages="${this.pages}"
-          results="${this.elements ? this.elements : 0}"
-          visible-pages="${this.visiblePages}"
-          current-page="${this.currentPage}"
-          visible-results="${this.visibleResults}"
-        ></pagination-nav>
+          .selected="${this.selectedTypes}"
+          @types-change="${this._onTypesChange}"
+        ></pokemon-type-filter>
 
-        ${this.error ? html`<p class="error">${this.error}</p>` : ""}
+        <div class="top-bar">
+          <div class="toolbar-row">
+            <button
+              type="button"
+              class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
+              @click="${this.toggleFavoritesOnly}"
+              aria-pressed="${this.favoritesOnly}"
+            >
+              ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
+            </button>
 
-        ${this.favoritesOnly && this.pokemonList?.length === 0
-          ? html`<p class="empty-favorites">Todavía no marcaste ningún Pokémon como favorito.</p>`
-          : ""}
+            <button
+              type="button"
+              class="tour-trigger"
+              @click="${this._startTour}"
+              aria-label="Ver tutorial de la app"
+              title="Ver tutorial"
+            >
+              ?
+            </button>
+          </div>
+
+          <pagination-nav
+            id="paginator"
+            class="${this.favoritesOnly ? "hidden" : ""}"
+            pages="${this.pages}"
+            results="${this._resultsCount}"
+            visible-pages="${this.visiblePages}"
+            current-page="${this.currentPage}"
+            visible-results="${this.visibleResults}"
+          ></pagination-nav>
+
+          ${!this.favoritesOnly && this._resultsCount > 0
+            ? html`
+                <p class="page-info">
+                  Mostrando ${this._rangeStart}–${this._rangeEnd} de ${this._resultsCount} · Página
+                  ${this.currentPage} de ${this._totalPages}
+                </p>
+              `
+            : ""}
+
+          ${this.error ? html`<p class="error">${this.error}</p>` : ""}
+
+          ${this.favoritesOnly && this.pokemonList?.length === 0
+            ? html`<p class="empty-favorites">Todavía no marcaste ningún Pokémon como favorito.</p>`
+            : ""}
+
+          ${!this.favoritesOnly && this.selectedTypes.length > 0 && this.pokemonList?.length === 0
+            ? html`<p class="empty-favorites">No hay Pokémon con ese tipo.</p>`
+            : ""}
+        </div>
 
         <listar-pokemon id="list"></listar-pokemon>
       </div>
