@@ -1,8 +1,10 @@
 import { LitElement, html, css } from "lit";
+import "../pokemon-search/pokemon-search.js";
 
 export class PageToolbar extends LitElement {
   static properties = {
     favoritesOnly: { type: Boolean },
+    searchQuery: { type: String },
   };
 
   static styles = css`
@@ -51,6 +53,7 @@ export class PageToolbar extends LitElement {
   constructor() {
     super();
     this.favoritesOnly = false;
+    this.searchQuery = "";
   }
 
   #emit(name) {
@@ -59,6 +62,8 @@ export class PageToolbar extends LitElement {
 
   render() {
     return html`
+      <pokemon-search .value="${this.searchQuery}"></pokemon-search>
+
       <button
         type="button"
         class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"

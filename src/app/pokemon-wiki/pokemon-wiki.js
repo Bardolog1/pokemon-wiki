@@ -6,10 +6,15 @@ import "../../components/pagination/pagination.js";
 import "../../components/page-range-info/page-range-info.js";
 import "../../components/navbar-buttons/navbar-buttons.js";
 import "../../components/page-toolbar/page-toolbar.js";
+import "../../components/favorites-empty/favorites-empty.js";
 import { PokemonDataManager } from "../../services/data-managers/pokemon-data-manager.js";
 import { favoritesStore } from "../../services/favorites-store.js";
 import { computeResultsRange } from "./results-range.js";
 import { styles } from "./pokemon-wiki.styles.js";
+
+// Carta "fantasma" que se muestra cuando una búsqueda no encuentra nada;
+// pokemon-card la pinta con "?" en lugar de los datos.
+const NOT_FOUND_CARD = { notFound: true, id: 0, name: "Pokémon no encontrado", type: [] };
 
 const events = [
   "number-click",
@@ -62,6 +67,14 @@ export class PokemonWiki extends LitElement {
         type: Number,
         attribute: false,
       },
+      searchQuery: {
+        type: String,
+        attribute: false,
+      },
+      searchNotFound: {
+        type: Boolean,
+        attribute: false,
+      },
     };
   }
 
@@ -72,6 +85,11 @@ export class PokemonWiki extends LitElement {
     this.favoritesOnly = false;
     this.selectedTypes = [];
     this.filteredTotal = 0;
+    this.searchQuery = "";
+    this.searchNotFound = false;
+    // Token compartido por todas las cargas de lista: solo la última gana, así
+    // una respuesta lenta no pisa a una acción más nueva (búsqueda, tipo, etc).
+    this._requestId = 0;
     this._onFavoritesChange = () => {
       if (this.favoritesOnly) this._loadFavorites();
     };
@@ -123,22 +141,28 @@ export class PokemonWiki extends LitElement {
   async _getPokemonList(dataPage) {
     if (!dataPage) return;
     this.currentPage = dataPage.page;
+    const requestId = ++this._requestId;
 
     try {
+      let pokemonList;
+      let filteredTotal;
       if (this.selectedTypes.length > 0) {
         const { total, pokemons } = await this.dataManager.getFilteredPokemonPage({
           types: this.selectedTypes,
           page: dataPage.page,
           resultsPerPage: dataPage.results_page,
         });
-        this.filteredTotal = total;
-        this.pokemonList = pokemons;
+        filteredTotal = total;
+        pokemonList = pokemons;
       } else {
-        this.pokemonList = await this.dataManager.getPokemonPage({
+        pokemonList = await this.dataManager.getPokemonPage({
           page: dataPage.page,
           resultsPerPage: dataPage.results_page,
         });
       }
+      if (requestId !== this._requestId) return;
+      if (filteredTotal !== undefined) this.filteredTotal = filteredTotal;
+      this.pokemonList = pokemonList;
       this.error = null;
       const list = this.renderRoot.getElementById("list");
       list.pokemons = this.pokemonList;
@@ -153,16 +177,59 @@ export class PokemonWiki extends LitElement {
   _onTypesChange(e) {
     this.selectedTypes = e.detail;
     this.favoritesOnly = false;
+    this._resetSearch();
     this._getPokemonList({
       page: 1,
       results_page: this.visibleResults,
     });
   }
 
+  _resetSearch() {
+    this.searchQuery = "";
+    this.searchNotFound = false;
+  }
+
+  // Búsqueda por nombre o número. Reemplaza la lista por el resultado único y
+  // apaga favoritos/tipos, que son otras fuentes de datos.
+  async _onSearchSubmit(e) {
+    const { query, raw } = e.detail;
+    // Se guarda el texto tal como lo escribió el usuario (para el input); la
+    // consulta normalizada solo se usa contra la API.
+    this.searchQuery = raw;
+    this.favoritesOnly = false;
+    this.selectedTypes = [];
+    const requestId = ++this._requestId;
+    try {
+      const pokemon = await this.dataManager.searchPokemon(query);
+      if (requestId !== this._requestId) return;
+      this.searchNotFound = pokemon === null;
+      this.pokemonList = pokemon ? [pokemon] : [NOT_FOUND_CARD];
+      this.error = null;
+      this.renderRoot.getElementById("list").pokemons = this.pokemonList;
+    } catch (error) {
+      if (requestId !== this._requestId) return;
+      // Error de red/servidor: sale del modo búsqueda para que la lista y el
+      // paginador vuelvan a ser coherentes con lo que se ve.
+      this._resetSearch();
+      this.error = error.message;
+    }
+  }
+
+  _onSearchClear() {
+    this._resetSearch();
+    this._getPokemonList({
+      page: this.currentPage,
+      results_page: this.visibleResults,
+      total: this.elements,
+    });
+  }
+
   async _loadFavorites() {
+    const requestId = ++this._requestId;
     try {
       const ids = favoritesStore.getIds();
       const pokemonList = ids.length > 0 ? await this.dataManager.getPokemonByIds(ids) : [];
+      if (requestId !== this._requestId) return;
       this.pokemonList = pokemonList;
       this.error = null;
       const list = this.renderRoot.getElementById("list");
@@ -176,6 +243,7 @@ export class PokemonWiki extends LitElement {
     this.favoritesOnly = !this.favoritesOnly;
     if (this.favoritesOnly) {
       this.selectedTypes = [];
+      this._resetSearch();
       this._loadFavorites();
     } else {
       this._getPokemonList({
@@ -210,7 +278,6 @@ export class PokemonWiki extends LitElement {
       <div class="container">
         <banner-title
           logo="https://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png/revision/latest?cb=20160319183155"
-          title="Pokédex Interactiva"
         ></banner-title>
 
         <navbar-buttons></navbar-buttons>
@@ -224,13 +291,16 @@ export class PokemonWiki extends LitElement {
         <div class="top-bar">
           <page-toolbar
             .favoritesOnly="${this.favoritesOnly}"
+            .searchQuery="${this.searchQuery}"
+            @search-submit="${this._onSearchSubmit}"
+            @search-clear="${this._onSearchClear}"
             @favorites-toggle-click="${this.toggleFavoritesOnly}"
             @tour-click="${this._startTour}"
           ></page-toolbar>
 
           <pagination-nav
             id="paginator"
-            class="${this.favoritesOnly ? "hidden" : ""}"
+            class="${this.favoritesOnly || this.searchQuery ? "hidden" : ""}"
             pages="${this.pages}"
             results="${this._range.resultsCount}"
             visible-pages="${this.visiblePages}"
@@ -238,7 +308,7 @@ export class PokemonWiki extends LitElement {
             visible-results="${this.visibleResults}"
           ></pagination-nav>
 
-          ${!this.favoritesOnly && this._range.resultsCount > 0
+          ${!this.favoritesOnly && !this.searchQuery && this._range.resultsCount > 0
             ? html`
                 <page-range-info
                   .rangeStart="${this._range.rangeStart}"
@@ -252,8 +322,9 @@ export class PokemonWiki extends LitElement {
 
           ${this.error ? html`<p class="error">${this.error}</p>` : ""}
 
+
           ${this.favoritesOnly && this.pokemonList?.length === 0
-            ? html`<p class="empty-favorites">Todavía no marcaste ningún Pokémon como favorito.</p>`
+            ? html`<favorites-empty></favorites-empty>`
             : ""}
 
           ${!this.favoritesOnly && this.selectedTypes.length > 0 && this.pokemonList?.length === 0

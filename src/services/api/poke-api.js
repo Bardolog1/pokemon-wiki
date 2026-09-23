@@ -5,7 +5,9 @@ export class PokeApi {
   async #request(url) {
     const response = await fetch(url, { method: "GET" });
     if (!response.ok) {
-      throw new Error(`PokeApi request failed with status ${response.status} for ${url}`);
+      const error = new Error(`PokeApi request failed with status ${response.status} for ${url}`);
+      error.status = response.status;
+      throw error;
     }
     return response.json();
   }

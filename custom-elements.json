@@ -25,6 +25,27 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/services/favorites-store.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "favoritesStore",
+          "default": "new FavoritesStore()"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "favoritesStore",
+          "declaration": {
+            "name": "favoritesStore",
+            "module": "src/services/favorites-store.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/storybook-helpers/pokedex-story-helpers.js",
       "declarations": [
         {
@@ -80,27 +101,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/services/favorites-store.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "favoritesStore",
-          "default": "new FavoritesStore()"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "favoritesStore",
-          "declaration": {
-            "name": "favoritesStore",
-            "module": "src/services/favorites-store.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/app/pokemon-wiki/pokemon-wiki.js",
       "declarations": [
         {
@@ -147,6 +147,23 @@
                   "name": "e"
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "_resetSearch"
+            },
+            {
+              "kind": "method",
+              "name": "_onSearchSubmit",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onSearchClear"
             },
             {
               "kind": "method",
@@ -204,6 +221,32 @@
               },
               "default": "0",
               "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "searchQuery",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "searchNotFound",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "_requestId",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
             },
             {
               "kind": "field",
@@ -267,7 +310,7 @@
         {
           "kind": "variable",
           "name": "styles",
-          "default": "css`\r\n  @font-face {\r\n    font-family: \"PokemonFont\";\r\n    src: url(../assets/fonts/Pokemon-Solid.ttf) format(\"truetype\");\r\n    font-weight: normal;\r\n    font-style: normal;\r\n  }\r\n\r\n  /* La cabecera (banner, favoritos/tour, paginación) ocupa solo el\r\n     alto que su contenido necesita (flex: 0 0 auto); listar-pokemon se\r\n     queda con TODO el resto vía flex: 1, en vez de pelear por\r\n     porcentajes fijos que no dejaban margen para los controles. */\r\n  .container {\r\n    cursor: url(assets/poke2.png), auto;\r\n    width: 100vw;\r\n    height: 100vh;\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    overflow: hidden;\r\n    padding-bottom: 0.75rem;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  banner-title {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n  }\r\n\r\n  pokemon-type-filter {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    margin-top: 0.3rem;\r\n  }\r\n\r\n  pokemon-type-filter.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .top-bar {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    padding: 0.4rem 0;\r\n  }\r\n\r\n  pagination-nav {\r\n    width: 100%;\r\n    position: relative;\r\n  }\r\n\r\n  pagination-nav.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .empty-favorites {\r\n    color: #fff;\r\n    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);\r\n    font-size: 1rem;\r\n  }\r\n\r\n  .error {\r\n    color: #fff;\r\n    background: rgba(180, 30, 30, 0.85);\r\n    padding: 0.5rem 1rem;\r\n    border-radius: 6px;\r\n  }\r\n\r\n  listar-pokemon {\r\n    width: 100%;\r\n    flex: 1 1 auto;\r\n    min-height: 0;\r\n    position: relative;\r\n  }\r\n\r\n  navbar-buttons {\r\n    height: 0px;\r\n    position: relative;\r\n  }\r\n`"
+          "default": "css`\r\n  @font-face {\r\n    font-family: \"PokemonFont\";\r\n    src: url(../assets/fonts/Pokemon-Solid.ttf) format(\"truetype\");\r\n    font-weight: normal;\r\n    font-style: normal;\r\n  }\r\n\r\n  /* La cabecera (banner, favoritos/tour, paginación) ocupa solo el\r\n     alto que su contenido necesita (flex: 0 0 auto); listar-pokemon se\r\n     queda con TODO el resto vía flex: 1, en vez de pelear por\r\n     porcentajes fijos que no dejaban margen para los controles. */\r\n  .container {\r\n    cursor: url(assets/poke2.png), auto;\r\n    width: 100vw;\r\n    height: 100vh;\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    overflow: hidden;\r\n    padding-bottom: 0.75rem;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  banner-title {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n  }\r\n\r\n  pokemon-type-filter {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    margin-top: 0.8rem;\r\n  }\r\n\r\n  pokemon-type-filter.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .top-bar {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    gap: 0.9rem;\r\n    padding: 0.9rem 0 0.6rem;\r\n  }\r\n\r\n  pagination-nav {\r\n    width: 100%;\r\n    position: relative;\r\n  }\r\n\r\n  pagination-nav.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .empty-favorites {\r\n    color: #fff;\r\n    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);\r\n    font-size: 1rem;\r\n  }\r\n\r\n  .error {\r\n    color: #fff;\r\n    background: rgba(180, 30, 30, 0.85);\r\n    padding: 0.5rem 1rem;\r\n    border-radius: 6px;\r\n  }\r\n\r\n  listar-pokemon {\r\n    width: 100%;\r\n    flex: 1 1 auto;\r\n    min-height: 0;\r\n    position: relative;\r\n  }\r\n\r\n  navbar-buttons {\r\n    height: 0px;\r\n    position: relative;\r\n  }\r\n`"
         }
       ],
       "exports": [
@@ -450,6 +493,73 @@
           "declaration": {
             "name": "Default",
             "module": "src/components/banner-title/banner-title.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/favorites-empty/favorites-empty.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "FavoritesEmpty",
+          "members": [],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "favorites-empty",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "FavoritesEmpty",
+          "declaration": {
+            "name": "FavoritesEmpty",
+            "module": "src/components/favorites-empty/favorites-empty.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "favorites-empty",
+          "declaration": {
+            "name": "FavoritesEmpty",
+            "module": "src/components/favorites-empty/favorites-empty.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/favorites-empty/favorites-empty.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<favorites-empty></favorites-empty>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/favorites-empty/favorites-empty.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/favorites-empty/favorites-empty.stories.js"
           }
         }
       ]
@@ -757,6 +867,16 @@
               "default": "false",
               "privacy": "public",
               "attribute": "favoritesOnly"
+            },
+            {
+              "kind": "field",
+              "name": "searchQuery",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "searchQuery"
             }
           ],
           "events": [
@@ -771,6 +891,10 @@
             {
               "name": "favoritesOnly",
               "fieldName": "favoritesOnly"
+            },
+            {
+              "name": "searchQuery",
+              "fieldName": "searchQuery"
             }
           ],
           "superclass": {
@@ -843,144 +967,6 @@
           "declaration": {
             "name": "FavoritesActive",
             "module": "src/components/page-toolbar/page-toolbar.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pagination-button/pagination-button.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PaginationButton",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_onClick"
-            },
-            {
-              "kind": "field",
-              "name": "icon",
-              "type": {
-                "text": "string"
-              },
-              "default": "\"\"",
-              "privacy": "public",
-              "attribute": "icon"
-            },
-            {
-              "kind": "field",
-              "name": "rotate",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "rotate"
-            },
-            {
-              "kind": "field",
-              "name": "disabled",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "disabled"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "type": {
-                "text": "string"
-              },
-              "default": "\"\"",
-              "privacy": "public",
-              "attribute": "label"
-            }
-          ],
-          "events": [
-            {
-              "name": "button-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "icon",
-              "fieldName": "icon"
-            },
-            {
-              "name": "rotate",
-              "fieldName": "rotate"
-            },
-            {
-              "name": "disabled",
-              "fieldName": "disabled"
-            },
-            {
-              "name": "label",
-              "fieldName": "label"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pagination-button",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationButton",
-          "declaration": {
-            "name": "PaginationButton",
-            "module": "src/components/pagination-button/pagination-button.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pagination-button",
-          "declaration": {
-            "name": "PaginationButton",
-            "module": "src/components/pagination-button/pagination-button.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pagination-button/pagination-button.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "Default",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\r\n  args: { icon: \"next\", rotate: false, disabled: false },\r\n  render: ({ icon, rotate, disabled }) => html`\r\n    <pagination-button icon=${icon} ?rotate=${rotate} ?disabled=${disabled}></pagination-button>\r\n  `,\r\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pagination-button/pagination-button.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Default",
-          "declaration": {
-            "name": "Default",
-            "module": "src/components/pagination-button/pagination-button.stories.js"
           }
         }
       ]
@@ -1222,61 +1208,114 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js",
+      "path": "src/components/pagination-button/pagination-button.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PokedexNavButtons",
+          "name": "PaginationButton",
           "members": [
             {
               "kind": "method",
-              "name": "#emit",
-              "parameters": [
-                {
-                  "name": "name"
-                }
-              ]
+              "name": "_onClick"
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "rotate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "rotate"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "label"
             }
           ],
           "events": [
             {
-              "name": "name",
+              "name": "button-click",
               "type": {
                 "text": "CustomEvent"
               }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "fieldName": "icon"
+            },
+            {
+              "name": "rotate",
+              "fieldName": "rotate"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "label",
+              "fieldName": "label"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "pokedex-nav-buttons",
+          "tagName": "pagination-button",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PokedexNavButtons",
+          "name": "PaginationButton",
           "declaration": {
-            "name": "PokedexNavButtons",
-            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
+            "name": "PaginationButton",
+            "module": "src/components/pagination-button/pagination-button.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "pokedex-nav-buttons",
+          "name": "pagination-button",
           "declaration": {
-            "name": "PokedexNavButtons",
-            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
+            "name": "PaginationButton",
+            "module": "src/components/pagination-button/pagination-button.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js",
+      "path": "src/components/pagination-button/pagination-button.stories.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1284,7 +1323,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-nav-buttons\n        @prev-click=\"${() => console.log(\"prev-click\")}\"\n        @next-click=\"${() => console.log(\"next-click\")}\"\n      ></pokedex-nav-buttons>\n    `),\n}"
+          "default": "{\r\n  args: { icon: \"next\", rotate: false, disabled: false },\r\n  render: ({ icon, rotate, disabled }) => html`\r\n    <pagination-button icon=${icon} ?rotate=${rotate} ?disabled=${disabled}></pagination-button>\r\n  `,\r\n}"
         }
       ],
       "exports": [
@@ -1292,7 +1331,7 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
+            "module": "src/components/pagination-button/pagination-button.stories.js"
           }
         },
         {
@@ -1300,7 +1339,154 @@
           "name": "Default",
           "declaration": {
             "name": "Default",
-            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
+            "module": "src/components/pagination-button/pagination-button.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-numbers/pagination-numbers.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PaginationNumbers",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_onClickNumber",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#activeButton",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#numberButton",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "numbers",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "numbers"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "current-page"
+            },
+            {
+              "kind": "field",
+              "name": "limit",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "limit"
+            }
+          ],
+          "events": [
+            {
+              "name": "number-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "numbers",
+              "fieldName": "numbers"
+            },
+            {
+              "name": "current-page",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "limit",
+              "fieldName": "limit"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination-numbers",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationNumbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination-numbers/pagination-numbers.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination-numbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination-numbers/pagination-numbers.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-numbers/pagination-numbers.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`\r\n    <pagination-numbers\r\n      .numbers=${[1, 2, 3, 4, 5]}\r\n      .currentPage=${3}\r\n      .limit=${5}\r\n    ></pagination-numbers>\r\n  `,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
           }
         }
       ]
@@ -1835,283 +2021,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pagination-numbers/pagination-numbers.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PaginationNumbers",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_onClickNumber",
-              "parameters": [
-                {
-                  "name": "num"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "#activeButton",
-              "parameters": [
-                {
-                  "name": "num"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "#numberButton",
-              "parameters": [
-                {
-                  "name": "num"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "numbers",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "privacy": "public",
-              "attribute": "numbers"
-            },
-            {
-              "kind": "field",
-              "name": "currentPage",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "current-page"
-            },
-            {
-              "kind": "field",
-              "name": "limit",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "privacy": "public",
-              "attribute": "limit"
-            }
-          ],
-          "events": [
-            {
-              "name": "number-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "numbers",
-              "fieldName": "numbers"
-            },
-            {
-              "name": "current-page",
-              "fieldName": "currentPage"
-            },
-            {
-              "name": "limit",
-              "fieldName": "limit"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pagination-numbers",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PaginationNumbers",
-          "declaration": {
-            "name": "PaginationNumbers",
-            "module": "src/components/pagination-numbers/pagination-numbers.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pagination-numbers",
-          "declaration": {
-            "name": "PaginationNumbers",
-            "module": "src/components/pagination-numbers/pagination-numbers.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pagination-numbers/pagination-numbers.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "Default",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\r\n  render: () => html`\r\n    <pagination-numbers\r\n      .numbers=${[1, 2, 3, 4, 5]}\r\n      .currentPage=${3}\r\n      .limit=${5}\r\n    ></pagination-numbers>\r\n  `,\r\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Default",
-          "declaration": {
-            "name": "Default",
-            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokedex-sensor/pokedex-sensor.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokedexSensor",
-          "members": [
-            {
-              "kind": "field",
-              "name": "blinking",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "blinking"
-            },
-            {
-              "kind": "field",
-              "name": "loading",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "loading"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "blinking",
-              "fieldName": "blinking"
-            },
-            {
-              "name": "loading",
-              "fieldName": "loading"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pokedex-sensor",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokedexSensor",
-          "declaration": {
-            "name": "PokedexSensor",
-            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pokedex-sensor",
-          "declaration": {
-            "name": "PokedexSensor",
-            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokedex-sensor/pokedex-sensor.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "Idle",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  render: () => withDexBackground(html`<pokedex-sensor></pokedex-sensor>`),\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "Blinking",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  name: \"Blinking (voice/cry playing)\",\n  render: () => withDexBackground(html`<pokedex-sensor blinking></pokedex-sensor>`),\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "LoadingSequence",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  name: \"Loading (LED sequence)\",\n  render: () => withDexBackground(html`<pokedex-sensor loading></pokedex-sensor>`),\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Idle",
-          "declaration": {
-            "name": "Idle",
-            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Blinking",
-          "declaration": {
-            "name": "Blinking",
-            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LoadingSequence",
-          "declaration": {
-            "name": "LoadingSequence",
-            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/pokedex-numpad/pokedex-numpad.js",
       "declarations": [
         {
@@ -2265,56 +2174,61 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.js",
+      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PokedexViewArtwork",
+          "name": "PokedexNavButtons",
           "members": [
             {
-              "kind": "field",
-              "name": "pokemon",
-              "privacy": "public",
-              "attribute": "pokemon"
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
             }
           ],
-          "attributes": [
+          "events": [
             {
-              "name": "pokemon",
-              "fieldName": "pokemon"
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "pokedex-view-artwork",
+          "tagName": "pokedex-nav-buttons",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PokedexViewArtwork",
+          "name": "PokedexNavButtons",
           "declaration": {
-            "name": "PokedexViewArtwork",
-            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "pokedex-view-artwork",
+          "name": "pokedex-nav-buttons",
           "declaration": {
-            "name": "PokedexViewArtwork",
-            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js",
+      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js",
       "declarations": [
         {
           "kind": "variable",
@@ -2322,7 +2236,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-artwork\n        .pokemon=${{\n          name: \"charizard\",\n          img: \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png\",\n        }}\n      ></pokedex-view-artwork>\n    `),\n}"
+          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-nav-buttons\n        @prev-click=\"${() => console.log(\"prev-click\")}\"\n        @next-click=\"${() => console.log(\"next-click\")}\"\n      ></pokedex-nav-buttons>\n    `),\n}"
         }
       ],
       "exports": [
@@ -2330,7 +2244,7 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
           }
         },
         {
@@ -2338,7 +2252,7 @@
           "name": "Default",
           "declaration": {
             "name": "Default",
-            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
           }
         }
       ]
@@ -2558,6 +2472,216 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex-sensor/pokedex-sensor.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexSensor",
+          "members": [
+            {
+              "kind": "field",
+              "name": "blinking",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "blinking"
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "loading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "blinking",
+              "fieldName": "blinking"
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-sensor",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexSensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-sensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-sensor/pokedex-sensor.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Idle",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-sensor></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Blinking",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Blinking (voice/cry playing)\",\n  render: () => withDexBackground(html`<pokedex-sensor blinking></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LoadingSequence",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loading (LED sequence)\",\n  render: () => withDexBackground(html`<pokedex-sensor loading></pokedex-sensor>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Idle",
+          "declaration": {
+            "name": "Idle",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Blinking",
+          "declaration": {
+            "name": "Blinking",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoadingSequence",
+          "declaration": {
+            "name": "LoadingSequence",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewArtwork",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-artwork",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewArtwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-artwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-artwork\n        .pokemon=${{\n          name: \"charizard\",\n          img: \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png\",\n        }}\n      ></pokedex-view-artwork>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokedex-view-description/pokedex-view-description.js",
       "declarations": [
         {
@@ -2750,102 +2874,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokedex-view-stats/pokedex-view-stats.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokedexViewStats",
-          "members": [
-            {
-              "kind": "field",
-              "name": "pokemon",
-              "privacy": "public",
-              "attribute": "pokemon"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemon",
-              "fieldName": "pokemon"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pokedex-view-stats",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokedexViewStats",
-          "declaration": {
-            "name": "PokedexViewStats",
-            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pokedex-view-stats",
-          "declaration": {
-            "name": "PokedexViewStats",
-            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "HighStats",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  name: \"High stats (near-legendary)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, speed: 100 } }}\n      ></pokedex-view-stats>\n    `),\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "LowStats",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  name: \"Low stats (early-game)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, speed: 65 } }}\n      ></pokedex-view-stats>\n    `),\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "HighStats",
-          "declaration": {
-            "name": "HighStats",
-            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "LowStats",
-          "declaration": {
-            "name": "LowStats",
-            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/pokedex-view-moves/pokedex-view-moves.js",
       "declarations": [
         {
@@ -2936,6 +2964,102 @@
           "declaration": {
             "name": "NoMoves",
             "module": "src/components/pokedex-view-moves/pokedex-view-moves.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-stats/pokedex-view-stats.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewStats",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-stats",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewStats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-stats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "HighStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"High stats (near-legendary)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, special_attack: 80, special_defense: 90, speed: 100 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LowStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Low stats (early-game)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, special_attack: 60, special_defense: 50, speed: 65 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HighStats",
+          "declaration": {
+            "name": "HighStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LowStats",
+          "declaration": {
+            "name": "LowStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
           }
         }
       ]
@@ -3368,6 +3492,280 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonPokedexButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#onClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "pokedex-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-pokedex-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonPokedexButton",
+          "declaration": {
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-pokedex-button",
+          "declaration": {
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`\n    <div style=\"width: 2rem; height: 2rem;\">\n      <pokemon-pokedex-button\n        @pokedex-click=${() => console.log(\"pokedex-click\")}\n      ></pokemon-pokedex-button>\n    </div>\n  `,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonSearch",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "detail"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#toggle"
+            },
+            {
+              "kind": "method",
+              "name": "#collapse"
+            },
+            {
+              "kind": "method",
+              "name": "#clearActiveSearch"
+            },
+            {
+              "kind": "method",
+              "name": "#onInput",
+              "parameters": [
+                {
+                  "name": "event"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#onKeydown",
+              "parameters": [
+                {
+                  "name": "event"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "expanded"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value"
+            },
+            {
+              "name": "expanded",
+              "fieldName": "expanded"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonSearch",
+          "declaration": {
+            "name": "PokemonSearch",
+            "module": "src/components/pokemon-search/pokemon-search.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-search",
+          "declaration": {
+            "name": "PokemonSearch",
+            "module": "src/components/pokemon-search/pokemon-search.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Collapsed",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokemon-search></pokemon-search>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "WithValue",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"With an active search\",\n  render: () => html`<pokemon-search value=\"pikachu\"></pokemon-search>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Collapsed",
+          "declaration": {
+            "name": "Collapsed",
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithValue",
+          "declaration": {
+            "name": "WithValue",
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.utils.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "normalizeSearchQuery",
+          "parameters": [
+            {
+              "name": "raw"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "normalizeSearchQuery",
+          "declaration": {
+            "name": "normalizeSearchQuery",
+            "module": "src/components/pokemon-search/pokemon-search.utils.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokemon-stat-item/pokemon-stat-item.js",
       "declarations": [
         {
@@ -3478,127 +3876,6 @@
           "declaration": {
             "name": "Height",
             "module": "src/components/pokemon-stat-item/pokemon-stat-item.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokemon-type-filter/pokemon-type-filter.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokemonTypeFilter",
-          "members": [
-            {
-              "kind": "method",
-              "name": "#toggle",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "#clear"
-            },
-            {
-              "kind": "field",
-              "name": "selected",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "privacy": "public",
-              "attribute": "selected"
-            }
-          ],
-          "events": [
-            {
-              "name": "types-change",
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "selected",
-              "fieldName": "selected"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pokemon-type-filter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokemonTypeFilter",
-          "declaration": {
-            "name": "PokemonTypeFilter",
-            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pokemon-type-filter",
-          "declaration": {
-            "name": "PokemonTypeFilter",
-            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "NoneSelected",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
-        },
-        {
-          "kind": "variable",
-          "name": "SomeSelected",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  name: \"Two types selected (fire, water)\",\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[\"fire\", \"water\"]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "NoneSelected",
-          "declaration": {
-            "name": "NoneSelected",
-            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "SomeSelected",
-          "declaration": {
-            "name": "SomeSelected",
-            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
           }
         }
       ]
@@ -3727,69 +4004,97 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js",
+      "path": "src/components/pokemon-type-filter/pokemon-type-filter.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PokemonPokedexButton",
+          "name": "PokemonTypeFilter",
           "members": [
             {
               "kind": "method",
-              "name": "#onClick",
+              "name": "#toggle",
               "parameters": [
                 {
-                  "name": "e"
+                  "name": "type"
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "#clear"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "selected"
             }
           ],
           "events": [
             {
-              "name": "pokedex-click",
+              "name": "types-change",
               "type": {
                 "text": "CustomEvent"
               }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "selected",
+              "fieldName": "selected"
             }
           ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "pokemon-pokedex-button",
+          "tagName": "pokemon-type-filter",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PokemonPokedexButton",
+          "name": "PokemonTypeFilter",
           "declaration": {
-            "name": "PokemonPokedexButton",
-            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "pokemon-pokedex-button",
+          "name": "pokemon-type-filter",
           "declaration": {
-            "name": "PokemonPokedexButton",
-            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js",
+      "path": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js",
       "declarations": [
         {
           "kind": "variable",
-          "name": "Default",
+          "name": "NoneSelected",
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`\n    <div style=\"width: 2rem; height: 2rem;\">\n      <pokemon-pokedex-button\n        @pokedex-click=${() => console.log(\"pokedex-click\")}\n      ></pokemon-pokedex-button>\n    </div>\n  `,\n}"
+          "default": "{\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "SomeSelected",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Two types selected (fire, water)\",\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[\"fire\", \"water\"]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
         }
       ],
       "exports": [
@@ -3797,15 +4102,23 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
           }
         },
         {
           "kind": "js",
-          "name": "Default",
+          "name": "NoneSelected",
           "declaration": {
-            "name": "Default",
-            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+            "name": "NoneSelected",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SomeSelected",
+          "declaration": {
+            "name": "SomeSelected",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
           }
         }
       ]
@@ -4158,6 +4471,15 @@
               "parameters": [
                 {
                   "name": "ids"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "searchPokemon",
+              "parameters": [
+                {
+                  "name": "query"
                 }
               ]
             },

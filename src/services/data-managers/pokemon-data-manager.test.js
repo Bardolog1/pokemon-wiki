@@ -230,6 +230,30 @@ describe('PokemonDataManager', () => {
     expect(api.getPokemonByType).toHaveBeenCalledTimes(2);
   });
 
+  it('searchPokemon returns the transformed pokemon for a name or id', async () => {
+    const api = makeFakeApi();
+    const dm = new PokemonDataManager(api);
+
+    const pokemon = await dm.searchPokemon('bulbasaur');
+
+    expect(api.getPokemon).toHaveBeenCalledWith('bulbasaur');
+    expect(pokemon).toMatchObject({ id: 1, name: 'bulbasaur', type: ['grass', 'poison'] });
+  });
+
+  it('searchPokemon returns null when the pokemon does not exist (404)', async () => {
+    const notFound = Object.assign(new Error('not found'), { status: 404 });
+    const dm = new PokemonDataManager(makeFakeApi({ getPokemon: vi.fn().mockRejectedValue(notFound) }));
+
+    await expect(dm.searchPokemon('zzz')).resolves.toBeNull();
+  });
+
+  it('searchPokemon still propagates non-404 failures (e.g. server or network errors)', async () => {
+    const serverError = Object.assign(new Error('boom'), { status: 500 });
+    const dm = new PokemonDataManager(makeFakeApi({ getPokemon: vi.fn().mockRejectedValue(serverError) }));
+
+    await expect(dm.searchPokemon('pikachu')).rejects.toThrow('boom');
+  });
+
   it('propagates a rejection from the API layer', async () => {
     const api = makeFakeApi({ getPokemonCount: vi.fn().mockRejectedValue(new Error('boom')) });
     const dm = new PokemonDataManager(api);

@@ -29,6 +29,7 @@ export class PokemonCard extends LitElement {
   }
 
   toggleFlip() {
+    if (this.pokemon?.notFound) return;
     this.flipped = !this.flipped;
   }
 
@@ -57,13 +58,36 @@ export class PokemonCard extends LitElement {
 
   render() {
     const { pokemon, flipped } = this;
+    const notFound = Boolean(pokemon?.notFound);
     const firstType = pokemon?.type?.[0] || "unknown";
-    const [c0, c1] = getTypeColors(firstType);
+    const [c0, c1] = notFound ? ["#3a3a3a", "#151515"] : getTypeColors(firstType);
 
     return html`
       <style>
         :host {
           --gradient-background: linear-gradient(90deg, ${c0} 0%, ${c1} 100%);
+        }
+        .containerCard .card img.not-found-ball {
+          height: 7rem;
+          width: 7rem;
+        }
+        .containerCard:hover .card img.not-found-ball,
+        .containerCard.force-hover .card img.not-found-ball {
+          height: 9rem;
+          width: 9rem;
+        }
+        .containerCard:hover .not-found-mark,
+        .containerCard.force-hover .not-found-mark {
+          display: none;
+        }
+        .not-found-mark {
+          font-size: 8rem;
+          font-weight: 900;
+          line-height: 1;
+          color: #ffcb04;
+          -webkit-text-stroke: 0.35rem #3b4cca;
+          paint-order: stroke fill;
+          text-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
         }
       </style>
 
@@ -79,21 +103,31 @@ export class PokemonCard extends LitElement {
         <div class="containerCard ${this.forceHover ? "force-hover" : ""}">
           <div class="card">
             <div class="top-toolbar">
-              <pokemon-pokedex-button @pokedex-click=${this._renderPokedex}></pokemon-pokedex-button>
-              <pokemon-favorite-button pokemon-id=${pokemon.id}></pokemon-favorite-button>
+              ${notFound
+                ? ""
+                : html`
+                    <pokemon-pokedex-button @pokedex-click=${this._renderPokedex}></pokemon-pokedex-button>
+                    <pokemon-favorite-button pokemon-id=${pokemon.id}></pokemon-favorite-button>
+                  `}
             </div>
             <div class="image-container">
               <div class="back-container">
-                <img class="img-back" src="assets/${firstType}.svg" alt="" />
+                ${notFound
+                  ? html`<span class="not-found-mark" aria-hidden="true">?</span>`
+                  : html`<img class="img-back" src="assets/${firstType}.svg" alt="" />`}
               </div>
-              <img src="${pokemon.img ? pokemon.img : "assets/R.png"}" alt="${pokemon.name}" />
+              <img
+                class="${notFound ? "not-found-ball" : ""}"
+                src="${notFound || !pokemon.img ? "assets/R.png" : pokemon.img}"
+                alt="${pokemon.name}"
+              />
             </div>
             <div class="info-container">
               <div class="general-info">
                 <h2>${pokemon.name.toUpperCase()}</h2>
                 <div class="id-exp-container">
-                  <span class="poke-id">N° ${pokemon.id}</span>
-                  <span class="poke-exp">${pokemon.exp} Exp</span>
+                  <span class="poke-id">N° ${notFound ? "???" : pokemon.id}</span>
+                  <span class="poke-exp">${notFound ? "???" : pokemon.exp} Exp</span>
                 </div>
                 <div class="type-container">
                   ${(pokemon.type || []).map(
@@ -105,12 +139,12 @@ export class PokemonCard extends LitElement {
                 <pokemon-stat-item
                   icon="weight-outline"
                   label="Weight"
-                  value="${Math.ceil(pokemon.weight * 0.1 * 10) / 10} Kg"
+                  value="${notFound ? "???" : `${Math.ceil(pokemon.weight * 0.1 * 10) / 10} Kg`}"
                 ></pokemon-stat-item>
                 <pokemon-stat-item
                   icon="tapemeasure"
                   label="Height"
-                  value="${Math.ceil(pokemon.height * 0.1 * 10) / 10} Mts"
+                  value="${notFound ? "???" : `${Math.ceil(pokemon.height * 0.1 * 10) / 10} Mts`}"
                 ></pokemon-stat-item>
               </div>
             </div>
