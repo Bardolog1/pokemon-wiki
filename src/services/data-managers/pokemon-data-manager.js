@@ -31,6 +31,18 @@ export class PokemonDataManager {
     return details.map((detail) => this.#toPokemon(detail));
   }
 
+  // Búsqueda exacta por nombre o número (la PokeAPI acepta ambos en el mismo
+  // endpoint). null = no existe (404); cualquier otro fallo se propaga.
+  async searchPokemon(query) {
+    try {
+      const detail = await this.api.getPokemon(query);
+      return this.#toPokemon(detail);
+    } catch (error) {
+      if (error.status === 404) return null;
+      throw error;
+    }
+  }
+
   // Unión (OR) de Pokémon que tengan al menos uno de los tipos dados, luego
   // paginada localmente: la PokeAPI no soporta offset/limit en /type/{name},
   // así que solo se piden los detalles completos de los ids de la página

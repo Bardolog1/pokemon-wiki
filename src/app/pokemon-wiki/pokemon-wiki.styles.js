@@ -33,7 +33,7 @@ export const styles = css`
   pokemon-type-filter {
     width: 100%;
     flex: 0 0 auto;
-    margin-top: 0.3rem;
+    margin-top: 0.8rem;
   }
 
   pokemon-type-filter.hidden {
@@ -46,8 +46,8 @@ export const styles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0;
+    gap: 0.9rem;
+    padding: 0.9rem 0 0.6rem;
   }
 
   pagination-nav {

@@ -176,6 +176,14 @@ export function startAppTour(pokemonWikiEl) {
       },
     },
     {
+      element: () => root.querySelector("page-toolbar")?.shadowRoot?.querySelector("pokemon-search"),
+      popover: {
+        title: "Buscar",
+        description:
+          "Haz clic en la lupa y escribe el nombre o el número de un Pokémon. Pulsa Enter para verlo; con Esc cierras la búsqueda.",
+      },
+    },
+    {
       element: () => root.querySelector("page-toolbar")?.shadowRoot?.querySelector(".favorites-toggle"),
       popover: {
         title: "Favoritos",
@@ -254,12 +262,12 @@ export function startAppTour(pokemonWikiEl) {
 
   const POKEDEX_FIRST_STEP = 2;
   const POKEDEX_LAST_STEP = 9;
-  // Se corrieron +1 por el nuevo paso del filtro por tipo, insertado justo
-  // antes del paso de favoritos.
-  const HOVER_FIRST_STEP = 14;
-  const HOVER_LAST_STEP = 18;
-  const FLIP_FIRST_STEP = 19;
-  const FLIP_LAST_STEP = 20;
+  // Rangos de índices: incluyen los pasos del filtro por tipo y de búsqueda,
+  // que van justo antes del paso de favoritos.
+  const HOVER_FIRST_STEP = 15;
+  const HOVER_LAST_STEP = 19;
+  const FLIP_FIRST_STEP = 20;
+  const FLIP_LAST_STEP = 21;
 
   // Calcula y aplica el estado exacto que le corresponde a un índice de
   // paso, sea que se llegue a él avanzando o retrocediendo — así "Anterior"

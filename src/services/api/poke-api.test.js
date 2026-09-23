@@ -133,6 +133,14 @@ describe('PokeApi', () => {
     await expect(api.getPokemon('not-a-pokemon')).rejects.toThrow(/404/);
   });
 
+  it('exposes the HTTP status on the thrown error so callers can tell a 404 from a network failure', async () => {
+    globalThis.fetch.mockResolvedValue(errorResponse(404));
+
+    const error = await api.getPokemon('nope').catch((e) => e);
+
+    expect(error.status).toBe(404);
+  });
+
   it('propagates a fetch rejection instead of swallowing it', async () => {
     globalThis.fetch.mockRejectedValue(new Error('network down'));
 
