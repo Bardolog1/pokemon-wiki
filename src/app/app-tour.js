@@ -1,5 +1,6 @@
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import "./app-tour.css";
 
 /**
  * Arma y arranca el tour guiado de la app. Recibe el componente raíz
@@ -93,7 +94,7 @@ export function startAppTour(pokemonWikiEl) {
       popover: {
         title: "Pokédex retro",
         description:
-          "Hacé click acá para abrir la Pokédex. También podés arrastrar este ícono y soltarlo sobre cualquier carta para abrirla directo con ese Pokémon.",
+          "Haz clic aquí para abrir la Pokédex. También puedes arrastrar este ícono y soltarlo sobre cualquier Pokémon para saber más sobre él.",
       },
     },
     // A partir de acá la pokedex está abierta y encendida (ver
@@ -109,21 +110,21 @@ export function startAppTour(pokemonWikiEl) {
       element: () => pokedexShadow(".screen-bezel"),
       popover: {
         title: "La pantalla",
-        description: "Acá se muestra la información del Pokémon que busques o navegues.",
+        description: "Aquí se muestra la información del Pokémon que busques o navegues.",
       },
     },
     {
       element: () => pokedexShadow(".grid-buttons"),
       popover: {
         title: "Teclado numérico",
-        description: "Escribí el número del Pokémon que querés buscar (hasta 7 dígitos).",
+        description: "Escribe el número del Pokémon que quieras buscar.",
       },
     },
     {
       element: () => pokedexShadow(".middle-controls .white-btns"),
       popover: {
         title: "DEL y GO",
-        description: "DEL borra el último dígito. GO ejecuta la búsqueda con lo que escribiste.",
+        description: "DEL borra el último número que escribiste. GO busca el Pokémon con el número que escribiste.",
       },
     },
     {
@@ -136,23 +137,23 @@ export function startAppTour(pokemonWikiEl) {
     {
       element: () => pokedexShadow(".d-pad"),
       popover: {
-        title: "D-pad",
+        title: "Cruceta direccional",
         description:
-          "Izquierda/derecha cambia entre las vistas del Pokémon (stats, movimientos, descripción, evoluciones). Arriba/abajo hace scroll dentro de la pantalla.",
+          "Izquierda y derecha cambian de pantalla (estadísticas, movimientos, descripción, evoluciones). Arriba y abajo mueven el texto hacia arriba o abajo dentro de la pantalla.",
       },
     },
     {
       element: () => pokedexShadow(".red-bezel-btn"),
       popover: {
         title: "Sonido",
-        description: "Reproduce el grito del Pokémon que estés viendo.",
+        description: "Reproduce el sonido del Pokémon que estés viendo.",
       },
     },
     {
       element: () => pokedexShadow(".bottom-controls"),
       popover: {
         title: "Anterior / Siguiente",
-        description: "Navegá al Pokémon anterior o siguiente sin tener que escribir su número.",
+        description: "Navega al Pokémon anterior o siguiente sin tener que escribir su número.",
       },
     },
     // A partir de acá se cierra la pokedex (stepRequirements en el índice
@@ -162,21 +163,21 @@ export function startAppTour(pokemonWikiEl) {
       popover: {
         title: "Favoritos",
         description:
-          "Marcá Pokémon como favoritos desde su carta, y volvé a verlos acá cuando quieras, sin importar en qué página estén.",
+          "Marca Pokémon como favoritos desde su carta, y vuelve a verlos aquí cuando quieras, sin importar en qué página estén.",
       },
     },
     {
       element: () => root.querySelector("#paginator"),
       popover: {
         title: "Navegación",
-        description: "Recorré la Pokédex por páginas.",
+        description: "Recorre la Pokédex por páginas.",
       },
     },
     {
       element: () => firstCard,
       popover: {
-        title: "El frente de la carta",
-        description: "Así se ve cada Pokémon en la lista, solo la imagen.",
+        title: "Cada Pokémon es una carta",
+        description: "Pasa el cursor por encima para ver toda su información.",
       },
     },
     // A partir de acá se fuerza el estado hover (rango HOVER_FIRST_STEP..
@@ -185,7 +186,7 @@ export function startAppTour(pokemonWikiEl) {
       element: () => cardShadow(".top-toolbar pokemon-pokedex-button"),
       popover: {
         title: "Ícono de pokedex",
-        description: "Abre la Pokédex retro ya precargada con este Pokémon.",
+        description: "Abre la Pokédex desde aquí para saber más de este Pokémon.",
       },
     },
     {
@@ -196,7 +197,7 @@ export function startAppTour(pokemonWikiEl) {
       },
     },
     {
-      element: () => cardShadow("h2"),
+      element: () => cardShadow(".general-info"),
       popover: {
         title: "Datos generales",
         description: "Nombre, número de la Pokédex, experiencia y tipo del Pokémon.",
