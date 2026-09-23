@@ -14,6 +14,19 @@ export const styles = css`
     --dex-bezel: #dedede;
   }
 
+  /* Reset base para los controles que siguen viviendo acá (power/sonido)
+     y que ahora son <button> reales en vez de <div @click>. El resto de
+     los controles (numpad, d-pad, PREV/NEXT, sensor) se movieron a sus
+     propios componentes — ver pokedex-numpad.js, pokedex-dpad.js,
+     pokedex-nav-buttons.js, pokedex-sensor.js. */
+  .power-btn,
+  .red-bezel-btn {
+    all: unset;
+    display: block;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
   .toggle-cover-btn {
     display: block;
     margin: 0 auto 40px auto;
@@ -56,27 +69,6 @@ export const styles = css`
     z-index: 1;
     box-sizing: border-box;
   }
-
-  .top-sensor-area { height: 100px; border-bottom: 4px solid var(--dex-border); display: flex; align-items: center; padding-left: 20px; box-sizing: border-box; }
-  .lens-container { width: 70px; height: 70px; background: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 4px solid var(--dex-border); }
-  .main-lens { width: 54px; height: 54px; background: radial-gradient(circle at 30% 30%, #7cd4ff, var(--dex-lens) 60%, #005f99); border-radius: 50%; border: 2px solid var(--dex-border); }
-  .mini-leds { display: flex; gap: 8px; margin-left: 20px; align-self: flex-start; margin-top: 20px; }
-  .led { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--dex-border); }
-  .led.red { background-color: #ff3333; } .led.yellow { background-color: var(--dex-yellow); } .led.green { background-color: var(--dex-green); }
-
-  .main-lens.blinking { animation: blue-siren 0.3s infinite alternate; }
-  @keyframes blue-siren {
-    from { background-color: #28aadc; box-shadow: 0 0 10px #28aadc; }
-    to { background-color: #e0f7fa; box-shadow: 0 0 30px #e0f7fa, inset 0 0 10px #fff; }
-  }
-
-  .loading-sequence .red { animation: traffic-red 0.6s infinite 0s; }
-  .loading-sequence .yellow { animation: traffic-yellow 0.6s infinite 0.2s; }
-  .loading-sequence .green { animation: traffic-green 0.6s infinite 0.4s; }
-
-  @keyframes traffic-red { 50% { background-color: #ff5555; box-shadow: 0 0 15px red; } }
-  @keyframes traffic-yellow { 50% { background-color: #ffff55; box-shadow: 0 0 15px yellow; } }
-  @keyframes traffic-green { 50% { background-color: #55ff55; box-shadow: 0 0 15px green; } }
 
   .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }
 
@@ -128,18 +120,6 @@ export const styles = css`
     color: #0f380f;
     box-shadow: inset 0 0 10px rgba(15, 56, 15, 0.8);
   }
-
-  .d-pad { position: relative; width: 85px; height: 85px; }
-  .d-pad-v { position: absolute; left: 28px; width: 29px; height: 85px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }
-  .d-pad-h { position: absolute; top: 28px; width: 85px; height: 29px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }
-  .d-pad-center { position: absolute; top: 28px; left: 28px; width: 29px; height: 29px; background-color: #222; z-index: 2; }
-
-  .d-pad-clickable { position: absolute; width: 29px; height: 29px; cursor: pointer; z-index: 10; }
-  .d-pad-left { left: 0; top: 28px; }
-  .d-pad-right { right: 0; top: 28px; }
-  .d-pad-up { left: 28px; top: 0; }
-  .d-pad-down { left: 28px; bottom: 0; }
-  .d-pad-clickable:active { background-color: rgba(255,255,255,0.25); border-radius: 4px; }
 
   .turn-on-hint {
     position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background-color: white; color: black; padding: 6px 10px; border-radius: 4px; font-weight: 900; font-family: sans-serif; font-size: 14px; white-space: nowrap; border: 2px solid black; animation: blinkArrow 0.6s infinite alternate; z-index: 20;
@@ -242,39 +222,4 @@ export const styles = css`
     overflow: hidden;
   }
 
-  .grid-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 220px; background-color: var(--dex-border); border: 4px solid var(--dex-border); border-radius: 4px; margin-bottom: 20px; padding: 2px; }
-  .grid-btn { height: 42px; background-color: #00bfff; border-radius: 2px; cursor: pointer; display: flex; justify-content: center; align-items: center; color: #fff; font-family: monospace; font-weight: bold; font-size: 1.4rem; text-shadow: 1px 1px 0px rgba(0,0,0,0.5); user-select: none; transition: transform 0.05s, background-color 0.05s; }
-  .grid-btn:hover { background-color: #33ccff; }
-  .grid-btn:active { transform: scale(0.85); background-color: #0088cc; }
-
-  .middle-controls { display: flex; width: 220px; justify-content: flex-end; align-items: center; gap: 15px; margin-bottom: 20px; }
-  .white-btns { display: flex; gap: 10px; margin-right: auto; }
-  .white-btn { width: 45px; height: 22px; background-color: #fff; border: 3px solid var(--dex-border); border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-family: sans-serif; cursor: pointer; font-weight: bold; }
-  .white-btn:active { transform: scale(0.9); }
-  .white-btn.bold-red { color: red; }
-
-  .yellow-btn { width: 22px; height: 22px; background-color: var(--dex-yellow); border: 3px solid var(--dex-border); border-radius: 50%; cursor: pointer; transition: background-color 0.1s; }
-  .yellow-btn.flash { background-color: #ffffee; box-shadow: 0 0 15px yellow; transform: scale(1.05); }
-
-  /* BOTONES INFERIORES VERDES (PREV Y NEXT) */
-  .bottom-controls { display: flex; width: 220px; justify-content: space-between; }
-  .dark-green-btn {
-    width: 100px;
-    height: 25px;
-    background-color: var(--dex-dark-green);
-    border: 3px solid var(--dex-border);
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #8bac0f;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
-    font-weight: bold;
-    user-select: none;
-    transition: background-color 0.1s, transform 0.05s;
-  }
-  .dark-green-btn:hover { background-color: #385e50; }
-  .dark-green-btn:active { transform: scale(0.92); }
 `;

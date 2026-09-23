@@ -1,7 +1,38 @@
 import { LitElement, html, css } from "lit";
 import { styles } from "./pokedex-app.styles.js";
 import { PokedexEntryDataManager } from "../../services/data-managers/pokedex-entry-data-manager.js";
+import { speakPokemonEntry } from "./pokedex-voice.js";
 import "./pokedex-screen.js";
+import "./pokedex-sensor.js";
+import "./pokedex-dpad.js";
+import "./pokedex-numpad.js";
+import "./pokedex-nav-buttons.js";
+
+// Estático, sin bindings a `this` — se define una sola vez a nivel de
+// módulo en vez de recrearse en cada render() dentro de renderRightHalf().
+const SHELL_SVG_INTERIOR = html`
+  <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M 0,10 L 150,10 L 190,100 L 325,100 A 15,15 0 0,1 340,115 L 340,465 A 15,15 0 0,1 325,480 L 0,480 Z"
+      fill="var(--dex-red)"
+      stroke="var(--dex-border)"
+      stroke-width="6"
+      stroke-linejoin="round"
+    />
+  </svg>
+`;
+
+const SHELL_SVG_EXTERIOR = html`
+  <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M 340,10 L 190,10 L 150,100 L 15,100 A 15,15 0 0,0 0,115 L 0,465 A 15,15 0 0,0 15,480 L 340,480 Z"
+      fill="var(--dex-red)"
+      stroke="var(--dex-border)"
+      stroke-width="6"
+      stroke-linejoin="round"
+    />
+  </svg>
+`;
 
 export class PokedexApp extends LitElement {
   static properties = {
@@ -41,44 +72,17 @@ export class PokedexApp extends LitElement {
   }
 
   // Narra en voz alta tipo, estadísticas, dato curioso y línea evolutiva del
-  // Pokémon actual. Se dispara sola cada vez que se carga un Pokémon nuevo
-  // (búsqueda o PREV/NEXT), sin necesidad de un botón dedicado.
+  // Pokémon actual (ver pokedex-voice.js). Se dispara sola cada vez que se
+  // carga un Pokémon nuevo (búsqueda o PREV/NEXT), sin necesidad de un
+  // botón dedicado.
   speakEntry() {
-    if (!this.isOn || !this.pokemon || !window.speechSynthesis) return;
-
-    window.speechSynthesis.cancel();
-
-    const { name, type, stats, description, evolutions } = this.pokemon;
-    const typeText = (type || []).join(" y ");
-    const evolutionText =
-      evolutions && evolutions.length > 1
-        ? `Su línea evolutiva es: ${evolutions.join(", ")}.`
-        : "No tiene evoluciones conocidas.";
-
-    const text = [
-      `${name}.`,
-      `Tipo: ${typeText}.`,
-      `Puntos de vida: ${stats.hp}. Ataque: ${stats.attack}. Defensa: ${stats.defense}. Velocidad: ${stats.speed}.`,
-      description,
-      evolutionText,
-    ].join(" ");
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "es-ES";
-    utterance.rate = 0.95;
-    // pitch/rate son los únicos parámetros reales que expone
-    // SpeechSynthesisUtterance para acercarla a un tono más sintético; no
-    // hay forma estándar de rutear la síntesis de voz por Web Audio API.
-    utterance.pitch = 0.7;
-
-    const stopSpeaking = () => {
-      this.isSpeaking = false;
-    };
-    utterance.addEventListener("end", stopSpeaking);
-    utterance.addEventListener("error", stopSpeaking);
-
+    if (!this.isOn || !this.pokemon) return;
     this.isSpeaking = true;
-    window.speechSynthesis.speak(utterance);
+    speakPokemonEntry(this.pokemon, {
+      onEnd: () => {
+        this.isSpeaking = false;
+      },
+    });
   }
 
   // Se dispara con el botón rojo bajo la pantalla; mientras suena, el lente
@@ -218,6 +222,17 @@ export class PokedexApp extends LitElement {
     screen.scrollBy(direction === "down" ? 40 : -40);
   }
 
+  // pokedex-dpad no sabe qué significa cada dirección: izq/der navegan
+  // entre vistas de la pantalla, arriba/abajo hacen scroll dentro de ella.
+  onDpadClick(e) {
+    const { direction } = e.detail;
+    if (direction === "left" || direction === "right") {
+      this.navigateInfo(direction);
+    } else {
+      this.handleDpadScroll(direction);
+    }
+  }
+
   get formattedTypes() {
     if (!this.pokemon) return "???";
     if (this.pokemon.types && Array.isArray(this.pokemon.types)) {
@@ -251,18 +266,10 @@ export class PokedexApp extends LitElement {
 
     return html`
       <div class="left-half">
-        <div class="top-sensor-area">
-          <div class="lens-container">
-            <div
-              class="main-lens ${this.isLoading || this.isPlayingCry || this.isSpeaking ? "blinking" : ""}"
-            ></div>
-          </div>
-          <div class="mini-leds ${this.isLoading ? "loading-sequence" : ""}">
-            <div class="led red"></div>
-            <div class="led yellow"></div>
-            <div class="led green"></div>
-          </div>
-        </div>
+        <pokedex-sensor
+          .blinking=${this.isLoading || this.isPlayingCry || this.isSpeaking}
+          .loading=${this.isLoading}
+        ></pokedex-sensor>
 
         <div class="screen-bezel">
           <div class="bezel-top-dots">
@@ -277,11 +284,13 @@ export class PokedexApp extends LitElement {
             .isOn=${this.isOn}
           ></pokedex-screen>
           <div class="bezel-bottom">
-            <div
+            <button
+              type="button"
               class="red-bezel-btn"
               @click="${this.playCry}"
               title="Reproducir sonido del Pokémon"
-            ></div>
+              aria-label="Reproducir sonido del Pokémon"
+            ></button>
             <div class="speaker-grill">
               <div class="speaker-line"></div>
               <div class="speaker-line"></div>
@@ -293,93 +302,48 @@ export class PokedexApp extends LitElement {
 
         <div class="lower-controls">
           <div class="power-btn-container">
-            <div class="power-btn" @click="${this.togglePower}">
+            <button
+              type="button"
+              class="power-btn"
+              @click="${this.togglePower}"
+              aria-label="${this.isOn ? "Apagar la Pokédex" : "Encender la Pokédex"}"
+              aria-pressed="${this.isOn}"
+            >
               ${this.isOpen && !this.isOn ? html`<div class="turn-on-hint">↓ ON</div>` : ""}
-            </div>
+            </button>
           </div>
 
           <div class="mini-green-screen ${this.isOn ? "is-on" : ""}">${this.isOn ? displayNum : ""}</div>
 
-          <div class="d-pad">
-            <div class="d-pad-v"></div>
-            <div class="d-pad-h"></div>
-            <div class="d-pad-center"></div>
-
-            <div class="d-pad-clickable d-pad-left" @click="${() => this.navigateInfo("left")}"></div>
-            <div class="d-pad-clickable d-pad-right" @click="${() => this.navigateInfo("right")}"></div>
-            <div class="d-pad-clickable d-pad-up" @click="${() => this.handleDpadScroll("up")}"></div>
-            <div class="d-pad-clickable d-pad-down" @click="${() => this.handleDpadScroll("down")}"></div>
-          </div>
+          <pokedex-dpad @dpad-click="${this.onDpadClick}"></pokedex-dpad>
         </div>
       </div>
     `;
   }
 
   renderRightHalf() {
-    const gridNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-
-    const shellSvgInterior = html`
-      <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M 0,10 L 150,10 L 190,100 L 325,100 A 15,15 0 0,1 340,115 L 340,465 A 15,15 0 0,1 325,480 L 0,480 Z"
-          fill="var(--dex-red)"
-          stroke="var(--dex-border)"
-          stroke-width="6"
-          stroke-linejoin="round"
-        />
-      </svg>
-    `;
-
-    const shellSvgExterior = html`
-      <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M 340,10 L 190,10 L 150,100 L 15,100 A 15,15 0 0,0 0,115 L 0,465 A 15,15 0 0,0 15,480 L 340,480 Z"
-          fill="var(--dex-red)"
-          stroke="var(--dex-border)"
-          stroke-width="6"
-          stroke-linejoin="round"
-        />
-      </svg>
-    `;
-
     return html`
       <div class="right-half ${this.isOpen ? "open" : "closed"}">
-        <div class="right-cover-exterior">${shellSvgExterior}</div>
+        <div class="right-cover-exterior">${SHELL_SVG_EXTERIOR}</div>
 
         <div class="right-content">
-          <div class="right-shell-svg-container">${shellSvgInterior}</div>
+          <div class="right-shell-svg-container">${SHELL_SVG_INTERIOR}</div>
 
           <div class="inner-components">
             <div class="secondary-screen ${this.isOn ? "is-on" : ""}">${this.renderSecondaryInfo()}</div>
 
-            <div class="grid-buttons">
-              ${gridNumbers.map(
-                (num) => html`
-                  <div class="grid-btn" @click="${() => this.handleNumberClick(num)}">${num}</div>
-                `,
-              )}
-            </div>
+            <pokedex-numpad
+              .yellowFlash=${this.yellowFlash}
+              @digit-click="${(e) => this.handleNumberClick(e.detail.digit)}"
+              @delete-click="${this.handleDelete}"
+              @search-click="${this.handleSearch}"
+              @reset-click="${this.resetSearch}"
+            ></pokedex-numpad>
 
-            <div class="middle-controls">
-              <div class="white-btns">
-                <div class="white-btn" @click="${this.handleDelete}" title="Borrar y limpiar búsqueda">DEL</div>
-                <div class="white-btn bold-red" @click="${this.handleSearch}" title="Buscar">GO</div>
-              </div>
-              <div
-                class="yellow-btn ${this.yellowFlash ? "flash" : ""}"
-                @click="${this.resetSearch}"
-                title="Reiniciar búsqueda"
-              ></div>
-            </div>
-
-            <div class="bottom-controls">
-              <div class="dark-green-btn" @click="${() => this.navigateStep(-1)}" title="Pokémon anterior">
-                ◄ PREV
-              </div>
-              <div class="dark-green-btn" @click="${() => this.navigateStep(1)}" title="Pokémon siguiente">
-                NEXT ►
-              </div>
-            </div>
+            <pokedex-nav-buttons
+              @prev-click="${() => this.navigateStep(-1)}"
+              @next-click="${() => this.navigateStep(1)}"
+            ></pokedex-nav-buttons>
           </div>
         </div>
       </div>
