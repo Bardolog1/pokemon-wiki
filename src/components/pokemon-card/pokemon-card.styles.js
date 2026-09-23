@@ -310,7 +310,6 @@ export const backStyles = css`
 export const sharedStyles = css`
   :host {
     user-select: none;
-    height: 100%;
     margin: 0 1rem;
   }
 
@@ -323,7 +322,7 @@ export const sharedStyles = css`
     background: transparent;
     border-radius: 1em;
     cursor: url(assets/poke1.png), auto;
-    transition: 0.3 all;
+    transition: 0.3s all;
   }
 
   /* Mientras se arrastra el ícono de la pokedex sobre la card, se anula el
@@ -331,6 +330,23 @@ export const sharedStyles = css`
   .scaff.drag-over .containerCard,
   .scaff.drag-over .containerCardBack {
     pointer-events: none;
+  }
+
+  /* Se activa desde listar-pokemon (IntersectionObserver, único responsable
+     de esto — ya no hay ningún view-timeline/scroll-driven animation en
+     paralelo peleando por el mismo estado) cuando la card está mayormente
+     fuera del área visible del scroll: apaga el :hover (para que la fila
+     apenas asomada en el borde inferior no muestre su info recortada) y la
+     atenúa/encoge en el lugar, sin mover su posición — eso lo sigue
+     moviendo únicamente el scroll nativo. */
+  .scaff.hover-disabled .containerCard,
+  .scaff.hover-disabled .containerCardBack {
+    pointer-events: none;
+  }
+
+  .scaff.hover-disabled {
+    opacity: 0.3;
+    transform: scale(0.85);
   }
 
   .scaff.flipped > .containerCard {
