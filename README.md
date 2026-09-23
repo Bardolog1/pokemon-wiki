@@ -1,63 +1,69 @@
-# 🌟 Pokédex Interactiva 🌟
+# Pokédex
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9d73e7ed-8113-4f35-9641-6b31b9171646/deploy-status)](https://app.netlify.com/sites/pokedex-lit/deploys)
 
+Pokédex web construida con [Lit](https://lit.dev) y la [PokéAPI](https://pokeapi.co). Lista Pokémon paginados y muestra sus estadísticas al hacer clic en cada tarjeta.
 
-¡Explora el mundo de los Pokémon de manera interactiva y visualmente atractiva!
-https://pokemowiki.netlify.app/
+**Demo:** https://pokemowiki.netlify.app/
 
-![PokeScreen](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/ca4811f3-19fa-46b0-beeb-a64d3cc308d3)
+![Vista principal](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/ca4811f3-19fa-46b0-beeb-a64d3cc308d3)
+![Detalle de estadísticas](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/f6cceea7-9358-44f2-be24-2ca4ce27d750)
 
+## Stack técnico
 
-## 📖 Visión General
+- [Lit](https://lit.dev) — Web Components
+- [Vite](https://vitejs.dev) — servidor de desarrollo y build
+- [Vitest](https://vitest.dev) — tests unitarios
+- [Storybook](https://storybook.js.org) — catálogo de componentes aislados
+- [Chart.js](https://www.chartjs.org) — gráficos de estadísticas por Pokémon
+- [PokéAPI](https://pokeapi.co) — fuente de datos
 
-Bienvenido a la Pokédex Interactiva, una aplicación emocionante construida con Lit Element y alimentada por la PokéAPI. ¡Sumérgete en el mundo de los Pokémon y explora sus detalles de manera inmersiva!
+## Requisitos
 
-## ✨ Funcionalidades
+- Node.js 18 o superior
+- npm
 
-- Explora una lista de Pokémon con tarjetas interactivas. 🎮
-- Navega fácilmente con la paginación. 🔄
-- Haz clic en una tarjeta para ver estadísticas detalladas. 📊
-- Descubre las evoluciones y más información al explorar la Pokédex. 🌐
+## Instalación
 
-## 📸 Capturas de Pantalla
+```bash
+npm install
+```
 
-![PokeScreen](https://github.com/Bardolog1/pokemon-wiki/assets/64260884/f6cceea7-9358-44f2-be24-2ca4ce27d750)
+## Scripts
 
+| Comando                   | Descripción                                                    |
+| -------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`               | Servidor de desarrollo con recarga en caliente                   |
+| `npm run build`             | Build de producción en `dist/`                                   |
+| `npm run preview`           | Sirve el build de producción localmente                          |
+| `npm run test`              | Corre los tests una vez, con cobertura                           |
+| `npm run test:watch`        | Corre los tests en modo watch                                    |
+| `npm run storybook`         | Levanta Storybook en `localhost:6006`                             |
+| `npm run storybook:build`   | Genera el build estático de Storybook en `storybook-static/`     |
+| `npm run analyze`           | Regenera `custom-elements.json` a partir de los componentes      |
 
-## 🛠️ Instalación
+## Arquitectura
 
-1. Clona este repositorio.
-2. Instala las dependencias con `npm install`.
+```
+src/
+  main.js                     # punto de entrada
+  app/
+    pokemon-wiki.js           # componente raíz
+  components/                 # un directorio por componente, con su story
+    pagination/
+    pokemon-card/
+    pokemon-list/
+    banner-title/
+    navbar-buttons/
+  services/
+    api/                      # peticiones crudas a la PokéAPI
+    data-managers/            # transforma la respuesta cruda para cada vista
+```
 
-## 🚀 Uso
+La capa de datos tiene dos niveles: `services/api` hace las peticiones HTTP sin transformar nada, y `services/data-managers` consume ese resultado y lo adapta a lo que necesita cada componente visual. Ningún componente llama a `fetch` directamente.
 
-1. Ejecuta `npm start` para iniciar la aplicación en modo de desarrollo.
-2. Abre tu navegador y ve a `http://localhost:3000` para explorar la Pokédex.
+Los componentes de UI están descompuestos por responsabilidad: `pokemon-card` y `pagination` son orquestadores que componen piezas más chicas (`pokemon-type-badge`, `pokemon-stat-item`, `pagination-button`, etc.), cada una documentada con su propia story en Storybook.
 
-## 👥 Contribución
+## Licencia
 
-¡Todas las contribuciones son bienvenidas! Si deseas contribuir a este proyecto:
-
-1. Haz un fork de este repositorio.
-2. Crea una rama para tu nueva característica (`git checkout -b feature/nueva-caracteristica`).
-3. Realiza tus cambios y commitea (`git commit -m "Añadir nueva característica"`).
-4. Sube tus cambios a tu repositorio (`git push origin feature/nueva-caracteristica`).
-5. Abre un Pull Request aquí.
-
-## 🗺️ Roadmap
-
-- **0.2.0**: Agregar estadísticas en el reverso de las tarjetas.
-- **0.3.0**: Implementar visualización de evoluciones.
-- **0.4.0**: Añadir información adicional al clic en la imagen de la Pokédex.
-
-## 📞 Contacto
-
-¿Preguntas o comentarios? ¡Hablemos!
-
-Nombre: Libardo Lozano Gambasica
-Correo Electrónico: liloga.dev@gmail.com
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles
-
+MIT — ver [LICENSE](LICENSE).

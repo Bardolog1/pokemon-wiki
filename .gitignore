@@ -23,3 +23,13 @@
 custom-elements.json
 .editorconfig
 
+## out-of-scope scratch file
+/poke.js
+
+## storybook
+*storybook.log
+storybook-static
+
+## AI/agent working artifacts — not part of the shipped project
+/docs/superpowers
+/.superpowers/
