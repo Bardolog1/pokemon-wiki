@@ -1,4 +1,3 @@
-// src/components/pokemon-type-badge/pokemon-type-badge.js
 import { LitElement, html, css } from "lit";
 
 export const TYPES_COLORS = {

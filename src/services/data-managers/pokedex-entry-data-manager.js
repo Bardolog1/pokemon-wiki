@@ -8,7 +8,6 @@ export class PokedexEntryDataManager {
   async getFullEntry({ query }) {
     const numericId = Number(query);
 
-    // 1. Validar límites de la PokeAPI
     if (query !== '' && !isNaN(numericId)) {
       const isValidNational = numericId >= 1 && numericId <= 1025;
       const isValidSpecialForm = numericId >= 10001 && numericId <= 10350;
@@ -18,15 +17,13 @@ export class PokedexEntryDataManager {
       }
     }
 
-    // 2-4. PokeApi resuelve internamente pokemon -> especie -> cadena de evolución
+    // PokeApi resuelve pokemon -> especie -> cadena de evolución.
     const { pokemon, species, evolutionChain } = await this.api.getPokemonFullEntry(query);
     const evolutions = this.#extractEvolutionLine(evolutionChain.chain);
 
-    // 5. Enviar todo a tu formateador privado
     return this.#formatPokedexEntry(pokemon, species, evolutions);
   }
 
-  // --- Métodos Privados ---
 
   #formatPokedexEntry(pokemon, species, evolutions) {
     const flavorEntry = species.flavor_text_entries.find(e => e.language.name === 'es')

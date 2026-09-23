@@ -1,7 +1,6 @@
 import { html } from "lit";
 
-// Markup 100% estático (sin bindings a `this`): se define una sola vez a
-// nivel de módulo en vez de recrearse en cada render() de pokedex-app.
+// Markup estático sin bindings a `this`: se crea una vez a nivel de módulo, no en cada render.
 export const SHELL_SVG_INTERIOR = html`
   <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
     <path

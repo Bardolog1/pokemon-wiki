@@ -23,18 +23,12 @@ export class ListarPokemon extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Con el alto del contenedor sin ser múltiplo exacto del alto de fila, la
-  // fila siguiente siempre asoma unos pocos px en el borde inferior — lo
-  // suficiente para que el cursor le dispare el :hover y se vea su info
-  // recortada a la mitad. Este observer apaga el :hover (hoverEnabled=false,
-  // ver pokemon-card) en cualquier card que no esté casi completamente
-  // dentro del área visible (threshold 0.9 = 90% visible).
+  // Si el alto del contenedor no es múltiplo del alto de fila, la fila siguiente asoma en el borde inferior
+  // y su :hover mostraría info recortada. Se apaga (hoverEnabled=false) en cards con menos de 90% visible.
   updated(props) {
     super.updated?.(props);
     if (props.has("pokemons") && this.pokemons?.length) {
-      // Cada página es un array de pokemons nuevo, pero el scroll físico
-      // del contenedor no se reinicia solo — sin esto, cambiar de página
-      // deja la vista donde quedó la anterior (ej. en la última fila).
+      // El scroll físico no se reinicia al cambiar de página; se resetea a mano.
       this.scrollTop = 0;
       this._hoverObserver?.disconnect();
       const grid = this.renderRoot.querySelector(".cards-grid");
@@ -54,24 +48,15 @@ export class ListarPokemon extends LitElement {
 
   static get styles() {
     return css`
-      /* :host es SOLO el scroll container (una columna). El grid real de
-         cards vive en .cards-grid, adentro. Así, "margin-top: auto" en
-         .cards-grid empuja las filas contra el borde inferior nada más
-         cuando sobra alto (una sola fila corta) — con muchas filas que
-         desbordan, ese margen automático colapsa a 0 solo y el scroll
-         queda normal, de arriba hacia abajo. "align-content: flex-end"
-         directo en :host rompía esto: con overflow, anclaba la ÚLTIMA fila
-         abajo y dejaba las anteriores fuera del área scrolleable. */
+      /* :host es solo el scroll container; el grid vive en .cards-grid. Así, "margin-top: auto" empuja
+         pocas filas hacia abajo y colapsa a 0 si desbordan. "align-content: flex-end" en :host dejaba
+         filas fuera del área scrolleable. */
       :host {
         display: flex;
         flex-direction: column;
         overflow-y: scroll;
         scrollbar-width: none;
-        /* Cada gesto de scroll queda "enganchado" a una fila completa en
-           vez de poder quedar a mitad de camino (cards cortadas arriba o
-           abajo). "mandatory" obliga a asentar siempre en un punto de
-           snap; "scroll-snap-stop: always" en cada card evita que un
-           scroll rápido salte de largo varias filas sin detenerse. */
+        /* "mandatory" asienta el scroll en una fila completa; "scroll-snap-stop: always" evita saltarse filas. */
         scroll-snap-type: y mandatory;
       }
 
@@ -83,11 +68,8 @@ export class ListarPokemon extends LitElement {
         justify-content: space-evenly;
         align-items: baseline;
         margin-top: auto;
-        /* Espacio de respiro extra bajo la última fila, además del punto de
-           enganche "end" en la última card. OJO: este padding compite por
-           el mismo espacio libre que "margin-top: auto" usa para el efecto
-           "parado sobre el piso" con pocas cards (ej. Favoritos) — si
-           queda muy grande, esa vista deja de bajar tanto como ahora. */
+        /* Espacio extra bajo la última fila. Compite con "margin-top: auto" (pocas cards, ej. Favoritos):
+           si crece, esa vista baja menos. */
         padding-bottom: 3rem;
       }
 
@@ -112,13 +94,8 @@ export class ListarPokemon extends LitElement {
         scroll-snap-stop: always;
       }
 
-      /* El punto de enganche "start" de la última fila suele pedir
-         scrollear más de lo que el contenedor permite (el alto visible es
-         mayor a una fila), así que el navegador lo recorta a mitad de
-         camino, dejando la última fila Y la penúltima parcialmente
-         visibles (penúltima atenuada por hover-disabled). "end" en la
-         última card agrega un punto de enganche que coincide con el final
-         real del scroll — siempre alcanzable, por definición. */
+      /* El snap "start" de la última fila pide más scroll del posible y el navegador lo recorta,
+         dejando dos filas parciales. "end" coincide con el final real del scroll. */
       pokemon-card:last-child {
         scroll-snap-align: end;
       }

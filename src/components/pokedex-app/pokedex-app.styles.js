@@ -14,11 +14,7 @@ export const styles = css`
     --dex-bezel: #dedede;
   }
 
-  /* Reset base para los controles que siguen viviendo acá (power/sonido)
-     y que ahora son <button> reales en vez de <div @click>. El resto de
-     los controles (numpad, d-pad, PREV/NEXT, sensor) se movieron a sus
-     propios componentes — ver pokedex-numpad.js, pokedex-dpad.js,
-     pokedex-nav-buttons.js, pokedex-sensor.js. */
+  /* Reset base para los <button> de power y sonido. */
   .power-btn,
   .red-bezel-btn {
     all: unset;
@@ -58,7 +54,6 @@ export const styles = css`
     transform-style: preserve-3d;
   }
 
-  /* MITAD IZQUIERDA */
   .left-half {
     width: 340px;
     height: 480px;
@@ -127,11 +122,9 @@ export const styles = css`
   .turn-on-hint::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: black transparent transparent transparent; }
   @keyframes blinkArrow { from { top: -50px; opacity: 1; } to { top: -35px; opacity: 0.8; } }
 
-  /* BISAGRA */
   .hinge { width: 30px; height: 480px; background: linear-gradient(to right, #990000, var(--dex-red) 30%, #ff5b5b 50%, var(--dex-red) 70%, #990000); border: 4px solid var(--dex-border); border-radius: 10px; margin-left: -4px; margin-right: -4px; z-index: 5; display: flex; flex-direction: column; justify-content: space-evenly; box-sizing: border-box; }
   .hinge-joint { width: 100%; height: 4px; background-color: var(--dex-border); }
 
-  /* MITAD DERECHA */
   .right-half {
     width: 340px;
     height: 480px;
