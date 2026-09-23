@@ -55,9 +55,15 @@ export class Pagination extends LitElement {
       props.has("visibleResults") ||
       props.has("visiblePages")
     ) {
+      // "pages" siempre se deriva de results/visibleResults, nunca se
+      // preserva de un cálculo anterior: si se pasara this.pages ya
+      // calculado, calcPages lo respeta como "ya definido" y jamás
+      // vuelve a recalcularlo (ver su guard `if (!nextPages)`), dejando
+      // la cantidad de páginas pegada al primer cómputo para siempre —
+      // justo el bug que rompía la paginación al filtrar por tipo.
       const next = calcPages({
         results: this.results,
-        pages: this.pages,
+        pages: 0,
         visibleResults: this.visibleResults,
         visiblePages: this.visiblePages,
         currentPage: this.currentPage,
