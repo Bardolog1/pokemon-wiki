@@ -108,19 +108,7 @@
             },
             {
               "kind": "field",
-              "name": "_resultsCount"
-            },
-            {
-              "kind": "field",
-              "name": "_totalPages"
-            },
-            {
-              "kind": "field",
-              "name": "_rangeStart"
-            },
-            {
-              "kind": "field",
-              "name": "_rangeEnd"
+              "name": "_range"
             },
             {
               "kind": "method",
@@ -218,6 +206,31 @@
           "declaration": {
             "name": "PokemonWiki",
             "module": "src/app/pokemon-wiki.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/app/results-range.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "computeResultsRange",
+          "parameters": [
+            {
+              "name": "{\n  selectedTypes,\n  filteredTotal,\n  elements,\n  currentPage,\n  visibleResults,\n}"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "computeResultsRange",
+          "declaration": {
+            "name": "computeResultsRange",
+            "module": "src/app/results-range.js"
           }
         }
       ]
@@ -486,6 +499,142 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pagination/page-range-info.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PageRangeInfo",
+          "members": [
+            {
+              "kind": "field",
+              "name": "rangeStart",
+              "privacy": "public",
+              "attribute": "rangeStart"
+            },
+            {
+              "kind": "field",
+              "name": "rangeEnd",
+              "privacy": "public",
+              "attribute": "rangeEnd"
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "privacy": "public",
+              "attribute": "total"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "privacy": "public",
+              "attribute": "currentPage"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "privacy": "public",
+              "attribute": "totalPages"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rangeStart",
+              "fieldName": "rangeStart"
+            },
+            {
+              "name": "rangeEnd",
+              "fieldName": "rangeEnd"
+            },
+            {
+              "name": "total",
+              "fieldName": "total"
+            },
+            {
+              "name": "currentPage",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "totalPages",
+              "fieldName": "totalPages"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "page-range-info",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageRangeInfo",
+          "declaration": {
+            "name": "PageRangeInfo",
+            "module": "src/components/pagination/page-range-info.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "page-range-info",
+          "declaration": {
+            "name": "PageRangeInfo",
+            "module": "src/components/pagination/page-range-info.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/page-range-info.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "FirstPage",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-range-info\n      .rangeStart=${1}\n      .rangeEnd=${20}\n      .total=${1351}\n      .currentPage=${1}\n      .totalPages=${68}\n    ></page-range-info>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LastPartialPage",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-range-info\n      .rangeStart=${101}\n      .rangeEnd=${117}\n      .total=${117}\n      .currentPage=${6}\n      .totalPages=${6}\n    ></page-range-info>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pagination/page-range-info.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FirstPage",
+          "declaration": {
+            "name": "FirstPage",
+            "module": "src/components/pagination/page-range-info.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LastPartialPage",
+          "declaration": {
+            "name": "LastPartialPage",
+            "module": "src/components/pagination/page-range-info.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pagination/pagination-button.js",
       "declarations": [
         {
@@ -526,6 +675,16 @@
               "default": "false",
               "privacy": "public",
               "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "label"
             }
           ],
           "events": [
@@ -548,6 +707,10 @@
             {
               "name": "disabled",
               "fieldName": "disabled"
+            },
+            {
+              "name": "label",
+              "fieldName": "label"
             }
           ],
           "superclass": {
@@ -620,6 +783,24 @@
             {
               "kind": "method",
               "name": "_onClickNumber",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#activeButton",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#numberButton",
               "parameters": [
                 {
                   "name": "num"
@@ -1068,6 +1249,15 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "onDpadClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "formattedTypes"
             },
@@ -1260,12 +1450,59 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-app.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Closed",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokedex-app></pokedex-app>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "OpenAndLoaded",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`\n    <pokedex-app .isOpen=${true} .isOn=${true} .pokemon=${SAMPLE_ENTRY}></pokedex-app>\n  `,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-app.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Closed",
+          "declaration": {
+            "name": "Closed",
+            "module": "src/components/pokedex/pokedex-app.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OpenAndLoaded",
+          "declaration": {
+            "name": "OpenAndLoaded",
+            "module": "src/components/pokedex/pokedex-app.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokedex/pokedex-app.styles.js",
       "declarations": [
         {
           "kind": "variable",
           "name": "styles",
-          "default": "css`\n  :host {\n    display: block;\n    --dex-red: #e32230;\n    --dex-border: #222;\n    --dex-screen-off: #232323;\n    --dex-screen-on: #8bac0f;\n    --dex-lens: #28aafa;\n    --dex-yellow: #e8c722;\n    --dex-green: #51ae5f;\n    --dex-dark-green: #2c4a3f;\n    --dex-bezel: #dedede;\n  }\n\n  .toggle-cover-btn {\n    display: block;\n    margin: 0 auto 40px auto;\n    padding: 12px 24px;\n    background-color: var(--dex-border);\n    color: white;\n    font-family: 'Press Start 2P', monospace, sans-serif;\n    font-size: 14px;\n    cursor: pointer;\n    border-radius: 8px;\n    border: 3px solid white;\n    transition: transform 0.1s;\n  }\n  .toggle-cover-btn:active { transform: scale(0.95); }\n\n  .pokedex-container {\n    perspective: 2000px;\n    margin: 0 auto 60px auto;\n    display: flex;\n    justify-content: center;\n    transform: scale(1.05);\n  }\n\n  .pokedex {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.6));\n    transform-style: preserve-3d;\n  }\n\n  /* MITAD IZQUIERDA */\n  .left-half {\n    width: 340px;\n    height: 480px;\n    background-color: var(--dex-red);\n    border: 4px solid var(--dex-border);\n    border-radius: 20px 0 0 20px;\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n  }\n\n  .top-sensor-area { height: 100px; border-bottom: 4px solid var(--dex-border); display: flex; align-items: center; padding-left: 20px; box-sizing: border-box; }\n  .lens-container { width: 70px; height: 70px; background: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 4px solid var(--dex-border); }\n  .main-lens { width: 54px; height: 54px; background: radial-gradient(circle at 30% 30%, #7cd4ff, var(--dex-lens) 60%, #005f99); border-radius: 50%; border: 2px solid var(--dex-border); }\n  .mini-leds { display: flex; gap: 8px; margin-left: 20px; align-self: flex-start; margin-top: 20px; }\n  .led { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--dex-border); }\n  .led.red { background-color: #ff3333; } .led.yellow { background-color: var(--dex-yellow); } .led.green { background-color: var(--dex-green); }\n\n  .main-lens.blinking { animation: blue-siren 0.3s infinite alternate; }\n  @keyframes blue-siren {\n    from { background-color: #28aadc; box-shadow: 0 0 10px #28aadc; }\n    to { background-color: #e0f7fa; box-shadow: 0 0 30px #e0f7fa, inset 0 0 10px #fff; }\n  }\n\n  .loading-sequence .red { animation: traffic-red 0.6s infinite 0s; }\n  .loading-sequence .yellow { animation: traffic-yellow 0.6s infinite 0.2s; }\n  .loading-sequence .green { animation: traffic-green 0.6s infinite 0.4s; }\n\n  @keyframes traffic-red { 50% { background-color: #ff5555; box-shadow: 0 0 15px red; } }\n  @keyframes traffic-yellow { 50% { background-color: #ffff55; box-shadow: 0 0 15px yellow; } }\n  @keyframes traffic-green { 50% { background-color: #55ff55; box-shadow: 0 0 15px green; } }\n\n  .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }\n\n  .bezel-bottom { display: flex; justify-content: space-between; width: 200px; margin-top: 10px; }\n  .red-bezel-btn {\n    width: 18px;\n    height: 18px;\n    background-color: var(--dex-red);\n    border-radius: 50%;\n    border: 2px solid var(--dex-border);\n    cursor: pointer;\n    transition: transform 0.1s ease;\n  }\n  .red-bezel-btn:hover { filter: brightness(1.15); }\n  .red-bezel-btn:active { transform: scale(0.88); }\n  .speaker-grill { display: flex; flex-direction: column; gap: 4px; }\n  .speaker-line { width: 30px; height: 3px; background-color: var(--dex-border); }\n\n  .lower-controls {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 20px;\n    margin-top: 20px;\n  }\n\n  .power-btn-container { position: relative; }\n  .power-btn { width: 45px; height: 45px; background-color: #222; border-radius: 50%; border: 3px solid var(--dex-border); cursor: pointer; }\n\n  .mini-green-screen {\n    width: 95px;\n    height: 42px;\n    background-color: var(--dex-dark-green);\n    border: 3.5px solid var(--dex-border);\n    border-radius: 6px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 16px;\n    font-weight: 900;\n    color: transparent;\n    transition: all 0.3s ease;\n    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);\n    letter-spacing: -1px;\n  }\n  .mini-green-screen.is-on {\n    background-color: var(--dex-green);\n    color: #0f380f;\n    box-shadow: inset 0 0 10px rgba(15, 56, 15, 0.8);\n  }\n\n  .d-pad { position: relative; width: 85px; height: 85px; }\n  .d-pad-v { position: absolute; left: 28px; width: 29px; height: 85px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }\n  .d-pad-h { position: absolute; top: 28px; width: 85px; height: 29px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }\n  .d-pad-center { position: absolute; top: 28px; left: 28px; width: 29px; height: 29px; background-color: #222; z-index: 2; }\n\n  .d-pad-clickable { position: absolute; width: 29px; height: 29px; cursor: pointer; z-index: 10; }\n  .d-pad-left { left: 0; top: 28px; }\n  .d-pad-right { right: 0; top: 28px; }\n  .d-pad-up { left: 28px; top: 0; }\n  .d-pad-down { left: 28px; bottom: 0; }\n  .d-pad-clickable:active { background-color: rgba(255,255,255,0.25); border-radius: 4px; }\n\n  .turn-on-hint {\n    position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background-color: white; color: black; padding: 6px 10px; border-radius: 4px; font-weight: 900; font-family: sans-serif; font-size: 14px; white-space: nowrap; border: 2px solid black; animation: blinkArrow 0.6s infinite alternate; z-index: 20;\n  }\n  .turn-on-hint::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: black transparent transparent transparent; }\n  @keyframes blinkArrow { from { top: -50px; opacity: 1; } to { top: -35px; opacity: 0.8; } }\n\n  /* BISAGRA */\n  .hinge { width: 30px; height: 480px; background: linear-gradient(to right, #990000, var(--dex-red) 30%, #ff5b5b 50%, var(--dex-red) 70%, #990000); border: 4px solid var(--dex-border); border-radius: 10px; margin-left: -4px; margin-right: -4px; z-index: 5; display: flex; flex-direction: column; justify-content: space-evenly; box-sizing: border-box; }\n  .hinge-joint { width: 100%; height: 4px; background-color: var(--dex-border); }\n\n  /* MITAD DERECHA */\n  .right-half {\n    width: 340px;\n    height: 480px;\n    position: relative;\n    z-index: 10;\n    transform-origin: left center;\n    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);\n    transform-style: preserve-3d;\n    box-sizing: border-box;\n  }\n\n  .right-half.closed { transform: rotateY(-180deg); }\n  .right-half.open { transform: rotateY(0deg); }\n\n  .right-cover-exterior {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n    transform: rotateY(180deg);\n  }\n  .right-cover-exterior svg { width: 100%; height: 100%; }\n\n  .right-content {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n  }\n  .right-shell-svg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }\n  .right-shell-svg-container svg { width: 100%; height: 100%; }\n\n  .inner-components {\n    position: relative; z-index: 2; padding: 120px 30px 30px 30px; display: flex; flex-direction: column; align-items: center; height: 100%; box-sizing: border-box;\n  }\n\n  .secondary-screen {\n    width: 220px;\n    height: 75px;\n    background-color: var(--dex-dark-green);\n    border: 4px solid var(--dex-border);\n    border-radius: 6px;\n    margin-bottom: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n    padding: 0 10px;\n    font-family: 'Press Start 2P', monospace;\n    transition: all 0.3s ease;\n    color: transparent;\n    box-sizing: border-box;\n    overflow: hidden;\n  }\n  .secondary-screen.is-on { color: #0f380f; background-color: rgba(155, 188, 15, 0.85); box-shadow: inset 0 0 8px rgba(15, 56, 15, 0.6), 0 0 15px rgba(155, 188, 15, 0.6); text-shadow: 1px 1px 0px rgba(139, 172, 15, 0.3); }\n  .poke-info-mini {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n    justify-content: center;\n    line-height: 1.4;\n    width: 100%;\n    max-width: 100%;\n    overflow: hidden;\n  }\n\n  .poke-info-mini > div:first-child {\n    font-size: 0.85rem;\n    font-weight: bold;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .poke-info-mini .type-text {\n    font-size: 0.65rem;\n    margin-top: 6px;\n    opacity: 0.9;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .typing-number {\n    font-size: 1.2rem;\n    font-weight: 900;\n    text-align: right;\n    width: 100%;\n    color: inherit;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .grid-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 220px; background-color: var(--dex-border); border: 4px solid var(--dex-border); border-radius: 4px; margin-bottom: 20px; padding: 2px; }\n  .grid-btn { height: 42px; background-color: #00bfff; border-radius: 2px; cursor: pointer; display: flex; justify-content: center; align-items: center; color: #fff; font-family: monospace; font-weight: bold; font-size: 1.4rem; text-shadow: 1px 1px 0px rgba(0,0,0,0.5); user-select: none; transition: transform 0.05s, background-color 0.05s; }\n  .grid-btn:hover { background-color: #33ccff; }\n  .grid-btn:active { transform: scale(0.85); background-color: #0088cc; }\n\n  .middle-controls { display: flex; width: 220px; justify-content: flex-end; align-items: center; gap: 15px; margin-bottom: 20px; }\n  .white-btns { display: flex; gap: 10px; margin-right: auto; }\n  .white-btn { width: 45px; height: 22px; background-color: #fff; border: 3px solid var(--dex-border); border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-family: sans-serif; cursor: pointer; font-weight: bold; }\n  .white-btn:active { transform: scale(0.9); }\n  .white-btn.bold-red { color: red; }\n\n  .yellow-btn { width: 22px; height: 22px; background-color: var(--dex-yellow); border: 3px solid var(--dex-border); border-radius: 50%; cursor: pointer; transition: background-color 0.1s; }\n  .yellow-btn.flash { background-color: #ffffee; box-shadow: 0 0 15px yellow; transform: scale(1.05); }\n\n  /* BOTONES INFERIORES VERDES (PREV Y NEXT) */\n  .bottom-controls { display: flex; width: 220px; justify-content: space-between; }\n  .dark-green-btn {\n    width: 100px;\n    height: 25px;\n    background-color: var(--dex-dark-green);\n    border: 3px solid var(--dex-border);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #8bac0f;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 8px;\n    font-weight: bold;\n    user-select: none;\n    transition: background-color 0.1s, transform 0.05s;\n  }\n  .dark-green-btn:hover { background-color: #385e50; }\n  .dark-green-btn:active { transform: scale(0.92); }\n`"
+          "default": "css`\n  :host {\n    display: block;\n    --dex-red: #e32230;\n    --dex-border: #222;\n    --dex-screen-off: #232323;\n    --dex-screen-on: #8bac0f;\n    --dex-lens: #28aafa;\n    --dex-yellow: #e8c722;\n    --dex-green: #51ae5f;\n    --dex-dark-green: #2c4a3f;\n    --dex-bezel: #dedede;\n  }\n\n  /* Reset base para los controles que siguen viviendo acá (power/sonido)\n     y que ahora son <button> reales en vez de <div @click>. El resto de\n     los controles (numpad, d-pad, PREV/NEXT, sensor) se movieron a sus\n     propios componentes — ver pokedex-numpad.js, pokedex-dpad.js,\n     pokedex-nav-buttons.js, pokedex-sensor.js. */\n  .power-btn,\n  .red-bezel-btn {\n    all: unset;\n    display: block;\n    box-sizing: border-box;\n    cursor: pointer;\n  }\n\n  .toggle-cover-btn {\n    display: block;\n    margin: 0 auto 40px auto;\n    padding: 12px 24px;\n    background-color: var(--dex-border);\n    color: white;\n    font-family: 'Press Start 2P', monospace, sans-serif;\n    font-size: 14px;\n    cursor: pointer;\n    border-radius: 8px;\n    border: 3px solid white;\n    transition: transform 0.1s;\n  }\n  .toggle-cover-btn:active { transform: scale(0.95); }\n\n  .pokedex-container {\n    perspective: 2000px;\n    margin: 0 auto 60px auto;\n    display: flex;\n    justify-content: center;\n    transform: scale(1.05);\n  }\n\n  .pokedex {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.6));\n    transform-style: preserve-3d;\n  }\n\n  /* MITAD IZQUIERDA */\n  .left-half {\n    width: 340px;\n    height: 480px;\n    background-color: var(--dex-red);\n    border: 4px solid var(--dex-border);\n    border-radius: 20px 0 0 20px;\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n  }\n\n  .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }\n\n  .bezel-bottom { display: flex; justify-content: space-between; width: 200px; margin-top: 10px; }\n  .red-bezel-btn {\n    width: 18px;\n    height: 18px;\n    background-color: var(--dex-red);\n    border-radius: 50%;\n    border: 2px solid var(--dex-border);\n    cursor: pointer;\n    transition: transform 0.1s ease;\n  }\n  .red-bezel-btn:hover { filter: brightness(1.15); }\n  .red-bezel-btn:active { transform: scale(0.88); }\n  .speaker-grill { display: flex; flex-direction: column; gap: 4px; }\n  .speaker-line { width: 30px; height: 3px; background-color: var(--dex-border); }\n\n  .lower-controls {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 20px;\n    margin-top: 20px;\n  }\n\n  .power-btn-container { position: relative; }\n  .power-btn { width: 45px; height: 45px; background-color: #222; border-radius: 50%; border: 3px solid var(--dex-border); cursor: pointer; }\n\n  .mini-green-screen {\n    width: 95px;\n    height: 42px;\n    background-color: var(--dex-dark-green);\n    border: 3.5px solid var(--dex-border);\n    border-radius: 6px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 16px;\n    font-weight: 900;\n    color: transparent;\n    transition: all 0.3s ease;\n    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);\n    letter-spacing: -1px;\n  }\n  .mini-green-screen.is-on {\n    background-color: var(--dex-green);\n    color: #0f380f;\n    box-shadow: inset 0 0 10px rgba(15, 56, 15, 0.8);\n  }\n\n  .turn-on-hint {\n    position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background-color: white; color: black; padding: 6px 10px; border-radius: 4px; font-weight: 900; font-family: sans-serif; font-size: 14px; white-space: nowrap; border: 2px solid black; animation: blinkArrow 0.6s infinite alternate; z-index: 20;\n  }\n  .turn-on-hint::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: black transparent transparent transparent; }\n  @keyframes blinkArrow { from { top: -50px; opacity: 1; } to { top: -35px; opacity: 0.8; } }\n\n  /* BISAGRA */\n  .hinge { width: 30px; height: 480px; background: linear-gradient(to right, #990000, var(--dex-red) 30%, #ff5b5b 50%, var(--dex-red) 70%, #990000); border: 4px solid var(--dex-border); border-radius: 10px; margin-left: -4px; margin-right: -4px; z-index: 5; display: flex; flex-direction: column; justify-content: space-evenly; box-sizing: border-box; }\n  .hinge-joint { width: 100%; height: 4px; background-color: var(--dex-border); }\n\n  /* MITAD DERECHA */\n  .right-half {\n    width: 340px;\n    height: 480px;\n    position: relative;\n    z-index: 10;\n    transform-origin: left center;\n    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);\n    transform-style: preserve-3d;\n    box-sizing: border-box;\n  }\n\n  .right-half.closed { transform: rotateY(-180deg); }\n  .right-half.open { transform: rotateY(0deg); }\n\n  .right-cover-exterior {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n    transform: rotateY(180deg);\n  }\n  .right-cover-exterior svg { width: 100%; height: 100%; }\n\n  .right-content {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n  }\n  .right-shell-svg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }\n  .right-shell-svg-container svg { width: 100%; height: 100%; }\n\n  .inner-components {\n    position: relative; z-index: 2; padding: 120px 30px 30px 30px; display: flex; flex-direction: column; align-items: center; height: 100%; box-sizing: border-box;\n  }\n\n  .secondary-screen {\n    width: 220px;\n    height: 75px;\n    background-color: var(--dex-dark-green);\n    border: 4px solid var(--dex-border);\n    border-radius: 6px;\n    margin-bottom: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n    padding: 0 10px;\n    font-family: 'Press Start 2P', monospace;\n    transition: all 0.3s ease;\n    color: transparent;\n    box-sizing: border-box;\n    overflow: hidden;\n  }\n  .secondary-screen.is-on { color: #0f380f; background-color: rgba(155, 188, 15, 0.85); box-shadow: inset 0 0 8px rgba(15, 56, 15, 0.6), 0 0 15px rgba(155, 188, 15, 0.6); text-shadow: 1px 1px 0px rgba(139, 172, 15, 0.3); }\n  .poke-info-mini {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n    justify-content: center;\n    line-height: 1.4;\n    width: 100%;\n    max-width: 100%;\n    overflow: hidden;\n  }\n\n  .poke-info-mini > div:first-child {\n    font-size: 0.85rem;\n    font-weight: bold;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .poke-info-mini .type-text {\n    font-size: 0.65rem;\n    margin-top: 6px;\n    opacity: 0.9;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .typing-number {\n    font-size: 1.2rem;\n    font-weight: 900;\n    text-align: right;\n    width: 100%;\n    color: inherit;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n`"
         }
       ],
       "exports": [
@@ -1275,6 +1512,308 @@
           "declaration": {
             "name": "styles",
             "module": "src/components/pokedex/pokedex-app.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-dpad.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexDpad",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "dpad-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-dpad",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexDpad",
+          "declaration": {
+            "name": "PokedexDpad",
+            "module": "src/components/pokedex/pokedex-dpad.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-dpad",
+          "declaration": {
+            "name": "PokedexDpad",
+            "module": "src/components/pokedex/pokedex-dpad.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-dpad.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-dpad\n        @dpad-click=\"${(e) => console.log(\"dpad-click:\", e.detail.direction)}\"\n      ></pokedex-dpad>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-dpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex/pokedex-dpad.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-nav-buttons.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexNavButtons",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-nav-buttons",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexNavButtons",
+          "declaration": {
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex/pokedex-nav-buttons.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-nav-buttons",
+          "declaration": {
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex/pokedex-nav-buttons.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-nav-buttons.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-nav-buttons\n        @prev-click=\"${() => console.log(\"prev-click\")}\"\n        @next-click=\"${() => console.log(\"next-click\")}\"\n      ></pokedex-nav-buttons>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-nav-buttons.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex/pokedex-nav-buttons.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-numpad.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexNumpad",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#digit",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "yellowFlash",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "yellowFlash"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "digit-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "yellowFlash",
+              "fieldName": "yellowFlash"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-numpad",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexNumpad",
+          "declaration": {
+            "name": "PokedexNumpad",
+            "module": "src/components/pokedex/pokedex-numpad.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-numpad",
+          "declaration": {
+            "name": "PokedexNumpad",
+            "module": "src/components/pokedex/pokedex-numpad.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-numpad.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => renderNumpad(),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "YellowFlash",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Yellow button flashing (reset feedback)\",\n  render: () => renderNumpad(true),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-numpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex/pokedex-numpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "YellowFlash",
+          "declaration": {
+            "name": "YellowFlash",
+            "module": "src/components/pokedex/pokedex-numpad.stories.js"
           }
         }
       ]
@@ -1383,6 +1922,302 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-screen.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Off",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-screen></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "SystemReady",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"On, no search yet\",\n  render: () => withDexBackground(html`<pokedex-screen isOn></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Loading",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-screen isOn isLoading></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NotFound",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Error (not found)\",\n  render: () => withDexBackground(html`<pokedex-screen isOn error></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "ArtworkView",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loaded — artwork view\",\n  render: () =>\n    withDexBackground(\n      html`<pokedex-screen isOn .pokemon=${SAMPLE_ENTRY} .activeView=${0}></pokedex-screen>`,\n    ),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "StatsView",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loaded — stats view\",\n  render: () =>\n    withDexBackground(\n      html`<pokedex-screen isOn .pokemon=${SAMPLE_ENTRY} .activeView=${1}></pokedex-screen>`,\n    ),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Off",
+          "declaration": {
+            "name": "Off",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SystemReady",
+          "declaration": {
+            "name": "SystemReady",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Loading",
+          "declaration": {
+            "name": "Loading",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotFound",
+          "declaration": {
+            "name": "NotFound",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ArtworkView",
+          "declaration": {
+            "name": "ArtworkView",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StatsView",
+          "declaration": {
+            "name": "StatsView",
+            "module": "src/components/pokedex/pokedex-screen.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-sensor.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexSensor",
+          "members": [
+            {
+              "kind": "field",
+              "name": "blinking",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "blinking"
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "loading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "blinking",
+              "fieldName": "blinking"
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-sensor",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexSensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex/pokedex-sensor.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-sensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex/pokedex-sensor.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-sensor.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Idle",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-sensor></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Blinking",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Blinking (voice/cry playing)\",\n  render: () => withDexBackground(html`<pokedex-sensor blinking></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LoadingSequence",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loading (LED sequence)\",\n  render: () => withDexBackground(html`<pokedex-sensor loading></pokedex-sensor>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Idle",
+          "declaration": {
+            "name": "Idle",
+            "module": "src/components/pokedex/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Blinking",
+          "declaration": {
+            "name": "Blinking",
+            "module": "src/components/pokedex/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoadingSequence",
+          "declaration": {
+            "name": "LoadingSequence",
+            "module": "src/components/pokedex/pokedex-sensor.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-story-helpers.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "DEX_VARS_STYLE",
+          "default": "`\n  --dex-red: #e32230;\n  --dex-border: #222;\n  --dex-screen-off: #232323;\n  --dex-screen-on: #8bac0f;\n  --dex-lens: #28aafa;\n  --dex-yellow: #e8c722;\n  --dex-green: #51ae5f;\n  --dex-dark-green: #2c4a3f;\n  --dex-bezel: #dedede;\n`"
+        },
+        {
+          "kind": "function",
+          "name": "withDexBackground",
+          "parameters": [
+            {
+              "name": "content"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "withScreenBackground",
+          "parameters": [
+            {
+              "name": "content"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DEX_VARS_STYLE",
+          "declaration": {
+            "name": "DEX_VARS_STYLE",
+            "module": "src/components/pokedex/pokedex-story-helpers.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "withDexBackground",
+          "declaration": {
+            "name": "withDexBackground",
+            "module": "src/components/pokedex/pokedex-story-helpers.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "withScreenBackground",
+          "declaration": {
+            "name": "withScreenBackground",
+            "module": "src/components/pokedex/pokedex-story-helpers.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokedex/pokedex-view-artwork.js",
       "declarations": [
         {
@@ -1426,6 +2261,37 @@
           "declaration": {
             "name": "PokedexViewArtwork",
             "module": "src/components/pokedex/pokedex-view-artwork.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-artwork.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-artwork\n        .pokemon=${{\n          name: \"charizard\",\n          img: \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png\",\n        }}\n      ></pokedex-view-artwork>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-view-artwork.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex/pokedex-view-artwork.stories.js"
           }
         }
       ]
@@ -1481,6 +2347,53 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-description.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "WithDescription",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-description\n        .pokemon=${{ description: \"Escupe fuego capaz de fundir rocas.\" }}\n      ></pokedex-view-description>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Empty",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"No description available\",\n  render: () =>\n    withScreenBackground(html`<pokedex-view-description .pokemon=${{}}></pokedex-view-description>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-view-description.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithDescription",
+          "declaration": {
+            "name": "WithDescription",
+            "module": "src/components/pokedex/pokedex-view-description.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Empty",
+          "declaration": {
+            "name": "Empty",
+            "module": "src/components/pokedex/pokedex-view-description.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokedex/pokedex-view-evolutions.js",
       "declarations": [
         {
@@ -1524,6 +2437,53 @@
           "declaration": {
             "name": "PokedexViewEvolutions",
             "module": "src/components/pokedex/pokedex-view-evolutions.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-evolutions.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ThreeStageLine",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-evolutions\n        .pokemon=${{ evolutions: [\"charmander\", \"charmeleon\", \"charizard\"] }}\n      ></pokedex-view-evolutions>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NoEvolutions",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-evolutions .pokemon=${{ evolutions: [\"ditto\"] }}></pokedex-view-evolutions>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-view-evolutions.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ThreeStageLine",
+          "declaration": {
+            "name": "ThreeStageLine",
+            "module": "src/components/pokedex/pokedex-view-evolutions.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoEvolutions",
+          "declaration": {
+            "name": "NoEvolutions",
+            "module": "src/components/pokedex/pokedex-view-evolutions.stories.js"
           }
         }
       ]
@@ -1579,6 +2539,53 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-moves.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "WithMoves",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-moves\n        .pokemon=${{ moves: [\"scratch\", \"growl\", \"flamethrower\", \"wing attack\", \"fire spin\"] }}\n      ></pokedex-view-moves>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NoMoves",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withScreenBackground(html`<pokedex-view-moves .pokemon=${{}}></pokedex-view-moves>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-view-moves.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithMoves",
+          "declaration": {
+            "name": "WithMoves",
+            "module": "src/components/pokedex/pokedex-view-moves.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoMoves",
+          "declaration": {
+            "name": "NoMoves",
+            "module": "src/components/pokedex/pokedex-view-moves.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokedex/pokedex-view-stats.js",
       "declarations": [
         {
@@ -1622,6 +2629,99 @@
           "declaration": {
             "name": "PokedexViewStats",
             "module": "src/components/pokedex/pokedex-view-stats.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-stats.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "HighStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"High stats (near-legendary)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, speed: 100 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LowStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Low stats (early-game)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, speed: 65 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HighStats",
+          "declaration": {
+            "name": "HighStats",
+            "module": "src/components/pokedex/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LowStats",
+          "declaration": {
+            "name": "LowStats",
+            "module": "src/components/pokedex/pokedex-view-stats.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-voice.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "buildNarrationText",
+          "parameters": [
+            {
+              "name": "pokemon"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "speakPokemonEntry",
+          "parameters": [
+            {
+              "name": "pokemon"
+            },
+            {
+              "name": "{ onEnd }",
+              "default": "{}"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "buildNarrationText",
+          "declaration": {
+            "name": "buildNarrationText",
+            "module": "src/components/pokedex/pokedex-voice.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "speakPokemonEntry",
+          "declaration": {
+            "name": "speakPokemonEntry",
+            "module": "src/components/pokedex/pokedex-voice.js"
           }
         }
       ]
@@ -1929,6 +3029,37 @@
           "declaration": {
             "name": "PokemonFavoriteButton",
             "module": "src/components/pokemon-card/pokemon-favorite-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-favorite-button.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokemon-favorite-button pokemon-id=\"99999\"></pokemon-favorite-button>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-card/pokemon-favorite-button.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-card/pokemon-favorite-button.stories.js"
           }
         }
       ]
@@ -2319,6 +3450,69 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-type-matchups.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "SingleType",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Single type (water)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"water\"]}></pokemon-type-matchups>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "DualType",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Dual type (fire/flying)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"fire\", \"flying\"]}></pokemon-type-matchups>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "ManyResistances",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Many resistances (steel/fairy)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"steel\", \"fairy\"]}></pokemon-type-matchups>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-card/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SingleType",
+          "declaration": {
+            "name": "SingleType",
+            "module": "src/components/pokemon-card/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "DualType",
+          "declaration": {
+            "name": "DualType",
+            "module": "src/components/pokemon-card/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ManyResistances",
+          "declaration": {
+            "name": "ManyResistances",
+            "module": "src/components/pokemon-card/pokemon-type-matchups.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokemon-card/type-effectiveness.js",
       "declarations": [
         {
@@ -2517,6 +3711,53 @@
           "declaration": {
             "name": "PokemonTypeFilter",
             "module": "src/components/pokemon-list/pokemon-type-filter.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-type-filter.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "NoneSelected",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "SomeSelected",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Two types selected (fire, water)\",\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[\"fire\", \"water\"]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-list/pokemon-type-filter.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoneSelected",
+          "declaration": {
+            "name": "NoneSelected",
+            "module": "src/components/pokemon-list/pokemon-type-filter.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SomeSelected",
+          "declaration": {
+            "name": "SomeSelected",
+            "module": "src/components/pokemon-list/pokemon-type-filter.stories.js"
           }
         }
       ]
@@ -2728,6 +3969,123 @@
           "declaration": {
             "name": "PokemonDataManager",
             "module": "src/services/data-managers/pokemon-data-manager.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/toolbar/page-toolbar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PageToolbar",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "favoritesOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "favoritesOnly"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "favoritesOnly",
+              "fieldName": "favoritesOnly"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "page-toolbar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageToolbar",
+          "declaration": {
+            "name": "PageToolbar",
+            "module": "src/components/toolbar/page-toolbar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "page-toolbar",
+          "declaration": {
+            "name": "PageToolbar",
+            "module": "src/components/toolbar/page-toolbar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/toolbar/page-toolbar.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ShowingAll",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-toolbar\n      .favoritesOnly=${false}\n      @favorites-toggle-click=\"${() => console.log(\"favorites-toggle-click\")}\"\n      @tour-click=\"${() => console.log(\"tour-click\")}\"\n    ></page-toolbar>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "FavoritesActive",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-toolbar\n      .favoritesOnly=${true}\n      @favorites-toggle-click=\"${() => console.log(\"favorites-toggle-click\")}\"\n      @tour-click=\"${() => console.log(\"tour-click\")}\"\n    ></page-toolbar>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/toolbar/page-toolbar.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ShowingAll",
+          "declaration": {
+            "name": "ShowingAll",
+            "module": "src/components/toolbar/page-toolbar.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FavoritesActive",
+          "declaration": {
+            "name": "FavoritesActive",
+            "module": "src/components/toolbar/page-toolbar.stories.js"
           }
         }
       ]

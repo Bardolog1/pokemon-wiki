@@ -131,12 +131,14 @@ export class Pagination extends LitElement {
         <div class="pagination-buttons">
           <pagination-button
             icon="first"
+            label="Primera página"
             .disabled=${this._firstDisabled}
             @button-click=${this._onFirst}
           ></pagination-button>
           <pagination-button
             icon="next"
             rotate
+            label="Página anterior"
             .disabled=${this._firstDisabled}
             @button-click=${this._onBack}
           ></pagination-button>
@@ -148,12 +150,14 @@ export class Pagination extends LitElement {
           ></pagination-numbers>
           <pagination-button
             icon="next"
+            label="Página siguiente"
             .disabled=${this._endDisabled}
             @button-click=${this._onNext}
           ></pagination-button>
           <pagination-button
             icon="first"
             rotate
+            label="Última página"
             .disabled=${this._endDisabled}
             @button-click=${this._onEnd}
           ></pagination-button>
