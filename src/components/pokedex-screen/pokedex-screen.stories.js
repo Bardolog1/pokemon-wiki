@@ -10,7 +10,7 @@ const SAMPLE_ENTRY = {
   description: "Escupe fuego capaz de fundir rocas. Provoca incendios forestales sin querer.",
   evolutions: ["charmander", "charmeleon", "charizard"],
   moves: ["scratch", "growl", "flamethrower", "wing attack", "fire spin"],
-  stats: { hp: 78, attack: 84, defense: 78, speed: 100 },
+  stats: { hp: 78, attack: 84, defense: 78, special_attack: 109, special_defense: 85, speed: 100 },
 };
 
 export default {

@@ -4,7 +4,9 @@ const STAT_ROWS = [
   { key: "hp", label: "HP" },
   { key: "attack", label: "ATK" },
   { key: "defense", label: "DEF" },
-  { key: "speed", label: "SPD" },
+  { key: "special_attack", label: "SPA" },
+  { key: "special_defense", label: "SPD" },
+  { key: "speed", label: "SPE" },
 ];
 const BAR_MAX = 130;
 const BAR_TOTAL_BLOCKS = 7;
@@ -39,8 +41,8 @@ export class PokedexViewStats extends LitElement {
     .stats-container {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      padding: 2px 0;
+      gap: 3px;
+      padding: 1px 0;
     }
     .stat-row {
       display: flex;
