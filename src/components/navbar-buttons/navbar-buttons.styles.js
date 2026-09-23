@@ -59,24 +59,22 @@ export const styles = css`
     background-image: url("assets/NicePng_pokedex-png_2285786.png");
   }
 
-  /* === NUEVOS ESTILOS PARA EL MODAL Y EL BACKDROP === */
   .backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.75); /* Fondo oscuro semi-transparente */
-    backdrop-filter: blur(4px); /* Efecto de desenfoque opcional */
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Asegura que esté por encima de todo */
+    z-index: 9999;
     animation: fadeIn 0.3s ease;
   }
 
   .modal-content {
-    /* Animación para que la Pokédex aparezca con un efecto de zoom */
     animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 

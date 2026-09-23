@@ -1,10 +1,6 @@
-// Cálculo puro del rango de resultados/páginas mostrado en la cabecera de
-// la lista — separado de pokemon-wiki.js para que sea testeable sin montar
-// el componente Lit. Mientras un fetch filtrado está en camino,
-// filteredTotal todavía no se actualizó (arranca en 0/valor anterior); sin
-// el fallback a `elements`, el paginador recibiría un total=0 transitorio
-// que rompe permanentemente visiblePages/currentPage (ver calcPages: el
-// clamp que aplica ese 0 nunca se revierte cuando llegan los datos reales).
+// Rango de resultados/páginas de la cabecera; puro para testearlo sin montar Lit.
+// Mientras un fetch filtrado está en curso usa `elements` como respaldo: un total=0 llegaría al paginador
+// y calcPages lo fijaría para siempre.
 export function computeResultsRange({
   selectedTypes,
   filteredTotal,

@@ -20,9 +20,7 @@ export class PokemonPokedexButton extends LitElement {
     }
   `;
 
-  // stopPropagation: la card entera flippea al hacer click (ver
-  // pokemon-card.js); este botón vive dentro de esa misma zona clickeable,
-  // así que su click no debe burbujear y disparar también el flip.
+  // stopPropagation: el clic burbujearía a la card entera y dispararía también el giro.
   #onClick(e) {
     e.stopPropagation();
     this.dispatchEvent(new CustomEvent("pokedex-click", { bubbles: true, composed: true }));

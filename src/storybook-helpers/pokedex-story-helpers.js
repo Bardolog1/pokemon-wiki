@@ -1,9 +1,6 @@
 import { html } from "lit";
 
-// Los componentes del dispositivo Pokédex usan estas custom properties,
-// normalmente heredadas del :host de pokedex-app. Al mostrarlos aislados en
-// Storybook hay que declararlas explícitamente para que se vean con sus
-// colores reales en vez de caer a los valores por defecto del navegador.
+// Sin el :host de pokedex-app las custom properties no se heredan; se declaran aquí para ver los colores reales.
 export const DEX_VARS_STYLE = `
   --dex-red: #e32230;
   --dex-border: #222;
@@ -26,10 +23,8 @@ export function withDexBackground(content) {
   `;
 }
 
-// Las vistas internas de la pantalla (pokedex-view-*) no declaran su propio
-// fondo/color — dependen de heredarlo de .main-screen.is-on en
-// pokedex-screen.js. Este wrapper reproduce ese contexto para que se vean
-// legibles estando aisladas.
+// Las vistas internas heredan fondo y color de .main-screen.is-on (pokedex-screen.js);
+// este wrapper reproduce ese contexto.
 export function withScreenBackground(content) {
   return html`
     <div

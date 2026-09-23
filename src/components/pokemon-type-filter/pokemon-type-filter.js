@@ -63,9 +63,7 @@ export class PokemonTypeFilter extends LitElement {
       border-color: #ffcb04;
     }
 
-    /* Con algún tipo seleccionado, los NO seleccionados se ven en blanco y
-       negro — así se distingue de un vistazo qué está activo. Sin nada
-       seleccionado (estado neutro), todos se ven a color. */
+    /* Con selección activa, los no seleccionados van en escala de grises; sin selección, todos a color. */
     .chips.has-selection .chip:not([aria-pressed="true"]) {
       filter: grayscale(1);
       opacity: 0.6;

@@ -12,8 +12,7 @@ import { favoritesStore } from "../../services/favorites-store.js";
 import { computeResultsRange } from "./results-range.js";
 import { styles } from "./pokemon-wiki.styles.js";
 
-// Carta "fantasma" que se muestra cuando una búsqueda no encuentra nada;
-// pokemon-card la pinta con "?" en lugar de los datos.
+// Carta fantasma para búsquedas sin resultado; pokemon-card la pinta con "?".
 const NOT_FOUND_CARD = { notFound: true, id: 0, name: "Pokémon no encontrado", type: [] };
 
 const events = [
@@ -87,8 +86,7 @@ export class PokemonWiki extends LitElement {
     this.filteredTotal = 0;
     this.searchQuery = "";
     this.searchNotFound = false;
-    // Token compartido por todas las cargas de lista: solo la última gana, así
-    // una respuesta lenta no pisa a una acción más nueva (búsqueda, tipo, etc).
+    // Token compartido: solo la última carga de lista gana, así una respuesta lenta no pisa una acción más nueva.
     this._requestId = 0;
     this._onFavoritesChange = () => {
       if (this.favoritesOnly) this._loadFavorites();
@@ -171,9 +169,7 @@ export class PokemonWiki extends LitElement {
     }
   }
 
-  // Filtro por tipo: lógica OR (unión de tipos seleccionados). Mutuamente
-  // excluyente con "Mis favoritos" para no tener que combinar ambas fuentes
-  // de datos a la vez.
+  // Filtro por tipo (OR). Excluyente con "Mis favoritos" para no combinar dos fuentes de datos.
   _onTypesChange(e) {
     this.selectedTypes = e.detail;
     this.favoritesOnly = false;
@@ -189,12 +185,10 @@ export class PokemonWiki extends LitElement {
     this.searchNotFound = false;
   }
 
-  // Búsqueda por nombre o número. Reemplaza la lista por el resultado único y
-  // apaga favoritos/tipos, que son otras fuentes de datos.
+  // Reemplaza la lista por el resultado único y apaga favoritos/tipos.
   async _onSearchSubmit(e) {
     const { query, raw } = e.detail;
-    // Se guarda el texto tal como lo escribió el usuario (para el input); la
-    // consulta normalizada solo se usa contra la API.
+    // Se guarda el texto original para el input; la consulta normalizada solo va a la API.
     this.searchQuery = raw;
     this.favoritesOnly = false;
     this.selectedTypes = [];
@@ -208,8 +202,7 @@ export class PokemonWiki extends LitElement {
       this.renderRoot.getElementById("list").pokemons = this.pokemonList;
     } catch (error) {
       if (requestId !== this._requestId) return;
-      // Error de red/servidor: sale del modo búsqueda para que la lista y el
-      // paginador vuelvan a ser coherentes con lo que se ve.
+      // Ante un error de red/servidor se sale del modo búsqueda para mantener coherentes lista y paginador.
       this._resetSearch();
       this.error = error.message;
     }
@@ -265,8 +258,7 @@ export class PokemonWiki extends LitElement {
     });
   }
 
-  // Carga driver.js recién cuando se pide el tour, para no sumarlo al
-  // bundle inicial de gente que nunca lo usa.
+  // driver.js se carga bajo demanda para no inflar el bundle inicial.
   async _startTour() {
     await this.updateComplete;
     const { startAppTour } = await import("../app-tour/app-tour.js");

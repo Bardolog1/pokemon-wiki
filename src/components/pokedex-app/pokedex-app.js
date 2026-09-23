@@ -46,10 +46,7 @@ export class PokedexApp extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Narra en voz alta tipo, estadísticas, dato curioso y línea evolutiva del
-  // Pokémon actual (ver pokedex-voice.js). Se dispara sola cada vez que se
-  // carga un Pokémon nuevo (búsqueda o PREV/NEXT), sin necesidad de un
-  // botón dedicado.
+  // Narra la entrada actual (ver pokedex-voice.js). Actualmente no se invoca.
   speakEntry() {
     if (!this.isOn || !this.pokemon) return;
     this.isSpeaking = true;
@@ -60,8 +57,7 @@ export class PokedexApp extends LitElement {
     });
   }
 
-  // Se dispara con el botón rojo bajo la pantalla; mientras suena, el lente
-  // azul titila (reusa la misma animación "blinking" del estado de carga).
+  // Botón rojo bajo la pantalla; mientras suena, el lente azul parpadea (animación "blinking").
   playCry() {
     if (!this.isOn || !this.pokemon?.cry || this.isPlayingCry) return;
 
@@ -90,9 +86,7 @@ export class PokedexApp extends LitElement {
     }
   }
 
-  // Se invoca desde afuera (navbar-buttons) cuando se pide abrir la pokedex
-  // ya precargada con un pokemon puntual (click en el ícono de una card, o
-  // soltar el ícono de la pokedex sobre una card).
+  // Abre la Pokédex ya cargada con un Pokémon puntual (la invoca navbar-buttons).
   openWithPokemon(pokemon) {
     this.isOpen = true;
     this.isOn = true;
@@ -148,7 +142,7 @@ export class PokedexApp extends LitElement {
     try {
       this.pokemon = await this.entryDataManager.getFullEntry({ query });
       this.searchValue = "";
-      // Narración por voz: pausada, sin exposición al cliente por ahora.
+      // Narración por voz desactivada.
       // this.speakEntry();
     } catch (err) {
       this.error = true;
@@ -197,8 +191,7 @@ export class PokedexApp extends LitElement {
     screen.scrollBy(direction === "down" ? 40 : -40);
   }
 
-  // pokedex-dpad no sabe qué significa cada dirección: izq/der navegan
-  // entre vistas de la pantalla, arriba/abajo hacen scroll dentro de ella.
+  // pokedex-dpad no interpreta direcciones: izq/der cambian de vista, arriba/abajo hacen scroll.
   onDpadClick(e) {
     const { direction } = e.detail;
     if (direction === "left" || direction === "right") {
