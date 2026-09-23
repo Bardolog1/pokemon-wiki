@@ -23,12 +23,10 @@ export class ListarPokemon extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Si el alto del contenedor no es múltiplo del alto de fila, la fila siguiente asoma en el borde inferior
-  // y su :hover mostraría info recortada. Se apaga (hoverEnabled=false) en cards con menos de 90% visible.
+  // La fila que asoma en el borde inferior mostraría info recortada en :hover; se apaga bajo 90% visible.
   updated(props) {
     super.updated?.(props);
     if (props.has("pokemons") && this.pokemons?.length) {
-      // El scroll físico no se reinicia al cambiar de página; se resetea a mano.
       this.scrollTop = 0;
       this._hoverObserver?.disconnect();
       const grid = this.renderRoot.querySelector(".cards-grid");
@@ -48,15 +46,11 @@ export class ListarPokemon extends LitElement {
 
   static get styles() {
     return css`
-      /* :host es solo el scroll container; el grid vive en .cards-grid. Así, "margin-top: auto" empuja
-         pocas filas hacia abajo y colapsa a 0 si desbordan. "align-content: flex-end" en :host dejaba
-         filas fuera del área scrolleable. */
       :host {
         display: flex;
         flex-direction: column;
         overflow-y: scroll;
         scrollbar-width: none;
-        /* "mandatory" asienta el scroll en una fila completa; "scroll-snap-stop: always" evita saltarse filas. */
         scroll-snap-type: y mandatory;
       }
 
@@ -68,8 +62,6 @@ export class ListarPokemon extends LitElement {
         justify-content: space-evenly;
         align-items: baseline;
         margin-top: auto;
-        /* Espacio extra bajo la última fila. Compite con "margin-top: auto" (pocas cards, ej. Favoritos):
-           si crece, esa vista baja menos. */
         padding-bottom: 3rem;
       }
 
@@ -94,8 +86,6 @@ export class ListarPokemon extends LitElement {
         scroll-snap-stop: always;
       }
 
-      /* El snap "start" de la última fila pide más scroll del posible y el navegador lo recorta,
-         dejando dos filas parciales. "end" coincide con el final real del scroll. */
       pokemon-card:last-child {
         scroll-snap-align: end;
       }

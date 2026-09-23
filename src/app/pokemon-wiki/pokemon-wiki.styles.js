@@ -8,7 +8,6 @@ export const styles = css`
     font-style: normal;
   }
 
-  /* La cabecera ocupa solo su alto (flex: 0 0 auto); listar-pokemon toma el resto con flex: 1. */
   .container {
     cursor: url(assets/poke2.png), auto;
     width: 100vw;

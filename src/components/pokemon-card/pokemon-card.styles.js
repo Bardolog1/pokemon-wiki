@@ -324,14 +324,11 @@ export const sharedStyles = css`
     transition: 0.3s all;
   }
 
-  /* Durante el arrastre del ícono se anula :hover para que la card no se expanda al soltar. */
   .scaff.drag-over .containerCard,
   .scaff.drag-over .containerCardBack {
     pointer-events: none;
   }
 
-  /* Lo activa listar-pokemon (IntersectionObserver) cuando la card está mayormente fuera de vista:
-     apaga :hover y la atenúa sin moverla; la posición la mueve solo el scroll nativo. */
   .scaff.hover-disabled .containerCard,
   .scaff.hover-disabled .containerCardBack {
     pointer-events: none;

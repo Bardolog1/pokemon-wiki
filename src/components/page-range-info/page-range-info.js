@@ -10,7 +10,6 @@ export class PageRangeInfo extends LitElement {
   };
 
   static styles = css`
-    /* Mismo estilo que .favorites-toggle/.tour-trigger: píldora blanca translúcida legible sobre el cielo. */
     .page-info {
       display: inline-block;
       background: rgba(255, 255, 255, 0.6);

@@ -21,8 +21,6 @@ export const Closed = {
   render: () => html`<pokedex-app></pokedex-app>`,
 };
 
-// Precarga .pokemon en lugar de disparar una búsqueda real (executeSearch consulta a la PokeAPI),
-// para no depender de red.
 export const OpenAndLoaded = {
   render: () => html`
     <pokedex-app .isOpen=${true} .isOn=${true} .pokemon=${SAMPLE_ENTRY}></pokedex-app>

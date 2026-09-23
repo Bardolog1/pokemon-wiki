@@ -14,7 +14,6 @@ export const styles = css`
     --dex-bezel: #dedede;
   }
 
-  /* Reset base para los <button> de power y sonido. */
   .power-btn,
   .red-bezel-btn {
     all: unset;

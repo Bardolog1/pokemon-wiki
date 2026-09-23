@@ -96,7 +96,6 @@ export class PokemonSearch extends LitElement {
     }
   }
 
-  // Vacía la búsqueda activa sin cerrar la lupa (el usuario sigue escribiendo).
   #clearActiveSearch() {
     if (!this.value) return;
     this.value = "";
