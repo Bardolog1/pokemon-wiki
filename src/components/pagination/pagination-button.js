@@ -5,6 +5,7 @@ export class PaginationButton extends LitElement {
     icon: { type: String },
     rotate: { type: Boolean },
     disabled: { type: Boolean },
+    label: { type: String },
   };
 
   static styles = css`
@@ -61,6 +62,7 @@ export class PaginationButton extends LitElement {
     this.icon = "";
     this.rotate = false;
     this.disabled = false;
+    this.label = "";
   }
 
   _onClick() {
@@ -74,9 +76,10 @@ export class PaginationButton extends LitElement {
         class="pagination-button ${this.disabled ? "disabled" : ""}"
         @click=${this._onClick}
         ?disabled=${this.disabled}
+        aria-label="${this.label}"
         style="--icon-url: url(assets/${this.icon}.svg)"
       >
-        <i class="icon ${this.rotate ? "rotate" : ""}"></i>
+        <i class="icon ${this.rotate ? "rotate" : ""}" aria-hidden="true"></i>
       </button>
     `;
   }
