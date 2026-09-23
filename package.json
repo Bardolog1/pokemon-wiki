@@ -22,8 +22,6 @@
   "devDependencies": {
     "@chromatic-com/storybook": "latest",
     "@custom-elements-manifest/analyzer": "^0.4.17",
-    "@open-wc/eslint-config": "^8.0.2",
-    "@open-wc/testing": "^3.1.6",
     "@storybook/addon-a11y": "^10.6.0",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/web-components-vite": "^10.6.0",
