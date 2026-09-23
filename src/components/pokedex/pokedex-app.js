@@ -14,6 +14,7 @@ export class PokedexApp extends LitElement {
     activeView: { type: Number },
     yellowFlash: { type: Boolean },
     isPlayingCry: { type: Boolean },
+    isSpeaking: { type: Boolean },
   };
 
   static styles = [styles];
@@ -29,8 +30,55 @@ export class PokedexApp extends LitElement {
     this.activeView = 0;
     this.yellowFlash = false;
     this.isPlayingCry = false;
+    this.isSpeaking = false;
 
     this.entryDataManager = new PokedexEntryDataManager();
+  }
+
+  disconnectedCallback() {
+    window.speechSynthesis?.cancel();
+    super.disconnectedCallback();
+  }
+
+  // Narra en voz alta tipo, estadísticas, dato curioso y línea evolutiva del
+  // Pokémon actual. Se dispara sola cada vez que se carga un Pokémon nuevo
+  // (búsqueda o PREV/NEXT), sin necesidad de un botón dedicado.
+  speakEntry() {
+    if (!this.isOn || !this.pokemon || !window.speechSynthesis) return;
+
+    window.speechSynthesis.cancel();
+
+    const { name, type, stats, description, evolutions } = this.pokemon;
+    const typeText = (type || []).join(" y ");
+    const evolutionText =
+      evolutions && evolutions.length > 1
+        ? `Su línea evolutiva es: ${evolutions.join(", ")}.`
+        : "No tiene evoluciones conocidas.";
+
+    const text = [
+      `${name}.`,
+      `Tipo: ${typeText}.`,
+      `Puntos de vida: ${stats.hp}. Ataque: ${stats.attack}. Defensa: ${stats.defense}. Velocidad: ${stats.speed}.`,
+      description,
+      evolutionText,
+    ].join(" ");
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "es-ES";
+    utterance.rate = 0.95;
+    // pitch/rate son los únicos parámetros reales que expone
+    // SpeechSynthesisUtterance para acercarla a un tono más sintético; no
+    // hay forma estándar de rutear la síntesis de voz por Web Audio API.
+    utterance.pitch = 0.7;
+
+    const stopSpeaking = () => {
+      this.isSpeaking = false;
+    };
+    utterance.addEventListener("end", stopSpeaking);
+    utterance.addEventListener("error", stopSpeaking);
+
+    this.isSpeaking = true;
+    window.speechSynthesis.speak(utterance);
   }
 
   // Se dispara con el botón rojo bajo la pantalla; mientras suena, el lente
@@ -100,6 +148,8 @@ export class PokedexApp extends LitElement {
   }
 
   resetSearch() {
+    window.speechSynthesis?.cancel();
+    this.isSpeaking = false;
     this.searchValue = "";
     this.pokemon = null;
     this.error = false;
@@ -119,6 +169,8 @@ export class PokedexApp extends LitElement {
     try {
       this.pokemon = await this.entryDataManager.getFullEntry({ query });
       this.searchValue = "";
+      // Narración por voz: pausada, sin exposición al cliente por ahora.
+      // this.speakEntry();
     } catch (err) {
       this.error = true;
     } finally {
@@ -201,7 +253,9 @@ export class PokedexApp extends LitElement {
       <div class="left-half">
         <div class="top-sensor-area">
           <div class="lens-container">
-            <div class="main-lens ${this.isLoading || this.isPlayingCry ? "blinking" : ""}"></div>
+            <div
+              class="main-lens ${this.isLoading || this.isPlayingCry || this.isSpeaking ? "blinking" : ""}"
+            ></div>
           </div>
           <div class="mini-leds ${this.isLoading ? "loading-sequence" : ""}">
             <div class="led red"></div>
