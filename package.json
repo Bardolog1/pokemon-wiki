@@ -4,6 +4,9 @@
   "license": "MIT",
   "author": "Libardo-Lozano",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite",
     "start": "vite",
