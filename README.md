@@ -212,4 +212,4 @@ Todos los componentes tienen al menos una story con sus casos de uso. `npm run s
 
 ## Licencia
 
-MIT, según el campo `license` de `package.json`.
+MIT. Ver [LICENSE](LICENSE).
