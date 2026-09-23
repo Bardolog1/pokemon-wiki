@@ -14,6 +14,7 @@ export class PokemonCard extends LitElement {
     flipped: { type: Boolean },
     forceHover: { type: Boolean },
     dragOver: { type: Boolean, state: true },
+    hoverEnabled: { type: Boolean },
   };
 
   static styles = [sharedStyles, frontStyles, backStyles];
@@ -24,6 +25,7 @@ export class PokemonCard extends LitElement {
     this.forceHover = false;
     this.pokemon = {};
     this.dragOver = false;
+    this.hoverEnabled = true;
   }
 
   toggleFlip() {
@@ -66,7 +68,7 @@ export class PokemonCard extends LitElement {
       </style>
 
       <div
-        class="scaff ${flipped ? "flipped" : ""} ${this.dragOver ? "drag-over" : ""}"
+        class="scaff ${flipped ? "flipped" : ""} ${this.dragOver ? "drag-over" : ""} ${!this.hoverEnabled ? "hover-disabled" : ""}"
         id=${pokemon.id || 0}
         @click=${this.toggleFlip}
         @dragenter=${this._onDragEnter}
@@ -87,15 +89,17 @@ export class PokemonCard extends LitElement {
               <img src="${pokemon.img ? pokemon.img : "assets/R.png"}" alt="${pokemon.name}" />
             </div>
             <div class="info-container">
-              <h2>${pokemon.name.toUpperCase()}</h2>
-              <div class="id-exp-container">
-                <span class="poke-id">N° ${pokemon.id}</span>
-                <span class="poke-exp">${pokemon.exp} Exp</span>
-              </div>
-              <div class="type-container">
-                ${(pokemon.type || []).map(
-                  (t) => html`<pokemon-type-badge type=${t}></pokemon-type-badge>`,
-                )}
+              <div class="general-info">
+                <h2>${pokemon.name.toUpperCase()}</h2>
+                <div class="id-exp-container">
+                  <span class="poke-id">N° ${pokemon.id}</span>
+                  <span class="poke-exp">${pokemon.exp} Exp</span>
+                </div>
+                <div class="type-container">
+                  ${(pokemon.type || []).map(
+                    (t) => html`<pokemon-type-badge type=${t}></pokemon-type-badge>`,
+                  )}
+                </div>
               </div>
               <div class="character-container">
                 <pokemon-stat-item
