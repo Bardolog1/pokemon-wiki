@@ -4,7 +4,7 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/pokemon-wiki.js",
+      "path": "src/main.js",
       "declarations": [],
       "exports": [
         {
@@ -12,14 +12,96 @@
           "name": "pokemon-wiki",
           "declaration": {
             "name": "PokemonWiki",
-            "module": "/src/PokemonWiki.js"
+            "module": "/src/app/pokemon-wiki/pokemon-wiki.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/PokemonWiki.js",
+      "path": "src/test-setup.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/favorites-store.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "favoritesStore",
+          "default": "new FavoritesStore()"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "favoritesStore",
+          "declaration": {
+            "name": "favoritesStore",
+            "module": "src/services/favorites-store.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/storybook-helpers/pokedex-story-helpers.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "DEX_VARS_STYLE",
+          "default": "`\n  --dex-red: #e32230;\n  --dex-border: #222;\n  --dex-screen-off: #232323;\n  --dex-screen-on: #8bac0f;\n  --dex-lens: #28aafa;\n  --dex-yellow: #e8c722;\n  --dex-green: #51ae5f;\n  --dex-dark-green: #2c4a3f;\n  --dex-bezel: #dedede;\n`"
+        },
+        {
+          "kind": "function",
+          "name": "withDexBackground",
+          "parameters": [
+            {
+              "name": "content"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "withScreenBackground",
+          "parameters": [
+            {
+              "name": "content"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DEX_VARS_STYLE",
+          "declaration": {
+            "name": "DEX_VARS_STYLE",
+            "module": "src/storybook-helpers/pokedex-story-helpers.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "withDexBackground",
+          "declaration": {
+            "name": "withDexBackground",
+            "module": "src/storybook-helpers/pokedex-story-helpers.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "withScreenBackground",
+          "declaration": {
+            "name": "withScreenBackground",
+            "module": "src/storybook-helpers/pokedex-story-helpers.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/app/pokemon-wiki/pokemon-wiki.js",
       "declarations": [
         {
           "kind": "class",
@@ -32,7 +114,7 @@
             },
             {
               "kind": "method",
-              "name": "_getResults",
+              "name": "_init",
               "parameters": [
                 {
                   "name": "pages"
@@ -58,10 +140,123 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "_onTypesChange",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_resetSearch"
+            },
+            {
+              "kind": "method",
+              "name": "_onSearchSubmit",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onSearchClear"
+            },
+            {
+              "kind": "method",
+              "name": "_loadFavorites"
+            },
+            {
+              "kind": "method",
+              "name": "toggleFavoritesOnly"
+            },
+            {
+              "kind": "field",
+              "name": "_range"
+            },
+            {
+              "kind": "method",
+              "name": "_startTour"
+            },
+            {
+              "kind": "field",
+              "name": "dataManager",
+              "default": "new PokemonDataManager()"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "favoritesOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "selectedTypes",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "filteredTotal",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "searchQuery",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "searchNotFound",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "_requestId",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "_onFavoritesChange",
+              "default": "() => {\r\n      if (this.favoritesOnly) this._loadFavorites();\r\n    }"
+            },
+            {
               "kind": "field",
               "name": "elements",
-              "privacy": "public",
-              "attribute": "elements"
+              "privacy": "public"
             },
             {
               "kind": "field",
@@ -89,15 +284,9 @@
               "privacy": "public"
             }
           ],
-          "attributes": [
-            {
-              "name": "elements",
-              "fieldName": "elements"
-            }
-          ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "pokemon-wiki",
           "customElement": true
@@ -109,238 +298,86 @@
           "name": "PokemonWiki",
           "declaration": {
             "name": "PokemonWiki",
-            "module": "src/PokemonWiki.js"
+            "module": "src/app/pokemon-wiki/pokemon-wiki.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/API/api-request.js",
+      "path": "src/app/pokemon-wiki/pokemon-wiki.styles.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "ApiRequest",
-          "members": [
-            {
-              "kind": "method",
-              "name": "executeRequest",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateErrorEvent",
-              "parameters": [
-                {
-                  "name": "error"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_generateEvents",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getBasicsPokemon",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPagePokes",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPokemonEndpoint",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "url",
-              "type": {
-                "text": "string"
-              },
-              "default": "''",
-              "privacy": "public",
-              "attribute": "url"
-            },
-            {
-              "kind": "field",
-              "name": "method",
-              "type": {
-                "text": "string"
-              },
-              "default": "'GET'",
-              "privacy": "public",
-              "attribute": "method"
-            }
-          ],
-          "events": [
-            {
-              "name": "request-error",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "attributes": [
-            {
-              "name": "url",
-              "fieldName": "url"
-            },
-            {
-              "name": "method",
-              "fieldName": "method"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "api-request",
-          "customElement": true
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\r\n  @font-face {\r\n    font-family: \"PokemonFont\";\r\n    src: url(../assets/fonts/Pokemon-Solid.ttf) format(\"truetype\");\r\n    font-weight: normal;\r\n    font-style: normal;\r\n  }\r\n\r\n  /* La cabecera (banner, favoritos/tour, paginación) ocupa solo el\r\n     alto que su contenido necesita (flex: 0 0 auto); listar-pokemon se\r\n     queda con TODO el resto vía flex: 1, en vez de pelear por\r\n     porcentajes fijos que no dejaban margen para los controles. */\r\n  .container {\r\n    cursor: url(assets/poke2.png), auto;\r\n    width: 100vw;\r\n    height: 100vh;\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    overflow: hidden;\r\n    padding-bottom: 0.75rem;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  banner-title {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n  }\r\n\r\n  pokemon-type-filter {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    margin-top: 0.8rem;\r\n  }\r\n\r\n  pokemon-type-filter.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .top-bar {\r\n    width: 100%;\r\n    flex: 0 0 auto;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    gap: 0.9rem;\r\n    padding: 0.9rem 0 0.6rem;\r\n  }\r\n\r\n  pagination-nav {\r\n    width: 100%;\r\n    position: relative;\r\n  }\r\n\r\n  pagination-nav.hidden {\r\n    display: none;\r\n  }\r\n\r\n  .empty-favorites {\r\n    color: #fff;\r\n    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);\r\n    font-size: 1rem;\r\n  }\r\n\r\n  .error {\r\n    color: #fff;\r\n    background: rgba(180, 30, 30, 0.85);\r\n    padding: 0.5rem 1rem;\r\n    border-radius: 6px;\r\n  }\r\n\r\n  listar-pokemon {\r\n    width: 100%;\r\n    flex: 1 1 auto;\r\n    min-height: 0;\r\n    position: relative;\r\n  }\r\n\r\n  navbar-buttons {\r\n    height: 0px;\r\n    position: relative;\r\n  }\r\n`"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "ApiRequest",
+          "name": "styles",
           "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "api-request",
-          "declaration": {
-            "name": "ApiRequest",
-            "module": "src/components/API/api-request.js"
+            "name": "styles",
+            "module": "src/app/pokemon-wiki/pokemon-wiki.styles.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/API/data-manager.js",
+      "path": "src/app/pokemon-wiki/results-range.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "DataManager",
-          "members": [
+          "kind": "function",
+          "name": "computeResultsRange",
+          "parameters": [
             {
-              "kind": "method",
-              "name": "_getCountResults"
-            },
-            {
-              "kind": "method",
-              "name": "_getPagesListPoke",
-              "parameters": [
-                {
-                  "name": "dataPages"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_getPokeFirstDetail",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_constructPokefirst",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "_dmNotifyEvent",
-              "parameters": [
-                {
-                  "name": "type"
-                },
-                {
-                  "name": "data"
-                }
-              ]
+              "name": "{\n  selectedTypes,\n  filteredTotal,\n  elements,\n  currentPage,\n  visibleResults,\n}"
             }
-          ],
-          "events": [
-            {
-              "type": {
-                "text": "CustomEvent"
-              }
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
-          },
-          "tagName": "data-manager",
-          "customElement": true
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "DataManager",
+          "name": "computeResultsRange",
           "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "data-manager",
-          "declaration": {
-            "name": "DataManager",
-            "module": "src/components/API/data-manager.js"
+            "name": "computeResultsRange",
+            "module": "src/app/pokemon-wiki/results-range.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/banner-title.js",
+      "path": "src/app/app-tour/app-tour.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "startAppTour",
+          "parameters": [
+            {
+              "name": "pokemonWikiEl"
+            }
+          ],
+          "description": "Arma y arranca el tour guiado de la app. Recibe el componente raíz\n(PokemonWiki) para poder alcanzar, vía su renderRoot, tanto sus propios\nelementos como los que viven dentro del Shadow DOM de sus hijos\n(navbar-buttons, listar-pokemon > pokemon-card, y la propia pokedex-app\ndentro de navbar-buttons).\n\nAlgunos pasos (la pokedex abierta, el reverso de una card) requieren un\ncambio de estado que solo existe mientras el usuario interactúa: el modal\nde la pokedex y el flip de la card no están en el DOM/visibles hasta que\nse activan. Por eso el tour intercepta la navegación (onNextClick) para\nforzar ese estado ANTES de pedirle a driver.js que resuelva y resalte el\nelemento del paso siguiente, y usa `element` como función (no como\nreferencia fija) para que se recalcule recién cuando ese elemento ya\nexiste. También cierra la pokedex al salir de esa sección (paso de\nfavoritos), porque de ahí en adelante el tour vuelve a mostrar la página\nprincipal y el modal taparía todo."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "startAppTour",
+          "declaration": {
+            "name": "startAppTour",
+            "module": "src/app/app-tour/app-tour.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/banner-title/banner-title.js",
       "declarations": [
         {
           "kind": "class",
@@ -404,7 +441,7 @@
           ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "banner-title",
           "customElement": true
@@ -416,7 +453,7 @@
           "name": "BannerTitle",
           "declaration": {
             "name": "BannerTitle",
-            "module": "src/components/view/banner-title.js"
+            "module": "src/components/banner-title/banner-title.js"
           }
         },
         {
@@ -424,223 +461,173 @@
           "name": "banner-title",
           "declaration": {
             "name": "BannerTitle",
-            "module": "src/components/view/banner-title.js"
+            "module": "src/components/banner-title/banner-title.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/card-poke.js",
+      "path": "src/components/banner-title/banner-title.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`\r\n    <banner-title\r\n      title=\"Pokédex Interactiva\"\r\n      logo=\"https://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png/revision/latest?cb=20160319183155\"\r\n    ></banner-title>\r\n  `,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/banner-title/banner-title.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/banner-title/banner-title.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/favorites-empty/favorites-empty.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "CardPoke",
-          "members": [
-            {
-              "kind": "method",
-              "name": "toggleFlip"
-            },
-            {
-              "kind": "method",
-              "name": "getTypeColors",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getTypeNameForSVG",
-              "parameters": [
-                {
-                  "name": "type"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "renderTypeContainer"
-            },
-            {
-              "kind": "method",
-              "name": "_renderPokedex"
-            },
-            {
-              "kind": "field",
-              "name": "flipped",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "flipped"
-            },
-            {
-              "kind": "field",
-              "name": "pokemon",
-              "type": {
-                "text": "object"
-              },
-              "default": "{}",
-              "privacy": "public",
-              "attribute": "pokemon"
-            },
-            {
-              "kind": "field",
-              "name": "pokemon1",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n      \"id\": 25,\r\n      \"name\": \"pikachu\",\r\n      \"img\": \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png\",\r\n      \"exp\": 112,\r\n      \"type\": [\r\n         //\"normal\",\r\n        //\"fire\",\r\n         //\"water\",\r\n         \"electric\",\r\n         //\"grass\",\r\n        // \"ice\",\r\n        //\"fighting\",\r\n        // \"poison\",\r\n        // \"ground\",\r\n        // \"flying\",\r\n        // \"psychic\",\r\n        // \"bug\",\r\n        // \"rock\",\r\n        // \"ghost\",\r\n        // \"dragon\",\r\n        // \"dark\",\r\n        // \"steel\",\r\n        // \"fairy\"\r\n      ],\r\n      \"abilities\": [\r\n        \"static\",\r\n        \"lightning-rod\",\r\n      ],\r\n      \"evolutions\": [\r\n        {\r\n          \"name\": \"raichu\",\r\n          \"url\": \"https://pokeapi.co/api/v2/pokemon/26/\",\r\n          \"img\": \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png\",\r\n          \"id\": 26\r\n        },\r\n        {\r\n          \"name\": \"pikachu\",\r\n          \"url\": \"https://pokeapi.co/api/v2/pokemon/25/\",\r\n          \"img\": \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png\",\r\n          \"id\": 25\r\n        },\r\n        {\r\n          \"name\": \"pichu\",\r\n          \"url\": \"https://pokeapi.co/api/v2/pokemon/172/\",\r\n          \"img\": \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/172.png\",\r\n          \"id\": 172\r\n        }\r\n      ],\r\n      \"stats\": {\r\n        \"hp\": 35,\r\n        \"speed\": 90,\r\n        \"attack\": 55,\r\n        \"special_attack\": 50,\r\n        \"defense\": 40,\r\n        \"special_defense\": 50\r\n      },\r\n      \"weight\":60,\r\n      \"height\": 4,\r\n\r\n    /*\r\n        HP (Hit Points): Máximo de 255.\r\n        Ataque (Attack): Máximo de 190.\r\n        Defensa (Defense): Máximo de 230.\r\n        Ataque Especial (Special Attack): Máximo de 194.\r\n        Defensa Especial (Special Defense): Máximo de 230.\r\n        Velocidad (Speed): Máximo de 180.\r\n\r\n        HP (Hit Points): Máximo de 255.\r\n        Ataque (Attack): Máximo de 190.\r\n        Defensa (Defense): Máximo de 250.\r\n        Ataque Especial (Special Attack): Máximo de 194.\r\n        Defensa Especial (Special Defense): Máximo de 250.\r\n        Velocidad (Speed): Máximo de 200.\r\n    */\r\n\r\n    }"
-            },
-            {
-              "kind": "field",
-              "name": "type",
-              "type": {
-                "text": "object"
-              },
-              "default": "{\r\n        \"normal\": [\"#f48b1fff\", \"#f3b81aff\"],\r\n        \"fire\": [\"#f37021ff\", \"#f3b81aff\"],\r\n        \"water\": [\"#0b87b3ff\", \"#20afdfff\"],\r\n        \"electric\": [\"#f3961fff\", \"#f3b81aff\"],\r\n        \"grass\": [\"#459f46ff\", \"#57b947ff\"],\r\n        \"ice\": [\"#20afdfff\", \"#66cef6ff\"],\r\n        \"fighting\": [\"#8e191bff\", \"#b81f25ff\"],\r\n        \"poison\": [\"#8e191bff\", \"#b81f25ff\"],\r\n        \"ground\": [\"#5b3513ff\", \"#77421aff\"],\r\n        \"flying\": [\"#0b87b3ff\", \"#20afdfff\"],\r\n        \"psychic\": [\"#b11f83ff\", \"#c03995ff\"],\r\n        \"bug\": [\"#459f46ff\", \"#57b947ff\"],\r\n        \"rock\": [\"#917f6cff\", \"#a69f96ff\"],\r\n        \"ghost\": [\"#15110cff\", \"#403b35ff\"],\r\n        \"dragon\": [\"#459f46ff\", \"#57b947ff\"],\r\n        \"dark\": [\"#360928ff\", \"#712158ff\"],\r\n        \"steel\": [\"#352514ff\", \"#523e28ff\"],\r\n        \"fairy\": [\"#f7ac36ff\", \"#f3b81aff\"],\r\n        \"unknown\": [\"#15110cff\", \"#403b35ff\"],\r\n    }"
-            },
-            {
-              "kind": "field",
-              "name": "firstType",
-              "privacy": "public",
-              "attribute": "firstType"
-            },
-            {
-              "kind": "field",
-              "name": "typeColors",
-              "privacy": "public",
-              "attribute": "typeColors"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemon",
-              "fieldName": "pokemon"
-            },
-            {
-              "name": "firstType",
-              "fieldName": "firstType"
-            },
-            {
-              "name": "typeColors",
-              "fieldName": "typeColors"
-            },
-            {
-              "name": "flipped",
-              "fieldName": "flipped"
-            }
-          ],
+          "name": "FavoritesEmpty",
+          "members": [],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
-          "tagName": "card-poke",
+          "tagName": "favorites-empty",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "CardPoke",
+          "name": "FavoritesEmpty",
           "declaration": {
-            "name": "CardPoke",
-            "module": "src/components/view/card-poke.js"
+            "name": "FavoritesEmpty",
+            "module": "src/components/favorites-empty/favorites-empty.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "card-poke",
+          "name": "favorites-empty",
           "declaration": {
-            "name": "CardPoke",
-            "module": "src/components/view/card-poke.js"
+            "name": "FavoritesEmpty",
+            "module": "src/components/favorites-empty/favorites-empty.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/listar-pokemon.js",
+      "path": "src/components/favorites-empty/favorites-empty.stories.js",
       "declarations": [
         {
-          "kind": "class",
-          "description": "",
-          "name": "ListarPokemon",
-          "members": [
-            {
-              "kind": "field",
-              "name": "dateTemplate"
-            },
-            {
-              "kind": "field",
-              "name": "visibleContent",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "visibleContent"
-            },
-            {
-              "kind": "field",
-              "name": "pokemons",
-              "privacy": "public",
-              "attribute": "pokemons"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemons",
-              "fieldName": "pokemons"
-            },
-            {
-              "name": "visibleContent",
-              "fieldName": "visibleContent"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit-element"
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
           },
-          "tagName": "listar-pokemon",
-          "customElement": true
+          "default": "{\n  render: () => html`<favorites-empty></favorites-empty>`,\n}"
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "ListarPokemon",
+          "name": "default",
           "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/view/listar-pokemon.js"
+            "module": "src/components/favorites-empty/favorites-empty.stories.js"
           }
         },
         {
-          "kind": "custom-element-definition",
-          "name": "listar-pokemon",
+          "kind": "js",
+          "name": "Default",
           "declaration": {
-            "name": "ListarPokemon",
-            "module": "src/components/view/listar-pokemon.js"
+            "name": "Default",
+            "module": "src/components/favorites-empty/favorites-empty.stories.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/navbar-buttons.js",
+      "path": "src/components/navbar-buttons/navbar-buttons.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
           "name": "NavbarButtons",
-          "members": [],
+          "members": [
+            {
+              "kind": "method",
+              "name": "_createDragImage"
+            },
+            {
+              "kind": "method",
+              "name": "togglePokedex"
+            },
+            {
+              "kind": "method",
+              "name": "stopPropagation",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleDragStart",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRenderPokedex",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOpen"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "isOpen",
+              "fieldName": "isOpen"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
           "tagName": "navbar-buttons",
           "customElement": true
@@ -652,7 +639,7 @@
           "name": "NavbarButtons",
           "declaration": {
             "name": "NavbarButtons",
-            "module": "src/components/view/navbar-buttons.js"
+            "module": "src/components/navbar-buttons/navbar-buttons.js"
           }
         },
         {
@@ -660,73 +647,378 @@
           "name": "navbar-buttons",
           "declaration": {
             "name": "NavbarButtons",
-            "module": "src/components/view/navbar-buttons.js"
+            "module": "src/components/navbar-buttons/navbar-buttons.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/view/paginador-poke.js",
+      "path": "src/components/navbar-buttons/navbar-buttons.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`<navbar-buttons></navbar-buttons>`,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/navbar-buttons/navbar-buttons.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/navbar-buttons/navbar-buttons.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/navbar-buttons/navbar-buttons.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\r\n  :host {\r\n    user-select: none;\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: row;\r\n    flex-wrap: nowrap;\r\n    justify-content: flex-end;\r\n    align-items: center;\r\n  }\r\n\r\n  .pokedex-button {\r\n    background: rgba(255, 255, 255, 0.6);\r\n    border: none;\r\n    height: 5rem;\r\n    width: 5rem;\r\n    margin: 0 3rem;\r\n    cursor: pointer;\r\n    border-radius: 50%;\r\n    display: flex;\r\n    align-items: center;\r\n    position: relative;\r\n    transition: 0.5s all ease-in-out;\r\n  }\r\n\r\n  .pokedex-button:hover {\r\n    background: rgba(200, 200, 200, 0.8);\r\n    transition: 0.5s all ease-in-out;\r\n  }\r\n\r\n  .pokedex-button:hover > .icon {\r\n    transform: scale(1.2);\r\n    transition: 0.5s all ease-in-out;\r\n  }\r\n\r\n  .pokedex-button:active > .icon {\r\n    transform: scale(0.8);\r\n    transition: 0.2s all ease-in-out;\r\n  }\r\n\r\n  .pokedex-button.disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n\r\n  .icon {\r\n    width: 5.5rem;\r\n    height: 5rem;\r\n    background-size: cover;\r\n    transition: 0.5s all ease-in-out;\r\n  }\r\n\r\n  .icon.icon-first {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    background-image: url(\"assets/NicePng_pokedex-png_2285786.png\");\r\n  }\r\n\r\n  /* === NUEVOS ESTILOS PARA EL MODAL Y EL BACKDROP === */\r\n  .backdrop {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100vw;\r\n    height: 100vh;\r\n    background-color: rgba(0, 0, 0, 0.75); /* Fondo oscuro semi-transparente */\r\n    backdrop-filter: blur(4px); /* Efecto de desenfoque opcional */\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    z-index: 9999; /* Asegura que esté por encima de todo */\r\n    animation: fadeIn 0.3s ease;\r\n  }\r\n\r\n  .modal-content {\r\n    /* Animación para que la Pokédex aparezca con un efecto de zoom */\r\n    animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);\r\n  }\r\n\r\n  @keyframes fadeIn {\r\n    from { opacity: 0; }\r\n    to { opacity: 1; }\r\n  }\r\n\r\n  @keyframes scaleUp {\r\n    from { transform: scale(0.5); opacity: 0; }\r\n    to { transform: scale(1); opacity: 1; }\r\n  }\r\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "styles",
+          "declaration": {
+            "name": "styles",
+            "module": "src/components/navbar-buttons/navbar-buttons.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/page-range-info/page-range-info.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PaginadorPoke",
+          "name": "PageRangeInfo",
+          "members": [
+            {
+              "kind": "field",
+              "name": "rangeStart",
+              "privacy": "public",
+              "attribute": "rangeStart"
+            },
+            {
+              "kind": "field",
+              "name": "rangeEnd",
+              "privacy": "public",
+              "attribute": "rangeEnd"
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "privacy": "public",
+              "attribute": "total"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "privacy": "public",
+              "attribute": "currentPage"
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "privacy": "public",
+              "attribute": "totalPages"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "rangeStart",
+              "fieldName": "rangeStart"
+            },
+            {
+              "name": "rangeEnd",
+              "fieldName": "rangeEnd"
+            },
+            {
+              "name": "total",
+              "fieldName": "total"
+            },
+            {
+              "name": "currentPage",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "totalPages",
+              "fieldName": "totalPages"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "page-range-info",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageRangeInfo",
+          "declaration": {
+            "name": "PageRangeInfo",
+            "module": "src/components/page-range-info/page-range-info.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "page-range-info",
+          "declaration": {
+            "name": "PageRangeInfo",
+            "module": "src/components/page-range-info/page-range-info.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/page-range-info/page-range-info.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "FirstPage",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-range-info\n      .rangeStart=${1}\n      .rangeEnd=${20}\n      .total=${1351}\n      .currentPage=${1}\n      .totalPages=${68}\n    ></page-range-info>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LastPartialPage",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-range-info\n      .rangeStart=${101}\n      .rangeEnd=${117}\n      .total=${117}\n      .currentPage=${6}\n      .totalPages=${6}\n    ></page-range-info>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/page-range-info/page-range-info.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FirstPage",
+          "declaration": {
+            "name": "FirstPage",
+            "module": "src/components/page-range-info/page-range-info.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LastPartialPage",
+          "declaration": {
+            "name": "LastPartialPage",
+            "module": "src/components/page-range-info/page-range-info.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/page-toolbar/page-toolbar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PageToolbar",
           "members": [
             {
               "kind": "method",
-              "name": "calcPages"
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
             },
             {
               "kind": "field",
-              "name": "_getNumberList"
+              "name": "favoritesOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "favoritesOnly"
             },
             {
               "kind": "field",
-              "name": "_getLimit"
+              "name": "searchQuery",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "searchQuery"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "favoritesOnly",
+              "fieldName": "favoritesOnly"
+            },
+            {
+              "name": "searchQuery",
+              "fieldName": "searchQuery"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "page-toolbar",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PageToolbar",
+          "declaration": {
+            "name": "PageToolbar",
+            "module": "src/components/page-toolbar/page-toolbar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "page-toolbar",
+          "declaration": {
+            "name": "PageToolbar",
+            "module": "src/components/page-toolbar/page-toolbar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/page-toolbar/page-toolbar.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ShowingAll",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-toolbar\n      .favoritesOnly=${false}\n      @favorites-toggle-click=\"${() => console.log(\"favorites-toggle-click\")}\"\n      @tour-click=\"${() => console.log(\"tour-click\")}\"\n    ></page-toolbar>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "FavoritesActive",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<page-toolbar\n      .favoritesOnly=${true}\n      @favorites-toggle-click=\"${() => console.log(\"favorites-toggle-click\")}\"\n      @tour-click=\"${() => console.log(\"tour-click\")}\"\n    ></page-toolbar>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/page-toolbar/page-toolbar.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ShowingAll",
+          "declaration": {
+            "name": "ShowingAll",
+            "module": "src/components/page-toolbar/page-toolbar.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "FavoritesActive",
+          "declaration": {
+            "name": "FavoritesActive",
+            "module": "src/components/page-toolbar/page-toolbar.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Pagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_firstDisabled"
             },
             {
               "kind": "field",
-              "name": "_firstDisabled",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "_endDisabled",
-              "privacy": "public"
+              "name": "_endDisabled"
             },
             {
               "kind": "method",
-              "name": "_numberTpl",
+              "name": "_dispatchNav",
               "parameters": [
                 {
-                  "name": "myNumbers"
+                  "name": "type"
                 },
                 {
-                  "name": "limit"
+                  "name": "page"
                 }
               ]
             },
             {
               "kind": "method",
-              "name": "_firstClick"
+              "name": "_onFirst"
             },
             {
               "kind": "method",
-              "name": "_endClick"
+              "name": "_onEnd"
             },
             {
               "kind": "method",
-              "name": "_backClick"
+              "name": "_onBack"
             },
             {
               "kind": "method",
-              "name": "_nextClick"
+              "name": "_onNext"
             },
             {
               "kind": "method",
-              "name": "_clickNumber",
+              "name": "_onNumberClick",
               "parameters": [
                 {
                   "name": "e"
@@ -782,45 +1074,11 @@
               "default": "0",
               "privacy": "public",
               "attribute": "visible-results"
-            },
-            {
-              "kind": "field",
-              "name": "_mobile",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "_numbers",
-              "privacy": "public"
             }
           ],
           "events": [
             {
-              "name": "first-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "end-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "back-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "next-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "number-click",
+              "name": "type",
               "type": {
                 "text": "CustomEvent"
               }
@@ -850,27 +1108,3424 @@
           ],
           "superclass": {
             "name": "LitElement",
-            "package": "lit-element"
+            "package": "lit"
           },
-          "tagName": "paginador-poke",
+          "tagName": "pagination-nav",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PaginadorPoke",
+          "name": "Pagination",
           "declaration": {
-            "name": "PaginadorPoke",
-            "module": "src/components/view/paginador-poke.js"
+            "name": "Pagination",
+            "module": "src/components/pagination/pagination.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "paginador-poke",
+          "name": "pagination-nav",
           "declaration": {
-            "name": "PaginadorPoke",
-            "module": "src/components/view/paginador-poke.js"
+            "name": "Pagination",
+            "module": "src/components/pagination/pagination.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`\r\n    <pagination-nav\r\n      results=\"60\"\r\n      visible-results=\"5\"\r\n      visible-pages=\"5\"\r\n      current-page=\"1\"\r\n    ></pagination-nav>\r\n  `,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pagination/pagination.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pagination/pagination.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination/pagination.utils.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "calcPages",
+          "parameters": [
+            {
+              "name": "{ results, pages, visibleResults, visiblePages, currentPage }"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "getNumberList",
+          "parameters": [
+            {
+              "name": "{ currentPage, visiblePages }"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "calcPages",
+          "declaration": {
+            "name": "calcPages",
+            "module": "src/components/pagination/pagination.utils.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getNumberList",
+          "declaration": {
+            "name": "getNumberList",
+            "module": "src/components/pagination/pagination.utils.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-button/pagination-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PaginationButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_onClick"
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "rotate",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "rotate"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "label"
+            }
+          ],
+          "events": [
+            {
+              "name": "button-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "fieldName": "icon"
+            },
+            {
+              "name": "rotate",
+              "fieldName": "rotate"
+            },
+            {
+              "name": "disabled",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "label",
+              "fieldName": "label"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationButton",
+          "declaration": {
+            "name": "PaginationButton",
+            "module": "src/components/pagination-button/pagination-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination-button",
+          "declaration": {
+            "name": "PaginationButton",
+            "module": "src/components/pagination-button/pagination-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-button/pagination-button.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  args: { icon: \"next\", rotate: false, disabled: false },\r\n  render: ({ icon, rotate, disabled }) => html`\r\n    <pagination-button icon=${icon} ?rotate=${rotate} ?disabled=${disabled}></pagination-button>\r\n  `,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pagination-button/pagination-button.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pagination-button/pagination-button.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-numbers/pagination-numbers.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PaginationNumbers",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_onClickNumber",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#activeButton",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#numberButton",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "numbers",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "numbers"
+            },
+            {
+              "kind": "field",
+              "name": "currentPage",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "current-page"
+            },
+            {
+              "kind": "field",
+              "name": "limit",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "limit"
+            }
+          ],
+          "events": [
+            {
+              "name": "number-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "numbers",
+              "fieldName": "numbers"
+            },
+            {
+              "name": "current-page",
+              "fieldName": "currentPage"
+            },
+            {
+              "name": "limit",
+              "fieldName": "limit"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pagination-numbers",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PaginationNumbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination-numbers/pagination-numbers.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pagination-numbers",
+          "declaration": {
+            "name": "PaginationNumbers",
+            "module": "src/components/pagination-numbers/pagination-numbers.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pagination-numbers/pagination-numbers.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`\r\n    <pagination-numbers\r\n      .numbers=${[1, 2, 3, 4, 5]}\r\n      .currentPage=${3}\r\n      .limit=${5}\r\n    ></pagination-numbers>\r\n  `,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pagination-numbers/pagination-numbers.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-app/pokedex-app.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexApp",
+          "members": [
+            {
+              "kind": "method",
+              "name": "speakEntry"
+            },
+            {
+              "kind": "method",
+              "name": "playCry"
+            },
+            {
+              "kind": "method",
+              "name": "toggleOpen"
+            },
+            {
+              "kind": "method",
+              "name": "togglePower"
+            },
+            {
+              "kind": "method",
+              "name": "openWithPokemon",
+              "parameters": [
+                {
+                  "name": "pokemon"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "triggerYellowFlash"
+            },
+            {
+              "kind": "method",
+              "name": "handleNumberClick",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDelete"
+            },
+            {
+              "kind": "method",
+              "name": "resetSearch"
+            },
+            {
+              "kind": "method",
+              "name": "executeSearch",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearch"
+            },
+            {
+              "kind": "method",
+              "name": "navigateStep",
+              "parameters": [
+                {
+                  "name": "offset"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "navigateInfo",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDpadScroll",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onDpadClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formattedTypes"
+            },
+            {
+              "kind": "method",
+              "name": "renderSecondaryInfo"
+            },
+            {
+              "kind": "method",
+              "name": "renderLeftHalf"
+            },
+            {
+              "kind": "method",
+              "name": "renderRightHalf"
+            },
+            {
+              "kind": "field",
+              "name": "isOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOpen"
+            },
+            {
+              "kind": "field",
+              "name": "isOn",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOn"
+            },
+            {
+              "kind": "field",
+              "name": "searchValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "searchValue"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isLoading"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "activeView",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "activeView"
+            },
+            {
+              "kind": "field",
+              "name": "yellowFlash",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "yellowFlash"
+            },
+            {
+              "kind": "field",
+              "name": "isPlayingCry",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isPlayingCry"
+            },
+            {
+              "kind": "field",
+              "name": "isSpeaking",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isSpeaking"
+            },
+            {
+              "kind": "field",
+              "name": "entryDataManager",
+              "default": "new PokedexEntryDataManager()"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "isOpen",
+              "fieldName": "isOpen"
+            },
+            {
+              "name": "isOn",
+              "fieldName": "isOn"
+            },
+            {
+              "name": "searchValue",
+              "fieldName": "searchValue"
+            },
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "isLoading",
+              "fieldName": "isLoading"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            },
+            {
+              "name": "activeView",
+              "fieldName": "activeView"
+            },
+            {
+              "name": "yellowFlash",
+              "fieldName": "yellowFlash"
+            },
+            {
+              "name": "isPlayingCry",
+              "fieldName": "isPlayingCry"
+            },
+            {
+              "name": "isSpeaking",
+              "fieldName": "isSpeaking"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-app",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexApp",
+          "declaration": {
+            "name": "PokedexApp",
+            "module": "src/components/pokedex-app/pokedex-app.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-app",
+          "declaration": {
+            "name": "PokedexApp",
+            "module": "src/components/pokedex-app/pokedex-app.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-app/pokedex-app.shell.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "SHELL_SVG_INTERIOR",
+          "default": "html`\n  <svg viewBox=\"0 0 340 480\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path\n      d=\"M 0,10 L 150,10 L 190,100 L 325,100 A 15,15 0 0,1 340,115 L 340,465 A 15,15 0 0,1 325,480 L 0,480 Z\"\n      fill=\"var(--dex-red)\"\n      stroke=\"var(--dex-border)\"\n      stroke-width=\"6\"\n      stroke-linejoin=\"round\"\n    />\n  </svg>\n`"
+        },
+        {
+          "kind": "variable",
+          "name": "SHELL_SVG_EXTERIOR",
+          "default": "html`\n  <svg viewBox=\"0 0 340 480\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path\n      d=\"M 340,10 L 190,10 L 150,100 L 15,100 A 15,15 0 0,0 0,115 L 0,465 A 15,15 0 0,0 15,480 L 340,480 Z\"\n      fill=\"var(--dex-red)\"\n      stroke=\"var(--dex-border)\"\n      stroke-width=\"6\"\n      stroke-linejoin=\"round\"\n    />\n  </svg>\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SHELL_SVG_INTERIOR",
+          "declaration": {
+            "name": "SHELL_SVG_INTERIOR",
+            "module": "src/components/pokedex-app/pokedex-app.shell.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SHELL_SVG_EXTERIOR",
+          "declaration": {
+            "name": "SHELL_SVG_EXTERIOR",
+            "module": "src/components/pokedex-app/pokedex-app.shell.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-app/pokedex-app.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Closed",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokedex-app></pokedex-app>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "OpenAndLoaded",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`\n    <pokedex-app .isOpen=${true} .isOn=${true} .pokemon=${SAMPLE_ENTRY}></pokedex-app>\n  `,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-app/pokedex-app.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Closed",
+          "declaration": {
+            "name": "Closed",
+            "module": "src/components/pokedex-app/pokedex-app.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OpenAndLoaded",
+          "declaration": {
+            "name": "OpenAndLoaded",
+            "module": "src/components/pokedex-app/pokedex-app.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-app/pokedex-app.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\n  :host {\n    display: block;\n    --dex-red: #e32230;\n    --dex-border: #222;\n    --dex-screen-off: #232323;\n    --dex-screen-on: #8bac0f;\n    --dex-lens: #28aafa;\n    --dex-yellow: #e8c722;\n    --dex-green: #51ae5f;\n    --dex-dark-green: #2c4a3f;\n    --dex-bezel: #dedede;\n  }\n\n  /* Reset base para los controles que siguen viviendo acá (power/sonido)\n     y que ahora son <button> reales en vez de <div @click>. El resto de\n     los controles (numpad, d-pad, PREV/NEXT, sensor) se movieron a sus\n     propios componentes — ver pokedex-numpad.js, pokedex-dpad.js,\n     pokedex-nav-buttons.js, pokedex-sensor.js. */\n  .power-btn,\n  .red-bezel-btn {\n    all: unset;\n    display: block;\n    box-sizing: border-box;\n    cursor: pointer;\n  }\n\n  .toggle-cover-btn {\n    display: block;\n    margin: 0 auto 40px auto;\n    padding: 12px 24px;\n    background-color: var(--dex-border);\n    color: white;\n    font-family: 'Press Start 2P', monospace, sans-serif;\n    font-size: 14px;\n    cursor: pointer;\n    border-radius: 8px;\n    border: 3px solid white;\n    transition: transform 0.1s;\n  }\n  .toggle-cover-btn:active { transform: scale(0.95); }\n\n  .pokedex-container {\n    perspective: 2000px;\n    margin: 0 auto 60px auto;\n    display: flex;\n    justify-content: center;\n    transform: scale(1.05);\n  }\n\n  .pokedex {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.6));\n    transform-style: preserve-3d;\n  }\n\n  /* MITAD IZQUIERDA */\n  .left-half {\n    width: 340px;\n    height: 480px;\n    background-color: var(--dex-red);\n    border: 4px solid var(--dex-border);\n    border-radius: 20px 0 0 20px;\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n  }\n\n  .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }\n\n  .bezel-bottom { display: flex; justify-content: space-between; width: 200px; margin-top: 10px; }\n  .red-bezel-btn {\n    width: 18px;\n    height: 18px;\n    background-color: var(--dex-red);\n    border-radius: 50%;\n    border: 2px solid var(--dex-border);\n    cursor: pointer;\n    transition: transform 0.1s ease;\n  }\n  .red-bezel-btn:hover { filter: brightness(1.15); }\n  .red-bezel-btn:active { transform: scale(0.88); }\n  .speaker-grill { display: flex; flex-direction: column; gap: 4px; }\n  .speaker-line { width: 30px; height: 3px; background-color: var(--dex-border); }\n\n  .lower-controls {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 20px;\n    margin-top: 20px;\n  }\n\n  .power-btn-container { position: relative; }\n  .power-btn { width: 45px; height: 45px; background-color: #222; border-radius: 50%; border: 3px solid var(--dex-border); cursor: pointer; }\n\n  .mini-green-screen {\n    width: 95px;\n    height: 42px;\n    background-color: var(--dex-dark-green);\n    border: 3.5px solid var(--dex-border);\n    border-radius: 6px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 16px;\n    font-weight: 900;\n    color: transparent;\n    transition: all 0.3s ease;\n    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);\n    letter-spacing: -1px;\n  }\n  .mini-green-screen.is-on {\n    background-color: var(--dex-green);\n    color: #0f380f;\n    box-shadow: inset 0 0 10px rgba(15, 56, 15, 0.8);\n  }\n\n  .turn-on-hint {\n    position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background-color: white; color: black; padding: 6px 10px; border-radius: 4px; font-weight: 900; font-family: sans-serif; font-size: 14px; white-space: nowrap; border: 2px solid black; animation: blinkArrow 0.6s infinite alternate; z-index: 20;\n  }\n  .turn-on-hint::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: black transparent transparent transparent; }\n  @keyframes blinkArrow { from { top: -50px; opacity: 1; } to { top: -35px; opacity: 0.8; } }\n\n  /* BISAGRA */\n  .hinge { width: 30px; height: 480px; background: linear-gradient(to right, #990000, var(--dex-red) 30%, #ff5b5b 50%, var(--dex-red) 70%, #990000); border: 4px solid var(--dex-border); border-radius: 10px; margin-left: -4px; margin-right: -4px; z-index: 5; display: flex; flex-direction: column; justify-content: space-evenly; box-sizing: border-box; }\n  .hinge-joint { width: 100%; height: 4px; background-color: var(--dex-border); }\n\n  /* MITAD DERECHA */\n  .right-half {\n    width: 340px;\n    height: 480px;\n    position: relative;\n    z-index: 10;\n    transform-origin: left center;\n    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);\n    transform-style: preserve-3d;\n    box-sizing: border-box;\n  }\n\n  .right-half.closed { transform: rotateY(-180deg); }\n  .right-half.open { transform: rotateY(0deg); }\n\n  .right-cover-exterior {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n    transform: rotateY(180deg);\n  }\n  .right-cover-exterior svg { width: 100%; height: 100%; }\n\n  .right-content {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n  }\n  .right-shell-svg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }\n  .right-shell-svg-container svg { width: 100%; height: 100%; }\n\n  .inner-components {\n    position: relative; z-index: 2; padding: 120px 30px 30px 30px; display: flex; flex-direction: column; align-items: center; height: 100%; box-sizing: border-box;\n  }\n\n  .secondary-screen {\n    width: 220px;\n    height: 75px;\n    background-color: var(--dex-dark-green);\n    border: 4px solid var(--dex-border);\n    border-radius: 6px;\n    margin-bottom: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n    padding: 0 10px;\n    font-family: 'Press Start 2P', monospace;\n    transition: all 0.3s ease;\n    color: transparent;\n    box-sizing: border-box;\n    overflow: hidden;\n  }\n  .secondary-screen.is-on { color: #0f380f; background-color: rgba(155, 188, 15, 0.85); box-shadow: inset 0 0 8px rgba(15, 56, 15, 0.6), 0 0 15px rgba(155, 188, 15, 0.6); text-shadow: 1px 1px 0px rgba(139, 172, 15, 0.3); }\n  .poke-info-mini {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n    justify-content: center;\n    line-height: 1.4;\n    width: 100%;\n    max-width: 100%;\n    overflow: hidden;\n  }\n\n  .poke-info-mini > div:first-child {\n    font-size: 0.85rem;\n    font-weight: bold;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .poke-info-mini .type-text {\n    font-size: 0.65rem;\n    margin-top: 6px;\n    opacity: 0.9;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .typing-number {\n    font-size: 1.2rem;\n    font-weight: 900;\n    text-align: right;\n    width: 100%;\n    color: inherit;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "styles",
+          "declaration": {
+            "name": "styles",
+            "module": "src/components/pokedex-app/pokedex-app.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-app/pokedex-voice.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "buildNarrationText",
+          "parameters": [
+            {
+              "name": "pokemon"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "speakPokemonEntry",
+          "parameters": [
+            {
+              "name": "pokemon"
+            },
+            {
+              "name": "{ onEnd }",
+              "default": "{}"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "buildNarrationText",
+          "declaration": {
+            "name": "buildNarrationText",
+            "module": "src/components/pokedex-app/pokedex-voice.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "speakPokemonEntry",
+          "declaration": {
+            "name": "speakPokemonEntry",
+            "module": "src/components/pokedex-app/pokedex-voice.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-dpad/pokedex-dpad.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexDpad",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "dpad-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-dpad",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexDpad",
+          "declaration": {
+            "name": "PokedexDpad",
+            "module": "src/components/pokedex-dpad/pokedex-dpad.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-dpad",
+          "declaration": {
+            "name": "PokedexDpad",
+            "module": "src/components/pokedex-dpad/pokedex-dpad.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-dpad/pokedex-dpad.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-dpad\n        @dpad-click=\"${(e) => console.log(\"dpad-click:\", e.detail.direction)}\"\n      ></pokedex-dpad>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-dpad/pokedex-dpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex-dpad/pokedex-dpad.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-numpad/pokedex-numpad.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexNumpad",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#digit",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "yellowFlash",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "yellowFlash"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "digit-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "yellowFlash",
+              "fieldName": "yellowFlash"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-numpad",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexNumpad",
+          "declaration": {
+            "name": "PokedexNumpad",
+            "module": "src/components/pokedex-numpad/pokedex-numpad.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-numpad",
+          "declaration": {
+            "name": "PokedexNumpad",
+            "module": "src/components/pokedex-numpad/pokedex-numpad.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-numpad/pokedex-numpad.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => renderNumpad(),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "YellowFlash",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Yellow button flashing (reset feedback)\",\n  render: () => renderNumpad(true),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-numpad/pokedex-numpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex-numpad/pokedex-numpad.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "YellowFlash",
+          "declaration": {
+            "name": "YellowFlash",
+            "module": "src/components/pokedex-numpad/pokedex-numpad.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-numpad/pokedex-numpad.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\n  :host {\n    display: block;\n    margin-bottom: 20px;\n  }\n\n  .grid-btn,\n  .white-btn,\n  .yellow-btn {\n    all: unset;\n    display: block;\n    box-sizing: border-box;\n    cursor: pointer;\n  }\n\n  .grid-buttons {\n    display: grid;\n    grid-template-columns: repeat(5, 1fr);\n    gap: 3px;\n    width: 220px;\n    background-color: var(--dex-border);\n    border: 4px solid var(--dex-border);\n    border-radius: 4px;\n    margin-bottom: 20px;\n    padding: 2px;\n  }\n  .grid-btn {\n    height: 42px;\n    background-color: #00bfff;\n    border-radius: 2px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #fff;\n    font-family: monospace;\n    font-weight: bold;\n    font-size: 1.4rem;\n    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);\n    user-select: none;\n    transition: transform 0.05s, background-color 0.05s;\n  }\n  .grid-btn:hover { background-color: #33ccff; }\n  .grid-btn:active { transform: scale(0.85); background-color: #0088cc; }\n\n  .middle-controls {\n    display: flex;\n    width: 220px;\n    justify-content: flex-end;\n    align-items: center;\n    gap: 15px;\n  }\n  .white-btns { display: flex; gap: 10px; margin-right: auto; }\n  .white-btn {\n    width: 45px;\n    height: 22px;\n    background-color: #fff;\n    border: 3px solid var(--dex-border);\n    border-radius: 4px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 0.7rem;\n    font-family: sans-serif;\n    font-weight: bold;\n  }\n  .white-btn:active { transform: scale(0.9); }\n  .white-btn.bold-red { color: red; }\n\n  .yellow-btn {\n    width: 22px;\n    height: 22px;\n    background-color: var(--dex-yellow);\n    border: 3px solid var(--dex-border);\n    border-radius: 50%;\n    transition: background-color 0.1s;\n  }\n  .yellow-btn.flash { background-color: #ffffee; box-shadow: 0 0 15px yellow; transform: scale(1.05); }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "styles",
+          "declaration": {
+            "name": "styles",
+            "module": "src/components/pokedex-numpad/pokedex-numpad.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexNavButtons",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-nav-buttons",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexNavButtons",
+          "declaration": {
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-nav-buttons",
+          "declaration": {
+            "name": "PokedexNavButtons",
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withDexBackground(html`\n      <pokedex-nav-buttons\n        @prev-click=\"${() => console.log(\"prev-click\")}\"\n        @next-click=\"${() => console.log(\"next-click\")}\"\n      ></pokedex-nav-buttons>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex-nav-buttons/pokedex-nav-buttons.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-screen/pokedex-screen.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexScreen",
+          "members": [
+            {
+              "kind": "method",
+              "name": "scrollBy",
+              "parameters": [
+                {
+                  "name": "deltaY"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#renderActiveView"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "privacy": "public",
+              "attribute": "isLoading"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "activeView",
+              "privacy": "public",
+              "attribute": "activeView"
+            },
+            {
+              "kind": "field",
+              "name": "isOn",
+              "privacy": "public",
+              "attribute": "isOn"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "isLoading",
+              "fieldName": "isLoading"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            },
+            {
+              "name": "activeView",
+              "fieldName": "activeView"
+            },
+            {
+              "name": "isOn",
+              "fieldName": "isOn"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-screen",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexScreen",
+          "declaration": {
+            "name": "PokedexScreen",
+            "module": "src/components/pokedex-screen/pokedex-screen.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-screen",
+          "declaration": {
+            "name": "PokedexScreen",
+            "module": "src/components/pokedex-screen/pokedex-screen.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-screen/pokedex-screen.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Off",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-screen></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "SystemReady",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"On, no search yet\",\n  render: () => withDexBackground(html`<pokedex-screen isOn></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Loading",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-screen isOn isLoading></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NotFound",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Error (not found)\",\n  render: () => withDexBackground(html`<pokedex-screen isOn error></pokedex-screen>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "ArtworkView",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loaded — artwork view\",\n  render: () =>\n    withDexBackground(\n      html`<pokedex-screen isOn .pokemon=${SAMPLE_ENTRY} .activeView=${0}></pokedex-screen>`,\n    ),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "StatsView",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loaded — stats view\",\n  render: () =>\n    withDexBackground(\n      html`<pokedex-screen isOn .pokemon=${SAMPLE_ENTRY} .activeView=${1}></pokedex-screen>`,\n    ),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Off",
+          "declaration": {
+            "name": "Off",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SystemReady",
+          "declaration": {
+            "name": "SystemReady",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Loading",
+          "declaration": {
+            "name": "Loading",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NotFound",
+          "declaration": {
+            "name": "NotFound",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ArtworkView",
+          "declaration": {
+            "name": "ArtworkView",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StatsView",
+          "declaration": {
+            "name": "StatsView",
+            "module": "src/components/pokedex-screen/pokedex-screen.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-sensor/pokedex-sensor.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexSensor",
+          "members": [
+            {
+              "kind": "field",
+              "name": "blinking",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "blinking"
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "loading"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "blinking",
+              "fieldName": "blinking"
+            },
+            {
+              "name": "loading",
+              "fieldName": "loading"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-sensor",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexSensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-sensor",
+          "declaration": {
+            "name": "PokedexSensor",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-sensor/pokedex-sensor.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Idle",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withDexBackground(html`<pokedex-sensor></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Blinking",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Blinking (voice/cry playing)\",\n  render: () => withDexBackground(html`<pokedex-sensor blinking></pokedex-sensor>`),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LoadingSequence",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Loading (LED sequence)\",\n  render: () => withDexBackground(html`<pokedex-sensor loading></pokedex-sensor>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Idle",
+          "declaration": {
+            "name": "Idle",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Blinking",
+          "declaration": {
+            "name": "Blinking",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LoadingSequence",
+          "declaration": {
+            "name": "LoadingSequence",
+            "module": "src/components/pokedex-sensor/pokedex-sensor.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewArtwork",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-artwork",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewArtwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-artwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-artwork\n        .pokemon=${{\n          name: \"charizard\",\n          img: \"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png\",\n        }}\n      ></pokedex-view-artwork>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokedex-view-artwork/pokedex-view-artwork.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-description/pokedex-view-description.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewDescription",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-description",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewDescription",
+          "declaration": {
+            "name": "PokedexViewDescription",
+            "module": "src/components/pokedex-view-description/pokedex-view-description.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-description",
+          "declaration": {
+            "name": "PokedexViewDescription",
+            "module": "src/components/pokedex-view-description/pokedex-view-description.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-description/pokedex-view-description.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "WithDescription",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-description\n        .pokemon=${{ description: \"Escupe fuego capaz de fundir rocas.\" }}\n      ></pokedex-view-description>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Empty",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"No description available\",\n  render: () =>\n    withScreenBackground(html`<pokedex-view-description .pokemon=${{}}></pokedex-view-description>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-description/pokedex-view-description.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithDescription",
+          "declaration": {
+            "name": "WithDescription",
+            "module": "src/components/pokedex-view-description/pokedex-view-description.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Empty",
+          "declaration": {
+            "name": "Empty",
+            "module": "src/components/pokedex-view-description/pokedex-view-description.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewEvolutions",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-evolutions",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewEvolutions",
+          "declaration": {
+            "name": "PokedexViewEvolutions",
+            "module": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-evolutions",
+          "declaration": {
+            "name": "PokedexViewEvolutions",
+            "module": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ThreeStageLine",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-evolutions\n        .pokemon=${{ evolutions: [\"charmander\", \"charmeleon\", \"charizard\"] }}\n      ></pokedex-view-evolutions>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NoEvolutions",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-evolutions .pokemon=${{ evolutions: [\"ditto\"] }}></pokedex-view-evolutions>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ThreeStageLine",
+          "declaration": {
+            "name": "ThreeStageLine",
+            "module": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoEvolutions",
+          "declaration": {
+            "name": "NoEvolutions",
+            "module": "src/components/pokedex-view-evolutions/pokedex-view-evolutions.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-moves/pokedex-view-moves.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewMoves",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-moves",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewMoves",
+          "declaration": {
+            "name": "PokedexViewMoves",
+            "module": "src/components/pokedex-view-moves/pokedex-view-moves.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-moves",
+          "declaration": {
+            "name": "PokedexViewMoves",
+            "module": "src/components/pokedex-view-moves/pokedex-view-moves.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-moves/pokedex-view-moves.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "WithMoves",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-moves\n        .pokemon=${{ moves: [\"scratch\", \"growl\", \"flamethrower\", \"wing attack\", \"fire spin\"] }}\n      ></pokedex-view-moves>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "NoMoves",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => withScreenBackground(html`<pokedex-view-moves .pokemon=${{}}></pokedex-view-moves>`),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-moves/pokedex-view-moves.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithMoves",
+          "declaration": {
+            "name": "WithMoves",
+            "module": "src/components/pokedex-view-moves/pokedex-view-moves.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoMoves",
+          "declaration": {
+            "name": "NoMoves",
+            "module": "src/components/pokedex-view-moves/pokedex-view-moves.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-stats/pokedex-view-stats.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewStats",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-stats",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewStats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-stats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "HighStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"High stats (near-legendary)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, special_attack: 80, special_defense: 90, speed: 100 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "LowStats",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Low stats (early-game)\",\n  render: () =>\n    withScreenBackground(html`\n      <pokedex-view-stats\n        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, special_attack: 60, special_defense: 50, speed: 65 } }}\n      ></pokedex-view-stats>\n    `),\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HighStats",
+          "declaration": {
+            "name": "HighStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "LowStats",
+          "declaration": {
+            "name": "LowStats",
+            "module": "src/components/pokedex-view-stats/pokedex-view-stats.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-card.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonCard",
+          "members": [
+            {
+              "kind": "method",
+              "name": "toggleFlip"
+            },
+            {
+              "kind": "method",
+              "name": "_renderPokedex"
+            },
+            {
+              "kind": "method",
+              "name": "_onDragEnter",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onDragOver",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onDragLeave"
+            },
+            {
+              "kind": "method",
+              "name": "_onDrop",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "flipped",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "flipped"
+            },
+            {
+              "kind": "field",
+              "name": "forceHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "forceHover"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "type": {
+                "text": "object"
+              },
+              "default": "{}",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "dragOver",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "dragOver"
+            },
+            {
+              "kind": "field",
+              "name": "hoverEnabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "privacy": "public",
+              "attribute": "hoverEnabled"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "flipped",
+              "fieldName": "flipped"
+            },
+            {
+              "name": "forceHover",
+              "fieldName": "forceHover"
+            },
+            {
+              "name": "dragOver",
+              "fieldName": "dragOver"
+            },
+            {
+              "name": "hoverEnabled",
+              "fieldName": "hoverEnabled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonCard",
+          "declaration": {
+            "name": "PokemonCard",
+            "module": "src/components/pokemon-card/pokemon-card.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-card",
+          "declaration": {
+            "name": "PokemonCard",
+            "module": "src/components/pokemon-card/pokemon-card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-card.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`<pokemon-card .pokemon=${SAMPLE_POKEMON}></pokemon-card>`,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-card/pokemon-card.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-card/pokemon-card.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-card.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "frontStyles",
+          "default": "css`\r\n  .containerCard {\r\n    place-items: center;\r\n    position: absolute;\r\n    min-width: 100%;\r\n    min-height: 100%;\r\n    backface-visibility: hidden;\r\n    border-radius: 1em;\r\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\r\n    text-align: center;\r\n    transform: rotateY(0deg);\r\n    transform-style: preserve-3d;\r\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard::before {\r\n    content: \"\";\r\n    position: absolute;\r\n    width: 450px;\r\n    height: 35px;\r\n    top: 0;\r\n    right: 35px;\r\n    transition: 0.1s ease-in-out;\r\n    background: transparent;\r\n    transform: rotate(-45deg) translate(0, -100px);\r\n  }\r\n\r\n  .containerCard:hover, .containerCard.force-hover {\r\n    overflow: hidden;\r\n    display: grid;\r\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\r\n  }\r\n\r\n  .containerCard:hover::before, .containerCard.force-hover::before {\r\n    background: linear-gradient(50deg, #00ff59, #02b3ff);\r\n    animation: brightness 1.9s;\r\n  }\r\n\r\n  .containerCard .card {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: 15.5rem;\r\n    height: 21.5rem;\r\n    background: transparent;\r\n    border-radius: 0.8em;\r\n    color: transparent;\r\n    transition: 0.1s ease-in-out;\r\n    z-index: 999;\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard:hover .card, .containerCard.force-hover .card {\r\n    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),\r\n      var(--gradient-background);\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard .card .top-toolbar {\r\n    display: none;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 10%;\r\n    width: 80%;\r\n    height: 10%;\r\n    z-index: 100;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCard:hover .top-toolbar, .containerCard.force-hover .top-toolbar {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCard .card .top-toolbar pokemon-pokedex-button {\r\n    height: 100%;\r\n    width: 10%;\r\n  }\r\n\r\n  .containerCard:hover .image-container, .containerCard.force-hover .image-container {\r\n    position: relative;\r\n    margin-top: 0px;\r\n    display: block;\r\n    height: 10rem;\r\n  }\r\n\r\n  .containerCard:hover .image-container::before, .containerCard.force-hover .image-container::before {\r\n    content: \"\";\r\n    width: 150%;\r\n    height: 250%;\r\n    border-radius: 50%;\r\n    background: var(--gradient-background);\r\n    position: absolute;\r\n    top: -170%;\r\n    left: -25%;\r\n    z-index: 1;\r\n  }\r\n\r\n  .containerCard:hover .image-container::after, .containerCard.force-hover .image-container::after {\r\n    content: \"\";\r\n    width: 150%;\r\n    height: 250%;\r\n    border-radius: 50%;\r\n    background: rgba(255, 255, 255, 0.4);\r\n\r\n    position: absolute;\r\n    top: -170%;\r\n    left: -25%;\r\n    z-index: 5;\r\n  }\r\n\r\n  .containerCard .card img {\r\n    position: absolute;\r\n    max-width: 100%;\r\n    height: 13rem;\r\n    transition: 0.3s ease-in-out;\r\n    top: 35%;\r\n    left: 0%;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .containerCard:hover img, .containerCard.force-hover img {\r\n    position: relative;\r\n    top: 10%;\r\n    transition: all 0.3s ease-in-out 0s;\r\n    z-index: 10;\r\n    height: 9rem;\r\n    width: 9rem;\r\n  }\r\n\r\n  .containerCard:hover .back-container, .containerCard.force-hover .back-container {\r\n    width: 100%;\r\n    height: 80%;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n    z-index: 9;\r\n  }\r\n\r\n  .containerCard .img-back {\r\n    display: none;\r\n  }\r\n\r\n  .containerCard:hover .img-back, .containerCard.force-hover .img-back {\r\n    display: block;\r\n    opacity: 0.5;\r\n    width: 6rem;\r\n    height: 7rem;\r\n  }\r\n\r\n  .containerCard .card h2 {\r\n    display: block;\r\n    font-weight: 500;\r\n    text-align: start;\r\n    width: 90%;\r\n    margin: 0.5rem;\r\n    margin-top: 1rem;\r\n    margin-bottom: 0.3rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #f2f2f2;\r\n    font-size: 1.2rem;\r\n  }\r\n\r\n  .containerCard .card .info-container {\r\n    display: none;\r\n    flex-direction: column;\r\n    justify-content: space-evenly;\r\n    align-items: center;\r\n  }\r\n\r\n  .containerCard:hover .card .info-container, .containerCard.force-hover .card .info-container {\r\n    display: flex;\r\n  }\r\n\r\n  .containerCard .id-exp-container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n  }\r\n\r\n  .containerCard .card .poke-id {\r\n    width: 50%;\r\n    text-align: left;\r\n    display: inline-block;\r\n    font-size: 0.8rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #7a7a7a;\r\n  }\r\n\r\n  .containerCard .card .poke-exp {\r\n    width: 50%;\r\n    text-align: right;\r\n    display: inline-block;\r\n    font-size: 0.8rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #7a7a7a;\r\n  }\r\n\r\n  .containerCard .type-container {\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: start;\r\n    gap: 0.2rem;\r\n  }\r\n\r\n  .containerCard .character-container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    flex-wrap: wrap;\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n  }\r\n`"
+        },
+        {
+          "kind": "variable",
+          "name": "backStyles",
+          "default": "css`\r\n  .containerCardBack {\r\n    display: grid;\r\n    place-items: center;\r\n    position: absolute;\r\n    backface-visibility: hidden;\r\n    min-width: 255px;\r\n    min-height: 355px;\r\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\r\n    border-radius: 1em;\r\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\r\n    text-align: center;\r\n    overflow: hidden;\r\n    transform: rotateY(180deg);\r\n    transform-style: preserve-3d;\r\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\r\n  }\r\n  .containerCardBack .card {\r\n    display: block;\r\n    place-items: center;\r\n    width: 247px;\r\n    height: 347px;\r\n    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),\r\n      var(--gradient-background);\r\n    border-radius: 0.8em;\r\n    z-index: 1;\r\n    color: transparent;\r\n    align-content: center;\r\n    transition: 1s ease;\r\n  }\r\n  .containerCardBack h5 {\r\n    color: #f2f2f2;\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.08em;\r\n    margin-bottom: 6px;\r\n    margin-top: 10px;\r\n  }\r\n\r\n  .containerCardBack h6 {\r\n    color: #fff;\r\n    font-size: 15px;\r\n    margin-bottom: 6px;\r\n    margin-top: 10px;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    margin-left: 5%;\r\n    margin-right: 5%;\r\n  }\r\n  pokemon-type-matchups {\r\n    margin-top: 8%;\r\n    width: 90%;\r\n  }\r\n  .containerCardBack .card .top-toolbar {\r\n    display: none;\r\n    position: absolute;\r\n    top: 5%;\r\n    left: 10%;\r\n    width: 80%;\r\n    height: 10%;\r\n    z-index: 100;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCardBack:hover .top-toolbar {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCardBack .card .top-toolbar pokemon-pokedex-button {\r\n    height: 100%;\r\n    width: 10%;\r\n  }\r\n`"
+        },
+        {
+          "kind": "variable",
+          "name": "sharedStyles",
+          "default": "css`\r\n  :host {\r\n    user-select: none;\r\n    margin: 0 1rem;\r\n  }\r\n\r\n  .scaff {\r\n    display: inline-block;\r\n    position: relative;\r\n    min-width: 16rem;\r\n    min-height: 22rem;\r\n    overflow: inherit;\r\n    background: transparent;\r\n    border-radius: 1em;\r\n    cursor: url(assets/poke1.png), auto;\r\n    transition: 0.3s all;\r\n  }\r\n\r\n  /* Mientras se arrastra el ícono de la pokedex sobre la card, se anula el\r\n     :hover para que no se abra/expanda mientras se suelta el ícono. */\r\n  .scaff.drag-over .containerCard,\r\n  .scaff.drag-over .containerCardBack {\r\n    pointer-events: none;\r\n  }\r\n\r\n  /* Se activa desde listar-pokemon (IntersectionObserver, único responsable\r\n     de esto — ya no hay ningún view-timeline/scroll-driven animation en\r\n     paralelo peleando por el mismo estado) cuando la card está mayormente\r\n     fuera del área visible del scroll: apaga el :hover (para que la fila\r\n     apenas asomada en el borde inferior no muestre su info recortada) y la\r\n     atenúa/encoge en el lugar, sin mover su posición — eso lo sigue\r\n     moviendo únicamente el scroll nativo. */\r\n  .scaff.hover-disabled .containerCard,\r\n  .scaff.hover-disabled .containerCardBack {\r\n    pointer-events: none;\r\n  }\r\n\r\n  .scaff.hover-disabled {\r\n    opacity: 0.3;\r\n    transform: scale(0.85);\r\n  }\r\n\r\n  .scaff.flipped > .containerCard {\r\n    transform: rotateY(-180deg);\r\n  }\r\n\r\n  .scaff.flipped > .containerCardBack {\r\n    transform: rotateY(0deg);\r\n  }\r\n\r\n  @keyframes brightness {\r\n    100% {\r\n      transform: rotate(-45deg) translate(0, 450px);\r\n    }\r\n  }\r\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "frontStyles",
+          "declaration": {
+            "name": "frontStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "backStyles",
+          "declaration": {
+            "name": "backStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "sharedStyles",
+          "declaration": {
+            "name": "sharedStyles",
+            "module": "src/components/pokemon-card/pokemon-card.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-favorite-button/pokemon-favorite-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonFavoriteButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#toggle",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "pokemonId",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public",
+              "attribute": "pokemon-id"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "active"
+            },
+            {
+              "kind": "field",
+              "name": "_onChange",
+              "default": "() => {\n      this.active = favoritesStore.isFavorite(this.pokemonId);\n    }"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon-id",
+              "fieldName": "pokemonId"
+            },
+            {
+              "name": "active",
+              "fieldName": "active"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-favorite-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonFavoriteButton",
+          "declaration": {
+            "name": "PokemonFavoriteButton",
+            "module": "src/components/pokemon-favorite-button/pokemon-favorite-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-favorite-button",
+          "declaration": {
+            "name": "PokemonFavoriteButton",
+            "module": "src/components/pokemon-favorite-button/pokemon-favorite-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-favorite-button/pokemon-favorite-button.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokemon-favorite-button pokemon-id=\"99999\"></pokemon-favorite-button>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-favorite-button/pokemon-favorite-button.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-favorite-button/pokemon-favorite-button.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-list.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ListarPokemon",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_hoverObserver",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "pokemons",
+              "privacy": "public",
+              "attribute": "pokemons"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemons",
+              "fieldName": "pokemons"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "listar-pokemon",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ListarPokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "listar-pokemon",
+          "declaration": {
+            "name": "ListarPokemon",
+            "module": "src/components/pokemon-list/pokemon-list.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-list.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  render: () => html`<listar-pokemon .pokemons=${SAMPLE_POKEMONS}></listar-pokemon>`,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-list/pokemon-list.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-list/pokemon-list.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonPokedexButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#onClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "pokedex-click",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-pokedex-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonPokedexButton",
+          "declaration": {
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-pokedex-button",
+          "declaration": {
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`\n    <div style=\"width: 2rem; height: 2rem;\">\n      <pokemon-pokedex-button\n        @pokedex-click=${() => console.log(\"pokedex-click\")}\n      ></pokemon-pokedex-button>\n    </div>\n  `,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-pokedex-button/pokemon-pokedex-button.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonSearch",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#emit",
+              "parameters": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "detail"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#toggle"
+            },
+            {
+              "kind": "method",
+              "name": "#collapse"
+            },
+            {
+              "kind": "method",
+              "name": "#clearActiveSearch"
+            },
+            {
+              "kind": "method",
+              "name": "#onInput",
+              "parameters": [
+                {
+                  "name": "event"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#onKeydown",
+              "parameters": [
+                {
+                  "name": "event"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "expanded"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "value",
+              "fieldName": "value"
+            },
+            {
+              "name": "expanded",
+              "fieldName": "expanded"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-search",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonSearch",
+          "declaration": {
+            "name": "PokemonSearch",
+            "module": "src/components/pokemon-search/pokemon-search.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-search",
+          "declaration": {
+            "name": "PokemonSearch",
+            "module": "src/components/pokemon-search/pokemon-search.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Collapsed",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () => html`<pokemon-search></pokemon-search>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "WithValue",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"With an active search\",\n  render: () => html`<pokemon-search value=\"pikachu\"></pokemon-search>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Collapsed",
+          "declaration": {
+            "name": "Collapsed",
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "WithValue",
+          "declaration": {
+            "name": "WithValue",
+            "module": "src/components/pokemon-search/pokemon-search.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-search/pokemon-search.utils.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "normalizeSearchQuery",
+          "parameters": [
+            {
+              "name": "raw"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "normalizeSearchQuery",
+          "declaration": {
+            "name": "normalizeSearchQuery",
+            "module": "src/components/pokemon-search/pokemon-search.utils.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-stat-item/pokemon-stat-item.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonStatItem",
+          "members": [
+            {
+              "kind": "field",
+              "name": "icon",
+              "privacy": "public",
+              "attribute": "icon"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "attribute": "value"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "icon",
+              "fieldName": "icon"
+            },
+            {
+              "name": "label",
+              "fieldName": "label"
+            },
+            {
+              "name": "value",
+              "fieldName": "value"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-stat-item",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonStatItem",
+          "declaration": {
+            "name": "PokemonStatItem",
+            "module": "src/components/pokemon-stat-item/pokemon-stat-item.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-stat-item",
+          "declaration": {
+            "name": "PokemonStatItem",
+            "module": "src/components/pokemon-stat-item/pokemon-stat-item.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-stat-item/pokemon-stat-item.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Weight",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  args: { icon: \"weight-outline\", label: \"Weight\", value: \"6.9 Kg\" },\r\n  render: ({ icon, label, value }) =>\r\n    html`<pokemon-stat-item icon=${icon} label=${label} value=${value}></pokemon-stat-item>`,\r\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "Height",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  args: { icon: \"tapemeasure\", label: \"Height\", value: \"0.7 Mts\" },\r\n  render: Weight.render,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-stat-item/pokemon-stat-item.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Weight",
+          "declaration": {
+            "name": "Weight",
+            "module": "src/components/pokemon-stat-item/pokemon-stat-item.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Height",
+          "declaration": {
+            "name": "Height",
+            "module": "src/components/pokemon-stat-item/pokemon-stat-item.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-badge/pokemon-type-badge.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "TYPES_COLORS",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  normal: [\"#f48b1fff\", \"#f3b81aff\"],\r\n  fire: [\"#f37021ff\", \"#f3b81aff\"],\r\n  water: [\"#0b87b3ff\", \"#20afdfff\"],\r\n  electric: [\"#f3961fff\", \"#f3b81aff\"],\r\n  grass: [\"#459f46ff\", \"#57b947ff\"],\r\n  ice: [\"#20afdfff\", \"#66cef6ff\"],\r\n  fighting: [\"#8e191bff\", \"#b81f25ff\"],\r\n  poison: [\"#8e191bff\", \"#b81f25ff\"],\r\n  ground: [\"#5b3513ff\", \"#77421aff\"],\r\n  flying: [\"#0b87b3ff\", \"#20afdfff\"],\r\n  psychic: [\"#b11f83ff\", \"#c03995ff\"],\r\n  bug: [\"#459f46ff\", \"#57b947ff\"],\r\n  rock: [\"#917f6cff\", \"#a69f96ff\"],\r\n  ghost: [\"#15110cff\", \"#403b35ff\"],\r\n  dragon: [\"#459f46ff\", \"#57b947ff\"],\r\n  dark: [\"#360928ff\", \"#712158ff\"],\r\n  steel: [\"#352514ff\", \"#523e28ff\"],\r\n  fairy: [\"#f7ac36ff\", \"#f3b81aff\"],\r\n  unknown: [\"#15110cff\", \"#403b35ff\"],\r\n}"
+        },
+        {
+          "kind": "function",
+          "name": "getTypeColors",
+          "parameters": [
+            {
+              "name": "type"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonTypeBadge",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#name",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-badge",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TYPES_COLORS",
+          "declaration": {
+            "name": "TYPES_COLORS",
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getTypeColors",
+          "declaration": {
+            "name": "getTypeColors",
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PokemonTypeBadge",
+          "declaration": {
+            "name": "PokemonTypeBadge",
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-badge",
+          "declaration": {
+            "name": "PokemonTypeBadge",
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-badge/pokemon-type-badge.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "Default",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\r\n  args: { type: \"fire\" },\r\n  render: ({ type }) => html`<pokemon-type-badge .type=${type}></pokemon-type-badge>`,\r\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Default",
+          "declaration": {
+            "name": "Default",
+            "module": "src/components/pokemon-type-badge/pokemon-type-badge.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-filter/pokemon-type-filter.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonTypeFilter",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#toggle",
+              "parameters": [
+                {
+                  "name": "type"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#clear"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "selected"
+            }
+          ],
+          "events": [
+            {
+              "name": "types-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "selected",
+              "fieldName": "selected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonTypeFilter",
+          "declaration": {
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-filter",
+          "declaration": {
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "NoneSelected",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "SomeSelected",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Two types selected (fire, water)\",\n  render: () =>\n    html`<pokemon-type-filter\n      .selected=${[\"fire\", \"water\"]}\n      @types-change=\"${(e) => console.log(\"types-change:\", e.detail)}\"\n    ></pokemon-type-filter>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "NoneSelected",
+          "declaration": {
+            "name": "NoneSelected",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SomeSelected",
+          "declaration": {
+            "name": "SomeSelected",
+            "module": "src/components/pokemon-type-filter/pokemon-type-filter.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-matchups/pokemon-type-matchups.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonTypeMatchups",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#renderChip",
+              "parameters": [
+                {
+                  "name": "{ type, multiplier }"
+                },
+                {
+                  "name": "accentColor"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "privacy": "public",
+              "attribute": "type"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-matchups",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonTypeMatchups",
+          "declaration": {
+            "name": "PokemonTypeMatchups",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-matchups",
+          "declaration": {
+            "name": "PokemonTypeMatchups",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-matchups/pokemon-type-matchups.stories.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "SingleType",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Single type (water)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"water\"]}></pokemon-type-matchups>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "DualType",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Dual type (fire/flying)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"fire\", \"flying\"]}></pokemon-type-matchups>`,\n}"
+        },
+        {
+          "kind": "variable",
+          "name": "ManyResistances",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  name: \"Many resistances (steel/fairy)\",\n  render: () => html`<pokemon-type-matchups .type=${[\"steel\", \"fairy\"]}></pokemon-type-matchups>`,\n}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SingleType",
+          "declaration": {
+            "name": "SingleType",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "DualType",
+          "declaration": {
+            "name": "DualType",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.stories.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ManyResistances",
+          "declaration": {
+            "name": "ManyResistances",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.stories.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-matchups/pokemon-type-matchups.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\n  :host {\n    display: block;\n    width: 100%;\n  }\n\n  .group {\n    margin-bottom: 0.7rem;\n  }\n\n  .group-title {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 0.3rem;\n    font-size: 0.68rem;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.06em;\n    color: var(--accent-color, #f2f2f2);\n    margin-bottom: 0.4rem;\n  }\n\n  .group-title .arrow {\n    font-size: 0.6rem;\n  }\n\n  .chips {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 0.6rem;\n    justify-content: center;\n    padding: 0.4rem;\n    background: rgba(255, 255, 255, 0.04);\n    border-radius: 0.6rem;\n  }\n\n  .chip {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    gap: 0.2rem;\n  }\n\n  .chip .badge {\n    width: 2.1rem;\n    height: 2.1rem;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);\n  }\n\n  .chip img {\n    width: 1.2rem;\n    height: 1.2rem;\n    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));\n  }\n\n  .chip .mult {\n    font-size: 0.62rem;\n    font-weight: 700;\n    color: var(--accent-color, #f2f2f2);\n  }\n\n  .chip .tooltip {\n    position: absolute;\n    bottom: calc(100% + 4px);\n    left: 50%;\n    transform: translateX(-50%) translateY(2px);\n    background: #171614;\n    border: 1px solid rgba(255, 255, 255, 0.25);\n    color: #f2f2f2;\n    font-size: 0.6rem;\n    font-weight: 600;\n    text-transform: capitalize;\n    padding: 0.15rem 0.45rem;\n    border-radius: 4px;\n    white-space: nowrap;\n    opacity: 0;\n    pointer-events: none;\n    transition: opacity 0.12s ease, transform 0.12s ease;\n    z-index: 10;\n  }\n\n  .chip:hover .tooltip {\n    opacity: 1;\n    transform: translateX(-50%) translateY(0);\n  }\n\n  .empty {\n    font-size: 0.65rem;\n    color: #f2f2f2;\n    opacity: 0.5;\n    padding: 0.3rem 0;\n  }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "styles",
+          "declaration": {
+            "name": "styles",
+            "module": "src/components/pokemon-type-matchups/pokemon-type-matchups.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-type-matchups/type-effectiveness.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "TYPE_EFFECTIVENESS",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  normal: { rock: 0.5, ghost: 0, steel: 0.5 },\n  fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },\n  water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },\n  electric: { water: 2, electric: 0.5, grass: 0.5, ground: 0, flying: 2, dragon: 0.5 },\n  grass: {\n    fire: 0.5,\n    water: 2,\n    grass: 0.5,\n    poison: 0.5,\n    ground: 2,\n    flying: 0.5,\n    bug: 0.5,\n    rock: 2,\n    dragon: 0.5,\n    steel: 0.5,\n  },\n  ice: { fire: 0.5, water: 0.5, grass: 2, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },\n  fighting: {\n    normal: 2,\n    ice: 2,\n    poison: 0.5,\n    flying: 0.5,\n    psychic: 0.5,\n    bug: 0.5,\n    rock: 2,\n    ghost: 0,\n    dark: 2,\n    steel: 2,\n    fairy: 0.5,\n  },\n  poison: { grass: 2, poison: 0.5, ground: 0.5, rock: 0.5, ghost: 0.5, steel: 0, fairy: 2 },\n  ground: { fire: 2, electric: 2, grass: 0.5, poison: 2, flying: 0, bug: 0.5, rock: 2, steel: 2 },\n  flying: { electric: 0.5, grass: 2, fighting: 2, bug: 2, rock: 0.5, steel: 0.5 },\n  psychic: { fighting: 2, poison: 2, psychic: 0.5, dark: 0, steel: 0.5 },\n  bug: {\n    fire: 0.5,\n    grass: 2,\n    fighting: 0.5,\n    poison: 0.5,\n    flying: 0.5,\n    psychic: 2,\n    ghost: 0.5,\n    dark: 2,\n    steel: 0.5,\n    fairy: 0.5,\n  },\n  rock: { fire: 2, ice: 2, fighting: 0.5, ground: 0.5, flying: 2, bug: 2, steel: 0.5 },\n  ghost: { normal: 0, psychic: 2, ghost: 2, dark: 0.5 },\n  dragon: { dragon: 2, steel: 0.5, fairy: 0 },\n  dark: { fighting: 0.5, psychic: 2, ghost: 2, dark: 0.5, fairy: 0.5 },\n  steel: { fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2 },\n  fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 },\n}"
+        },
+        {
+          "kind": "function",
+          "name": "getTypeMatchups",
+          "parameters": [
+            {
+              "name": "defenderTypes"
+            }
+          ],
+          "description": "Calcula, para uno o dos tipos defensores, contra qué tipos atacantes es\ndébil (multiplicador > 1) y contra cuáles resiste (multiplicador < 1,\nincluyendo inmunidad = 0). Combina ambos tipos multiplicando."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TYPE_EFFECTIVENESS",
+          "declaration": {
+            "name": "TYPE_EFFECTIVENESS",
+            "module": "src/components/pokemon-type-matchups/type-effectiveness.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getTypeMatchups",
+          "declaration": {
+            "name": "getTypeMatchups",
+            "module": "src/components/pokemon-type-matchups/type-effectiveness.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/api/poke-api.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokeApi",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#request",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonCount"
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ offset, limit }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemon",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonByType",
+              "parameters": [
+                {
+                  "name": "typeName"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonFullEntry",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokeApi",
+          "declaration": {
+            "name": "PokeApi",
+            "module": "src/services/api/poke-api.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/data-managers/pokedex-entry-data-manager.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexEntryDataManager",
+          "members": [
+            {
+              "kind": "method",
+              "name": "getFullEntry",
+              "parameters": [
+                {
+                  "name": "{ query }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#formatPokedexEntry",
+              "parameters": [
+                {
+                  "name": "pokemon"
+                },
+                {
+                  "name": "species"
+                },
+                {
+                  "name": "evolutions"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#extractEvolutionLine",
+              "parameters": [
+                {
+                  "name": "chain"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "api",
+              "default": "api"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexEntryDataManager",
+          "declaration": {
+            "name": "PokedexEntryDataManager",
+            "module": "src/services/data-managers/pokedex-entry-data-manager.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/data-managers/pokemon-data-manager.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonDataManager",
+          "members": [
+            {
+              "kind": "method",
+              "name": "getResultsCount"
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ page, resultsPerPage }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonByIds",
+              "parameters": [
+                {
+                  "name": "ids"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "searchPokemon",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getFilteredPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ types, page, resultsPerPage }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#toPokemon",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "api",
+              "default": "api"
+            },
+            {
+              "kind": "field",
+              "name": "pageCache",
+              "default": "new Map()"
+            },
+            {
+              "kind": "field",
+              "name": "typeFilterCache",
+              "default": "new Map()"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonDataManager",
+          "declaration": {
+            "name": "PokemonDataManager",
+            "module": "src/services/data-managers/pokemon-data-manager.js"
           }
         }
       ]

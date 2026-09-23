@@ -1,0 +1,54 @@
+/* Tema Pokédex para los popovers de driver.js (ver app-tour.js). */
+
+.driver-popover {
+  background-color: #1c2e28;
+  background-image: linear-gradient(160deg, #1c2e28, #2c4a3f);
+  color: #f2f2f2;
+  border: 3px solid #e32230;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  max-width: 320px;
+}
+
+.driver-popover-title {
+  color: #e8c722;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.driver-popover-description {
+  color: #dedede;
+}
+
+.driver-popover-progress-text {
+  color: #8bd18f;
+}
+
+.driver-popover-footer-btn {
+  background-color: #e8c722;
+  color: #1c2e28;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-weight: 700;
+}
+
+.driver-popover-footer-btn:hover,
+.driver-popover-footer-btn:focus {
+  background-color: #ffdd55;
+  color: #1c2e28;
+}
+
+.driver-popover-close-btn {
+  color: #e8c722;
+}
+
+.driver-popover-close-btn:hover,
+.driver-popover-close-btn:focus {
+  color: #ffdd55;
+}
+
+.driver-popover-arrow {
+  border-color: #2c4a3f;
+}
