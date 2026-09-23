@@ -26,15 +26,22 @@ export class PaginationNumbers extends LitElement {
       margin: 0 5rem;
     }
 
+    .pagination-numbers .number,
+    .pagination-numbers .active {
+      all: unset;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
     .pagination-numbers .number {
       margin: 0 10px;
       padding: 8px;
       border-radius: 20%;
-      cursor: pointer;
       background: rgba(255, 255, 255, 0.5);
     }
 
-    .pagination-numbers .number:hover {
+    .pagination-numbers .number:hover,
+    .pagination-numbers .number:focus-visible {
       background: rgba(200, 200, 200, 0.8);
       transform: scale(1.1);
       transition: 0.1s all ease-in-out;
@@ -47,6 +54,7 @@ export class PaginationNumbers extends LitElement {
       border-radius: 20%;
       background: rgba(0, 0, 0, 0.5);
       color: #fff;
+      cursor: default;
     }
   `;
 
@@ -63,24 +71,45 @@ export class PaginationNumbers extends LitElement {
     );
   }
 
+  #activeButton(num) {
+    return html`
+      <button type="button" class="active" aria-current="page" aria-label="Página ${num}, actual" disabled>
+        ${num}
+      </button>
+    `;
+  }
+
+  #numberButton(num) {
+    return html`
+      <button
+        type="button"
+        class="number"
+        aria-label="Ir a la página ${num}"
+        @click=${() => this._onClickNumber(num)}
+      >
+        ${num}
+      </button>
+    `;
+  }
+
   render() {
     return html`
       <div class="pagination-numbers">
         ${this.numbers.map((num) => {
           if (num === this.currentPage && num === this.limit) {
-            return html`<span class="active">${num}</span>`;
+            return this.#activeButton(num);
           }
           if (num === this.limit) {
-            return html`<span class="number" @click=${() => this._onClickNumber(num)}>${num}</span>`;
+            return this.#numberButton(num);
           }
           if (num === this.currentPage) {
             return html`
-              <span class="active">${num}</span>
+              ${this.#activeButton(num)}
               <hr class="vertical" />
             `;
           }
           return html`
-            <span class="number" @click=${() => this._onClickNumber(num)}>${num}</span>
+            ${this.#numberButton(num)}
             <hr class="vertical" />
           `;
         })}
