@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-numpad.js";
-import { withDexBackground } from "./pokedex-story-helpers.js";
+import { withDexBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 function renderNumpad(yellowFlash = false) {
   return withDexBackground(html`

@@ -1,12 +1,12 @@
 // src/components/pokemon-card/pokemon-card.js
 import { LitElement, html, css } from "lit";
-import "./pokemon-type-badge.js";
-import "./pokemon-stat-item.js";
-import "./pokemon-pokedex-button.js";
-import "./pokemon-type-matchups.js";
-import "./pokemon-favorite-button.js";
+import "../pokemon-type-badge/pokemon-type-badge.js";
+import "../pokemon-stat-item/pokemon-stat-item.js";
+import "../pokemon-pokedex-button/pokemon-pokedex-button.js";
+import "../pokemon-type-matchups/pokemon-type-matchups.js";
+import "../pokemon-favorite-button/pokemon-favorite-button.js";
 import { frontStyles, backStyles, sharedStyles } from "./pokemon-card.styles.js";
-import { getTypeColors } from "./pokemon-type-badge.js";
+import { getTypeColors } from "../pokemon-type-badge/pokemon-type-badge.js";
 
 export class PokemonCard extends LitElement {
   static properties = {

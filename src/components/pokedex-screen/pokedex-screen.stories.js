@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "./pokedex-screen.js";
-import { withDexBackground } from "./pokedex-story-helpers.js";
+import { withDexBackground } from "../../storybook-helpers/pokedex-story-helpers.js";
 
 const SAMPLE_ENTRY = {
   id: 6,

@@ -1,9 +1,9 @@
 import { LitElement, html, css } from "lit";
-import "./pokedex-view-artwork.js";
-import "./pokedex-view-stats.js";
-import "./pokedex-view-moves.js";
-import "./pokedex-view-description.js";
-import "./pokedex-view-evolutions.js";
+import "../pokedex-view-artwork/pokedex-view-artwork.js";
+import "../pokedex-view-stats/pokedex-view-stats.js";
+import "../pokedex-view-moves/pokedex-view-moves.js";
+import "../pokedex-view-description/pokedex-view-description.js";
+import "../pokedex-view-evolutions/pokedex-view-evolutions.js";
 
 const VIEWS = [
   "pokedex-view-artwork",
