@@ -1,4 +1,3 @@
-// src/components/pokemon-stat-item/pokemon-stat-item.js
 import { LitElement, html, css } from "lit";
 
 export class PokemonStatItem extends LitElement {

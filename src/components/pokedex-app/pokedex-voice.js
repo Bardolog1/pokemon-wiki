@@ -1,10 +1,6 @@
-// Lógica de narración por voz de la Pokédex, separada de pokedex-app.js
-// porque es lógica pura (arma texto) + un efecto secundario aislado
-// (SpeechSynthesis), sin tocar ningún otro estado del componente.
+// Narración por voz separada de pokedex-app: texto puro más un efecto aislado (SpeechSynthesis).
 
-// Arma el texto que narra la Pokédex: tipo, estadísticas, dato curioso y
-// línea evolutiva. Función pura — testeable sin SpeechSynthesis ni un
-// componente Lit montado.
+// Arma el texto narrado: tipo, estadísticas, dato curioso y línea evolutiva. Pura, testeable sin SpeechSynthesis.
 export function buildNarrationText(pokemon) {
   const { name, type, stats, description, evolutions } = pokemon;
   const typeText = (type || []).join(" y ");
@@ -22,10 +18,8 @@ export function buildNarrationText(pokemon) {
   ].join(" ");
 }
 
-// Cancela cualquier narración en curso y arranca una nueva para este
-// Pokémon. pitch/rate son los únicos parámetros reales que expone
-// SpeechSynthesisUtterance para acercarla a un tono más sintético; no hay
-// forma estándar de rutear la síntesis de voz por Web Audio API.
+// Cancela la narración en curso y arranca otra. pitch/rate son lo único que expone
+// SpeechSynthesisUtterance para acercarse a un tono sintético.
 export function speakPokemonEntry(pokemon, { onEnd } = {}) {
   if (!window.speechSynthesis) return;
 

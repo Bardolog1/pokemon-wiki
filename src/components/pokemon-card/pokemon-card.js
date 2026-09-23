@@ -1,4 +1,3 @@
-// src/components/pokemon-card/pokemon-card.js
 import { LitElement, html, css } from "lit";
 import "../pokemon-type-badge/pokemon-type-badge.js";
 import "../pokemon-stat-item/pokemon-stat-item.js";

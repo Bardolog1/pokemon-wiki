@@ -1,4 +1,3 @@
-// src/components/pokemon-card/pokemon-card.styles.js
 import { css } from "lit";
 
 export const frontStyles = css`
@@ -325,20 +324,14 @@ export const sharedStyles = css`
     transition: 0.3s all;
   }
 
-  /* Mientras se arrastra el ícono de la pokedex sobre la card, se anula el
-     :hover para que no se abra/expanda mientras se suelta el ícono. */
+  /* Durante el arrastre del ícono se anula :hover para que la card no se expanda al soltar. */
   .scaff.drag-over .containerCard,
   .scaff.drag-over .containerCardBack {
     pointer-events: none;
   }
 
-  /* Se activa desde listar-pokemon (IntersectionObserver, único responsable
-     de esto — ya no hay ningún view-timeline/scroll-driven animation en
-     paralelo peleando por el mismo estado) cuando la card está mayormente
-     fuera del área visible del scroll: apaga el :hover (para que la fila
-     apenas asomada en el borde inferior no muestre su info recortada) y la
-     atenúa/encoge en el lugar, sin mover su posición — eso lo sigue
-     moviendo únicamente el scroll nativo. */
+  /* Lo activa listar-pokemon (IntersectionObserver) cuando la card está mayormente fuera de vista:
+     apaga :hover y la atenúa sin moverla; la posición la mueve solo el scroll nativo. */
   .scaff.hover-disabled .containerCard,
   .scaff.hover-disabled .containerCardBack {
     pointer-events: none;

@@ -13,16 +13,13 @@ function writeIds(ids) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
   } catch {
-    // localStorage puede fallar (modo privado, cuota excedida); el favorito
-    // no persiste entre sesiones pero la app sigue funcionando igual.
+    // localStorage puede fallar (modo privado, cuota); el favorito no persiste pero la app sigue funcionando.
   }
 }
 
 /**
- * Store singleton de favoritos, persistido en localStorage. Emite "change"
- * cada vez que se agrega/quita un favorito, para que cualquier componente
- * (cards en distintas páginas, la vista de favoritos) se mantenga sincronizado
- * sin necesidad de pasar props por toda la jerarquía.
+ * Singleton de favoritos persistido en localStorage. Emite "change" para sincronizar
+ * cards y vista de favoritos sin pasar props.
  */
 class FavoritesStore extends EventTarget {
   #ids;

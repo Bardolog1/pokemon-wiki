@@ -5,7 +5,6 @@ import { styles } from "./navbar-buttons.styles.js";
 export class NavbarButtons extends LitElement {
   static get properties() {
     return {
-      // Agregamos una propiedad reactiva para controlar si está abierta
       isOpen: { type: Boolean }
     };
   }
@@ -14,7 +13,6 @@ export class NavbarButtons extends LitElement {
 
   constructor() {
     super();
-    // Inicialmente la Pokédex está cerrada
     this.isOpen = false;
     this._handleRenderPokedex = this._handleRenderPokedex.bind(this);
   }
@@ -31,9 +29,8 @@ export class NavbarButtons extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Precarga la imagen del drag UNA sola vez (no en cada dragstart) para que,
-  // al momento de arrastrar, ya esté completamente decodificada — si no,
-  // el navegador puede capturar un frame a medio cargar que se ve borroso.
+  // Precarga la imagen del drag una sola vez para que esté decodificada al arrastrar;
+  // si no, el navegador puede capturar un frame a medio cargar.
   _createDragImage() {
     const img = document.createElement("img");
     img.src = "assets/NicePng_pokedex-png_2285786.png";
@@ -49,21 +46,17 @@ export class NavbarButtons extends LitElement {
     this._dragImageEl = img;
   }
 
-  // Método para alternar el estado
   togglePokedex() {
     this.isOpen = !this.isOpen;
   }
 
-  // Método para evitar que al hacer clic dentro de la Pokédex se cierre
+  // Evita que un clic dentro de la Pokédex cierre el modal.
   stopPropagation(e) {
     e.stopPropagation();
   }
 
-  // Requerido por algunos navegadores (Firefox) para permitir iniciar el arrastre.
-  // Además reemplaza el "ghost" nativo (que arrastra el botón completo, círculo
-  // incluido) por la imagen precargada en _createDragImage: solo el ícono, más
-  // grande y a color real, sin la semi-transparencia que aplica el navegador
-  // al ghost por defecto.
+  // Firefox exige setData para iniciar el arrastre. Reemplaza el ghost nativo (botón completo,
+  // semitransparente) por la imagen precargada en _createDragImage.
   _handleDragStart(e) {
     e.dataTransfer.setData("text/plain", "pokedex");
     e.dataTransfer.effectAllowed = "copy";
@@ -73,8 +66,7 @@ export class NavbarButtons extends LitElement {
     }
   }
 
-  // Se dispara al hacer click en el ícono de una card, o al soltar el ícono
-  // de la pokedex sobre una card (mismo evento "render-pokedex" en ambos casos)
+  // Clic en el ícono de una card y soltar el ícono de la pokedex sobre ella emiten el mismo "render-pokedex".
   async _handleRenderPokedex(e) {
     this.isOpen = true;
     await this.updateComplete;
@@ -84,7 +76,6 @@ export class NavbarButtons extends LitElement {
 
   render() {
     return html`
-      <!-- Agregamos el evento @click al botón; draggable para arrastrarlo sobre una card -->
       <button
         class="pokedex-button"
         draggable="true"
@@ -94,12 +85,10 @@ export class NavbarButtons extends LitElement {
         <i class="icon icon-first"></i>
       </button>
 
-      <!-- Renderizado condicional del Backdrop y la Pokédex -->
       ${this.isOpen
         ? html`
             <div class="backdrop" @click="${this.togglePokedex}">
               <div class="modal-content" @click="${this.stopPropagation}">
-                <!-- Aquí se invoca tu componente de la Pokédex -->
                 <pokedex-app></pokedex-app>
               </div>
             </div>

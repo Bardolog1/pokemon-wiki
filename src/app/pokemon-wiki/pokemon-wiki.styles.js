@@ -8,10 +8,7 @@ export const styles = css`
     font-style: normal;
   }
 
-  /* La cabecera (banner, favoritos/tour, paginación) ocupa solo el
-     alto que su contenido necesita (flex: 0 0 auto); listar-pokemon se
-     queda con TODO el resto vía flex: 1, en vez de pelear por
-     porcentajes fijos que no dejaban margen para los controles. */
+  /* La cabecera ocupa solo su alto (flex: 0 0 auto); listar-pokemon toma el resto con flex: 1. */
   .container {
     cursor: url(assets/poke2.png), auto;
     width: 100vw;

@@ -21,9 +21,8 @@ export const Closed = {
   render: () => html`<pokedex-app></pokedex-app>`,
 };
 
-// Precarga .pokemon directamente en vez de disparar una búsqueda real
-// (executeSearch pega contra la PokeAPI), así la story queda determinística
-// y no depende de red.
+// Precarga .pokemon en lugar de disparar una búsqueda real (executeSearch consulta a la PokeAPI),
+// para no depender de red.
 export const OpenAndLoaded = {
   render: () => html`
     <pokedex-app .isOpen=${true} .isOn=${true} .pokemon=${SAMPLE_ENTRY}></pokedex-app>

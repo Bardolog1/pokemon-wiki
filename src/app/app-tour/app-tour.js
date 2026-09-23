@@ -3,22 +3,9 @@ import "driver.js/dist/driver.css";
 import "./app-tour.css";
 
 /**
- * Arma y arranca el tour guiado de la app. Recibe el componente raíz
- * (PokemonWiki) para poder alcanzar, vía su renderRoot, tanto sus propios
- * elementos como los que viven dentro del Shadow DOM de sus hijos
- * (navbar-buttons, listar-pokemon > pokemon-card, y la propia pokedex-app
- * dentro de navbar-buttons).
- *
- * Algunos pasos (la pokedex abierta, el reverso de una card) requieren un
- * cambio de estado que solo existe mientras el usuario interactúa: el modal
- * de la pokedex y el flip de la card no están en el DOM/visibles hasta que
- * se activan. Por eso el tour intercepta la navegación (onNextClick) para
- * forzar ese estado ANTES de pedirle a driver.js que resuelva y resalte el
- * elemento del paso siguiente, y usa `element` como función (no como
- * referencia fija) para que se recalcule recién cuando ese elemento ya
- * existe. También cierra la pokedex al salir de esa sección (paso de
- * favoritos), porque de ahí en adelante el tour vuelve a mostrar la página
- * principal y el modal taparía todo.
+ * Arranca el tour guiado. Algunos pasos (pokedex abierta, reverso de una card) requieren un cambio
+ * de estado, por lo que se intercepta la navegación (onNextClick) para forzarlo antes de que driver.js
+ * resuelva el paso; `element` es una función para evaluarse de forma diferida.
  */
 export function startAppTour(pokemonWikiEl) {
   const root = pokemonWikiEl.renderRoot;
@@ -35,11 +22,8 @@ export function startAppTour(pokemonWikiEl) {
     return getPokedexApp()?.shadowRoot?.querySelector(selector) ?? null;
   }
 
-  // El D-pad, el numpad y los botones PREV/NEXT viven en su propio
-  // componente (pokedex-dpad, pokedex-numpad, pokedex-nav-buttons), cada
-  // uno con su propio shadow root — un nivel más profundo que el resto de
-  // pokedexShadow(). componentSelector selecciona ese componente dentro del
-  // shadow de pokedex-app; innerSelector busca adentro de SU shadow root.
+  // Estos controles tienen su propio shadow root, un nivel más profundo que pokedexShadow():
+  // componentSelector busca en pokedex-app, innerSelector en el shadow del componente.
   function pokedexDeepShadow(componentSelector, innerSelector) {
     return pokedexShadow(componentSelector)?.shadowRoot?.querySelector(innerSelector) ?? null;
   }
@@ -50,8 +34,7 @@ export function startAppTour(pokemonWikiEl) {
     await navbar.updateComplete;
     const pokedexApp = getPokedexApp();
     if (pokedexApp) {
-      // isOpen = tapa del dispositivo abierta; isOn = encendido. Son dos
-      // estados distintos (ver pokedex-app.js) y el tour necesita ambos.
+      // isOpen = tapa abierta; isOn = encendido (estados distintos, ver pokedex-app.js).
       pokedexApp.isOpen = true;
       pokedexApp.isOn = true;
       await pokedexApp.updateComplete;
@@ -106,8 +89,7 @@ export function startAppTour(pokemonWikiEl) {
           "Haz clic aquí para abrir la Pokédex. También puedes arrastrar este ícono y soltarlo sobre cualquier Pokémon para saber más sobre él.",
       },
     },
-    // A partir de acá la pokedex está abierta y encendida (ver
-    // stepRequirements[2] = openPokedex).
+    // Desde aquí la pokedex está abierta y encendida (stepRequirements[2]).
     {
       element: () => pokedexShadow(".power-btn"),
       popover: {
@@ -165,8 +147,7 @@ export function startAppTour(pokemonWikiEl) {
         description: "Navega al Pokémon anterior o siguiente sin tener que escribir su número.",
       },
     },
-    // A partir de acá se cierra la pokedex (stepRequirements en el índice
-    // de este paso = closePokedex) y volvemos a la página principal.
+    // Desde aquí se cierra la pokedex y se vuelve a la página principal.
     {
       element: () => root.querySelector("pokemon-type-filter"),
       popover: {
@@ -205,8 +186,7 @@ export function startAppTour(pokemonWikiEl) {
         description: "Pasa el cursor por encima para ver toda su información.",
       },
     },
-    // A partir de acá se fuerza el estado hover (rango HOVER_FIRST_STEP..
-    // HOVER_LAST_STEP), ya que esta info solo se revela al pasar el mouse.
+    // Desde aquí se fuerza el hover (HOVER_FIRST_STEP..HOVER_LAST_STEP); esa info solo aparece al pasar el mouse.
     {
       element: () => cardShadow(".top-toolbar pokemon-pokedex-button"),
       popover: {
@@ -242,8 +222,7 @@ export function startAppTour(pokemonWikiEl) {
         description: "La altura del Pokémon, en metros.",
       },
     },
-    // A partir de acá se saca el hover forzado y se flippea la card (rango
-    // FLIP_FIRST_STEP..FLIP_LAST_STEP).
+    // Desde aquí se quita el hover forzado y se gira la card (FLIP_FIRST_STEP..FLIP_LAST_STEP).
     {
       element: () => matchupGroup(0),
       popover: {
@@ -262,17 +241,13 @@ export function startAppTour(pokemonWikiEl) {
 
   const POKEDEX_FIRST_STEP = 2;
   const POKEDEX_LAST_STEP = 9;
-  // Rangos de índices: incluyen los pasos del filtro por tipo y de búsqueda,
-  // que van justo antes del paso de favoritos.
+  // Rangos de índices; incluyen los pasos de filtro por tipo y búsqueda, previos al de favoritos.
   const HOVER_FIRST_STEP = 15;
   const HOVER_LAST_STEP = 19;
   const FLIP_FIRST_STEP = 20;
   const FLIP_LAST_STEP = 21;
 
-  // Calcula y aplica el estado exacto que le corresponde a un índice de
-  // paso, sea que se llegue a él avanzando o retrocediendo — así "Anterior"
-  // también deja la pokedex/card como ese paso las necesita, no solo
-  // "Siguiente".
+  // Aplica el estado que exige un paso, se llegue avanzando o retrocediendo.
   async function prepareForIndex(index) {
     if (index >= POKEDEX_FIRST_STEP && index <= POKEDEX_LAST_STEP) {
       await openPokedex();
