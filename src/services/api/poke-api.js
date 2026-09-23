@@ -1,4 +1,5 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
+const TYPE_URL = "https://pokeapi.co/api/v2/type";
 
 export class PokeApi {
   async #request(url) {
@@ -20,6 +21,10 @@ export class PokeApi {
 
   async getPokemon(query) {
     return this.#request(`${BASE_URL}/${String(query).toLowerCase()}`);
+  }
+
+  async getPokemonByType(typeName) {
+    return this.#request(`${TYPE_URL}/${String(typeName).toLowerCase()}`);
   }
 
   async getPokemonFullEntry(query) {

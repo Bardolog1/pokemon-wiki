@@ -113,6 +113,20 @@ describe('PokeApi', () => {
     expect(result.evolutionChain.chain.species.name).toBe('bulbasaur');
   });
 
+  it('getPokemonByType fetches the type endpoint by name, lowercased', async () => {
+    globalThis.fetch.mockResolvedValue(
+      okResponse({ pokemon: [{ pokemon: { name: 'charmander', url: 'https://pokeapi.co/api/v2/pokemon/4/' } }] }),
+    );
+
+    const result = await api.getPokemonByType('Fire');
+
+    expect(globalThis.fetch).toHaveBeenCalledWith(
+      'https://pokeapi.co/api/v2/type/fire',
+      { method: 'GET' },
+    );
+    expect(result.pokemon[0].pokemon.name).toBe('charmander');
+  });
+
   it('throws when the response is not ok', async () => {
     globalThis.fetch.mockResolvedValue(errorResponse(404));
 

@@ -25,6 +25,32 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/app/app-tour.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "startAppTour",
+          "parameters": [
+            {
+              "name": "pokemonWikiEl"
+            }
+          ],
+          "description": "Arma y arranca el tour guiado de la app. Recibe el componente raíz\n(PokemonWiki) para poder alcanzar, vía su renderRoot, tanto sus propios\nelementos como los que viven dentro del Shadow DOM de sus hijos\n(navbar-buttons, listar-pokemon > pokemon-card, y la propia pokedex-app\ndentro de navbar-buttons).\n\nAlgunos pasos (la pokedex abierta, el reverso de una card) requieren un\ncambio de estado que solo existe mientras el usuario interactúa: el modal\nde la pokedex y el flip de la card no están en el DOM/visibles hasta que\nse activan. Por eso el tour intercepta la navegación (onNextClick) para\nforzar ese estado ANTES de pedirle a driver.js que resuelva y resalte el\nelemento del paso siguiente, y usa `element` como función (no como\nreferencia fija) para que se recalcule recién cuando ese elemento ya\nexiste. También cierra la pokedex al salir de esa sección (paso de\nfavoritos), porque de ahí en adelante el tour vuelve a mostrar la página\nprincipal y el modal taparía todo."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "startAppTour",
+          "declaration": {
+            "name": "startAppTour",
+            "module": "src/app/app-tour.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/app/pokemon-wiki.js",
       "declarations": [
         {
@@ -64,6 +90,43 @@
               ]
             },
             {
+              "kind": "method",
+              "name": "_onTypesChange",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_loadFavorites"
+            },
+            {
+              "kind": "method",
+              "name": "toggleFavoritesOnly"
+            },
+            {
+              "kind": "field",
+              "name": "_resultsCount"
+            },
+            {
+              "kind": "field",
+              "name": "_totalPages"
+            },
+            {
+              "kind": "field",
+              "name": "_rangeStart"
+            },
+            {
+              "kind": "field",
+              "name": "_rangeEnd"
+            },
+            {
+              "kind": "method",
+              "name": "_startTour"
+            },
+            {
               "kind": "field",
               "name": "dataManager",
               "default": "new PokemonDataManager()"
@@ -76,6 +139,38 @@
               },
               "default": "null",
               "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "favoritesOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "selectedTypes",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "filteredTotal",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "_onFavoritesChange",
+              "default": "() => {\r\n      if (this.favoritesOnly) this._loadFavorites();\r\n    }"
             },
             {
               "kind": "field",
@@ -123,6 +218,27 @@
           "declaration": {
             "name": "PokemonWiki",
             "module": "src/app/pokemon-wiki.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/favorites-store.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "favoritesStore",
+          "default": "new FavoritesStore()"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "favoritesStore",
+          "declaration": {
+            "name": "favoritesStore",
+            "module": "src/services/favorites-store.js"
           }
         }
       ]
@@ -228,7 +344,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`\n    <banner-title\n      title=\"PokeDex with PokéAPI & Lit\"\n      logo=\"https://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png/revision/latest?cb=20160319183155\"\n      logo-2=\"https://lit.dev/images/logo.svg#flame\"\n    ></banner-title>\n  `,\n}"
+          "default": "{\r\n  render: () => html`\r\n    <banner-title\r\n      title=\"Pokédex Interactiva\"\r\n      logo=\"https://vignette1.wikia.nocookie.net/es.pokemon/images/6/61/Logo_de_Pok%C3%A9mon_(EN).png/revision/latest?cb=20160319183155\"\r\n    ></banner-title>\r\n  `,\r\n}"
         }
       ],
       "exports": [
@@ -257,7 +373,59 @@
           "kind": "class",
           "description": "",
           "name": "NavbarButtons",
-          "members": [],
+          "members": [
+            {
+              "kind": "method",
+              "name": "_createDragImage"
+            },
+            {
+              "kind": "method",
+              "name": "togglePokedex"
+            },
+            {
+              "kind": "method",
+              "name": "stopPropagation",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleDragStart",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleRenderPokedex",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "isOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOpen"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "isOpen",
+              "fieldName": "isOpen"
+            }
+          ],
           "superclass": {
             "name": "LitElement",
             "package": "lit"
@@ -295,7 +463,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`<navbar-buttons></navbar-buttons>`,\n}"
+          "default": "{\r\n  render: () => html`<navbar-buttons></navbar-buttons>`,\r\n}"
         }
       ],
       "exports": [
@@ -419,7 +587,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  args: { icon: \"next\", rotate: false, disabled: false },\n  render: ({ icon, rotate, disabled }) => html`\n    <pagination-button icon=${icon} ?rotate=${rotate} ?disabled=${disabled}></pagination-button>\n  `,\n}"
+          "default": "{\r\n  args: { icon: \"next\", rotate: false, disabled: false },\r\n  render: ({ icon, rotate, disabled }) => html`\r\n    <pagination-button icon=${icon} ?rotate=${rotate} ?disabled=${disabled}></pagination-button>\r\n  `,\r\n}"
         }
       ],
       "exports": [
@@ -548,7 +716,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`\n    <pagination-numbers\n      .numbers=${[1, 2, 3, 4, 5]}\n      .currentPage=${3}\n      .limit=${5}\n    ></pagination-numbers>\n  `,\n}"
+          "default": "{\r\n  render: () => html`\r\n    <pagination-numbers\r\n      .numbers=${[1, 2, 3, 4, 5]}\r\n      .currentPage=${3}\r\n      .limit=${5}\r\n    ></pagination-numbers>\r\n  `,\r\n}"
         }
       ],
       "exports": [
@@ -741,7 +909,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`\n    <pagination-nav\n      results=\"60\"\n      visible-results=\"5\"\n      visible-pages=\"5\"\n      current-page=\"1\"\n    ></pagination-nav>\n  `,\n}"
+          "default": "{\r\n  render: () => html`\r\n    <pagination-nav\r\n      results=\"60\"\r\n      visible-results=\"5\"\r\n      visible-pages=\"5\"\r\n      current-page=\"1\"\r\n    ></pagination-nav>\r\n  `,\r\n}"
         }
       ],
       "exports": [
@@ -806,6 +974,660 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-app.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexApp",
+          "members": [
+            {
+              "kind": "method",
+              "name": "speakEntry"
+            },
+            {
+              "kind": "method",
+              "name": "playCry"
+            },
+            {
+              "kind": "method",
+              "name": "toggleOpen"
+            },
+            {
+              "kind": "method",
+              "name": "togglePower"
+            },
+            {
+              "kind": "method",
+              "name": "openWithPokemon",
+              "parameters": [
+                {
+                  "name": "pokemon"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "triggerYellowFlash"
+            },
+            {
+              "kind": "method",
+              "name": "handleNumberClick",
+              "parameters": [
+                {
+                  "name": "num"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDelete"
+            },
+            {
+              "kind": "method",
+              "name": "resetSearch"
+            },
+            {
+              "kind": "method",
+              "name": "executeSearch",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSearch"
+            },
+            {
+              "kind": "method",
+              "name": "navigateStep",
+              "parameters": [
+                {
+                  "name": "offset"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "navigateInfo",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDpadScroll",
+              "parameters": [
+                {
+                  "name": "direction"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "formattedTypes"
+            },
+            {
+              "kind": "method",
+              "name": "renderSecondaryInfo"
+            },
+            {
+              "kind": "method",
+              "name": "renderLeftHalf"
+            },
+            {
+              "kind": "method",
+              "name": "renderRightHalf"
+            },
+            {
+              "kind": "field",
+              "name": "isOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOpen"
+            },
+            {
+              "kind": "field",
+              "name": "isOn",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isOn"
+            },
+            {
+              "kind": "field",
+              "name": "searchValue",
+              "type": {
+                "text": "string"
+              },
+              "default": "\"\"",
+              "privacy": "public",
+              "attribute": "searchValue"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isLoading"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "activeView",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "privacy": "public",
+              "attribute": "activeView"
+            },
+            {
+              "kind": "field",
+              "name": "yellowFlash",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "yellowFlash"
+            },
+            {
+              "kind": "field",
+              "name": "isPlayingCry",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isPlayingCry"
+            },
+            {
+              "kind": "field",
+              "name": "isSpeaking",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "isSpeaking"
+            },
+            {
+              "kind": "field",
+              "name": "entryDataManager",
+              "default": "new PokedexEntryDataManager()"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "isOpen",
+              "fieldName": "isOpen"
+            },
+            {
+              "name": "isOn",
+              "fieldName": "isOn"
+            },
+            {
+              "name": "searchValue",
+              "fieldName": "searchValue"
+            },
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "isLoading",
+              "fieldName": "isLoading"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            },
+            {
+              "name": "activeView",
+              "fieldName": "activeView"
+            },
+            {
+              "name": "yellowFlash",
+              "fieldName": "yellowFlash"
+            },
+            {
+              "name": "isPlayingCry",
+              "fieldName": "isPlayingCry"
+            },
+            {
+              "name": "isSpeaking",
+              "fieldName": "isSpeaking"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-app",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexApp",
+          "declaration": {
+            "name": "PokedexApp",
+            "module": "src/components/pokedex/pokedex-app.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-app",
+          "declaration": {
+            "name": "PokedexApp",
+            "module": "src/components/pokedex/pokedex-app.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-app.styles.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "styles",
+          "default": "css`\n  :host {\n    display: block;\n    --dex-red: #e32230;\n    --dex-border: #222;\n    --dex-screen-off: #232323;\n    --dex-screen-on: #8bac0f;\n    --dex-lens: #28aafa;\n    --dex-yellow: #e8c722;\n    --dex-green: #51ae5f;\n    --dex-dark-green: #2c4a3f;\n    --dex-bezel: #dedede;\n  }\n\n  .toggle-cover-btn {\n    display: block;\n    margin: 0 auto 40px auto;\n    padding: 12px 24px;\n    background-color: var(--dex-border);\n    color: white;\n    font-family: 'Press Start 2P', monospace, sans-serif;\n    font-size: 14px;\n    cursor: pointer;\n    border-radius: 8px;\n    border: 3px solid white;\n    transition: transform 0.1s;\n  }\n  .toggle-cover-btn:active { transform: scale(0.95); }\n\n  .pokedex-container {\n    perspective: 2000px;\n    margin: 0 auto 60px auto;\n    display: flex;\n    justify-content: center;\n    transform: scale(1.05);\n  }\n\n  .pokedex {\n    display: flex;\n    flex-direction: row;\n    align-items: center;\n    filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.6));\n    transform-style: preserve-3d;\n  }\n\n  /* MITAD IZQUIERDA */\n  .left-half {\n    width: 340px;\n    height: 480px;\n    background-color: var(--dex-red);\n    border: 4px solid var(--dex-border);\n    border-radius: 20px 0 0 20px;\n    position: relative;\n    z-index: 1;\n    box-sizing: border-box;\n  }\n\n  .top-sensor-area { height: 100px; border-bottom: 4px solid var(--dex-border); display: flex; align-items: center; padding-left: 20px; box-sizing: border-box; }\n  .lens-container { width: 70px; height: 70px; background: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 4px solid var(--dex-border); }\n  .main-lens { width: 54px; height: 54px; background: radial-gradient(circle at 30% 30%, #7cd4ff, var(--dex-lens) 60%, #005f99); border-radius: 50%; border: 2px solid var(--dex-border); }\n  .mini-leds { display: flex; gap: 8px; margin-left: 20px; align-self: flex-start; margin-top: 20px; }\n  .led { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--dex-border); }\n  .led.red { background-color: #ff3333; } .led.yellow { background-color: var(--dex-yellow); } .led.green { background-color: var(--dex-green); }\n\n  .main-lens.blinking { animation: blue-siren 0.3s infinite alternate; }\n  @keyframes blue-siren {\n    from { background-color: #28aadc; box-shadow: 0 0 10px #28aadc; }\n    to { background-color: #e0f7fa; box-shadow: 0 0 30px #e0f7fa, inset 0 0 10px #fff; }\n  }\n\n  .loading-sequence .red { animation: traffic-red 0.6s infinite 0s; }\n  .loading-sequence .yellow { animation: traffic-yellow 0.6s infinite 0.2s; }\n  .loading-sequence .green { animation: traffic-green 0.6s infinite 0.4s; }\n\n  @keyframes traffic-red { 50% { background-color: #ff5555; box-shadow: 0 0 15px red; } }\n  @keyframes traffic-yellow { 50% { background-color: #ffff55; box-shadow: 0 0 15px yellow; } }\n  @keyframes traffic-green { 50% { background-color: #55ff55; box-shadow: 0 0 15px green; } }\n\n  .screen-bezel { margin: 20px auto 10px auto; width: 260px; height: 200px; background-color: var(--dex-bezel); border: 4px solid var(--dex-border); border-radius: 10px 10px 10px 60px; display: flex; flex-direction: column; align-items: center; padding-top: 15px; box-sizing: border-box; }\n\n  .bezel-bottom { display: flex; justify-content: space-between; width: 200px; margin-top: 10px; }\n  .red-bezel-btn {\n    width: 18px;\n    height: 18px;\n    background-color: var(--dex-red);\n    border-radius: 50%;\n    border: 2px solid var(--dex-border);\n    cursor: pointer;\n    transition: transform 0.1s ease;\n  }\n  .red-bezel-btn:hover { filter: brightness(1.15); }\n  .red-bezel-btn:active { transform: scale(0.88); }\n  .speaker-grill { display: flex; flex-direction: column; gap: 4px; }\n  .speaker-line { width: 30px; height: 3px; background-color: var(--dex-border); }\n\n  .lower-controls {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 20px;\n    margin-top: 20px;\n  }\n\n  .power-btn-container { position: relative; }\n  .power-btn { width: 45px; height: 45px; background-color: #222; border-radius: 50%; border: 3px solid var(--dex-border); cursor: pointer; }\n\n  .mini-green-screen {\n    width: 95px;\n    height: 42px;\n    background-color: var(--dex-dark-green);\n    border: 3.5px solid var(--dex-border);\n    border-radius: 6px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 16px;\n    font-weight: 900;\n    color: transparent;\n    transition: all 0.3s ease;\n    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);\n    letter-spacing: -1px;\n  }\n  .mini-green-screen.is-on {\n    background-color: var(--dex-green);\n    color: #0f380f;\n    box-shadow: inset 0 0 10px rgba(15, 56, 15, 0.8);\n  }\n\n  .d-pad { position: relative; width: 85px; height: 85px; }\n  .d-pad-v { position: absolute; left: 28px; width: 29px; height: 85px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }\n  .d-pad-h { position: absolute; top: 28px; width: 85px; height: 29px; background-color: #222; border-radius: 4px; border: 3px solid var(--dex-border); box-sizing: border-box; }\n  .d-pad-center { position: absolute; top: 28px; left: 28px; width: 29px; height: 29px; background-color: #222; z-index: 2; }\n\n  .d-pad-clickable { position: absolute; width: 29px; height: 29px; cursor: pointer; z-index: 10; }\n  .d-pad-left { left: 0; top: 28px; }\n  .d-pad-right { right: 0; top: 28px; }\n  .d-pad-up { left: 28px; top: 0; }\n  .d-pad-down { left: 28px; bottom: 0; }\n  .d-pad-clickable:active { background-color: rgba(255,255,255,0.25); border-radius: 4px; }\n\n  .turn-on-hint {\n    position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background-color: white; color: black; padding: 6px 10px; border-radius: 4px; font-weight: 900; font-family: sans-serif; font-size: 14px; white-space: nowrap; border: 2px solid black; animation: blinkArrow 0.6s infinite alternate; z-index: 20;\n  }\n  .turn-on-hint::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: black transparent transparent transparent; }\n  @keyframes blinkArrow { from { top: -50px; opacity: 1; } to { top: -35px; opacity: 0.8; } }\n\n  /* BISAGRA */\n  .hinge { width: 30px; height: 480px; background: linear-gradient(to right, #990000, var(--dex-red) 30%, #ff5b5b 50%, var(--dex-red) 70%, #990000); border: 4px solid var(--dex-border); border-radius: 10px; margin-left: -4px; margin-right: -4px; z-index: 5; display: flex; flex-direction: column; justify-content: space-evenly; box-sizing: border-box; }\n  .hinge-joint { width: 100%; height: 4px; background-color: var(--dex-border); }\n\n  /* MITAD DERECHA */\n  .right-half {\n    width: 340px;\n    height: 480px;\n    position: relative;\n    z-index: 10;\n    transform-origin: left center;\n    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);\n    transform-style: preserve-3d;\n    box-sizing: border-box;\n  }\n\n  .right-half.closed { transform: rotateY(-180deg); }\n  .right-half.open { transform: rotateY(0deg); }\n\n  .right-cover-exterior {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n    transform: rotateY(180deg);\n  }\n  .right-cover-exterior svg { width: 100%; height: 100%; }\n\n  .right-content {\n    position: absolute; top: 0; left: 0; width: 100%; height: 100%;\n    backface-visibility: hidden;\n  }\n  .right-shell-svg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }\n  .right-shell-svg-container svg { width: 100%; height: 100%; }\n\n  .inner-components {\n    position: relative; z-index: 2; padding: 120px 30px 30px 30px; display: flex; flex-direction: column; align-items: center; height: 100%; box-sizing: border-box;\n  }\n\n  .secondary-screen {\n    width: 220px;\n    height: 75px;\n    background-color: var(--dex-dark-green);\n    border: 4px solid var(--dex-border);\n    border-radius: 6px;\n    margin-bottom: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n    padding: 0 10px;\n    font-family: 'Press Start 2P', monospace;\n    transition: all 0.3s ease;\n    color: transparent;\n    box-sizing: border-box;\n    overflow: hidden;\n  }\n  .secondary-screen.is-on { color: #0f380f; background-color: rgba(155, 188, 15, 0.85); box-shadow: inset 0 0 8px rgba(15, 56, 15, 0.6), 0 0 15px rgba(155, 188, 15, 0.6); text-shadow: 1px 1px 0px rgba(139, 172, 15, 0.3); }\n  .poke-info-mini {\n    display: flex;\n    flex-direction: column;\n    align-items: flex-end;\n    justify-content: center;\n    line-height: 1.4;\n    width: 100%;\n    max-width: 100%;\n    overflow: hidden;\n  }\n\n  .poke-info-mini > div:first-child {\n    font-size: 0.85rem;\n    font-weight: bold;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .poke-info-mini .type-text {\n    font-size: 0.65rem;\n    margin-top: 6px;\n    opacity: 0.9;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    max-width: 100%;\n  }\n\n  .typing-number {\n    font-size: 1.2rem;\n    font-weight: 900;\n    text-align: right;\n    width: 100%;\n    color: inherit;\n    white-space: nowrap;\n    overflow: hidden;\n  }\n\n  .grid-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 220px; background-color: var(--dex-border); border: 4px solid var(--dex-border); border-radius: 4px; margin-bottom: 20px; padding: 2px; }\n  .grid-btn { height: 42px; background-color: #00bfff; border-radius: 2px; cursor: pointer; display: flex; justify-content: center; align-items: center; color: #fff; font-family: monospace; font-weight: bold; font-size: 1.4rem; text-shadow: 1px 1px 0px rgba(0,0,0,0.5); user-select: none; transition: transform 0.05s, background-color 0.05s; }\n  .grid-btn:hover { background-color: #33ccff; }\n  .grid-btn:active { transform: scale(0.85); background-color: #0088cc; }\n\n  .middle-controls { display: flex; width: 220px; justify-content: flex-end; align-items: center; gap: 15px; margin-bottom: 20px; }\n  .white-btns { display: flex; gap: 10px; margin-right: auto; }\n  .white-btn { width: 45px; height: 22px; background-color: #fff; border: 3px solid var(--dex-border); border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-family: sans-serif; cursor: pointer; font-weight: bold; }\n  .white-btn:active { transform: scale(0.9); }\n  .white-btn.bold-red { color: red; }\n\n  .yellow-btn { width: 22px; height: 22px; background-color: var(--dex-yellow); border: 3px solid var(--dex-border); border-radius: 50%; cursor: pointer; transition: background-color 0.1s; }\n  .yellow-btn.flash { background-color: #ffffee; box-shadow: 0 0 15px yellow; transform: scale(1.05); }\n\n  /* BOTONES INFERIORES VERDES (PREV Y NEXT) */\n  .bottom-controls { display: flex; width: 220px; justify-content: space-between; }\n  .dark-green-btn {\n    width: 100px;\n    height: 25px;\n    background-color: var(--dex-dark-green);\n    border: 3px solid var(--dex-border);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: #8bac0f;\n    font-family: 'Press Start 2P', monospace;\n    font-size: 8px;\n    font-weight: bold;\n    user-select: none;\n    transition: background-color 0.1s, transform 0.05s;\n  }\n  .dark-green-btn:hover { background-color: #385e50; }\n  .dark-green-btn:active { transform: scale(0.92); }\n`"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "styles",
+          "declaration": {
+            "name": "styles",
+            "module": "src/components/pokedex/pokedex-app.styles.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-screen.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexScreen",
+          "members": [
+            {
+              "kind": "method",
+              "name": "scrollBy",
+              "parameters": [
+                {
+                  "name": "deltaY"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#renderActiveView"
+            },
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "isLoading",
+              "privacy": "public",
+              "attribute": "isLoading"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "privacy": "public",
+              "attribute": "error"
+            },
+            {
+              "kind": "field",
+              "name": "activeView",
+              "privacy": "public",
+              "attribute": "activeView"
+            },
+            {
+              "kind": "field",
+              "name": "isOn",
+              "privacy": "public",
+              "attribute": "isOn"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            },
+            {
+              "name": "isLoading",
+              "fieldName": "isLoading"
+            },
+            {
+              "name": "error",
+              "fieldName": "error"
+            },
+            {
+              "name": "activeView",
+              "fieldName": "activeView"
+            },
+            {
+              "name": "isOn",
+              "fieldName": "isOn"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-screen",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexScreen",
+          "declaration": {
+            "name": "PokedexScreen",
+            "module": "src/components/pokedex/pokedex-screen.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-screen",
+          "declaration": {
+            "name": "PokedexScreen",
+            "module": "src/components/pokedex/pokedex-screen.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-artwork.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewArtwork",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-artwork",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewArtwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex/pokedex-view-artwork.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-artwork",
+          "declaration": {
+            "name": "PokedexViewArtwork",
+            "module": "src/components/pokedex/pokedex-view-artwork.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-description.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewDescription",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-description",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewDescription",
+          "declaration": {
+            "name": "PokedexViewDescription",
+            "module": "src/components/pokedex/pokedex-view-description.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-description",
+          "declaration": {
+            "name": "PokedexViewDescription",
+            "module": "src/components/pokedex/pokedex-view-description.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-evolutions.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewEvolutions",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-evolutions",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewEvolutions",
+          "declaration": {
+            "name": "PokedexViewEvolutions",
+            "module": "src/components/pokedex/pokedex-view-evolutions.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-evolutions",
+          "declaration": {
+            "name": "PokedexViewEvolutions",
+            "module": "src/components/pokedex/pokedex-view-evolutions.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-moves.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewMoves",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-moves",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewMoves",
+          "declaration": {
+            "name": "PokedexViewMoves",
+            "module": "src/components/pokedex/pokedex-view-moves.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-moves",
+          "declaration": {
+            "name": "PokedexViewMoves",
+            "module": "src/components/pokedex/pokedex-view-moves.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokedex/pokedex-view-stats.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexViewStats",
+          "members": [
+            {
+              "kind": "field",
+              "name": "pokemon",
+              "privacy": "public",
+              "attribute": "pokemon"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon",
+              "fieldName": "pokemon"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokedex-view-stats",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexViewStats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex/pokedex-view-stats.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokedex-view-stats",
+          "declaration": {
+            "name": "PokedexViewStats",
+            "module": "src/components/pokedex/pokedex-view-stats.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/pokemon-card/pokemon-card.js",
       "declarations": [
         {
@@ -822,6 +1644,37 @@
               "name": "_renderPokedex"
             },
             {
+              "kind": "method",
+              "name": "_onDragEnter",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onDragOver",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onDragLeave"
+            },
+            {
+              "kind": "method",
+              "name": "_onDrop",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
               "kind": "field",
               "name": "flipped",
               "type": {
@@ -833,6 +1686,16 @@
             },
             {
               "kind": "field",
+              "name": "forceHover",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "forceHover"
+            },
+            {
+              "kind": "field",
               "name": "pokemon",
               "type": {
                 "text": "object"
@@ -840,6 +1703,26 @@
               "default": "{}",
               "privacy": "public",
               "attribute": "pokemon"
+            },
+            {
+              "kind": "field",
+              "name": "dragOver",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "dragOver"
+            },
+            {
+              "kind": "field",
+              "name": "hoverEnabled",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true",
+              "privacy": "public",
+              "attribute": "hoverEnabled"
             }
           ],
           "attributes": [
@@ -850,6 +1733,18 @@
             {
               "name": "flipped",
               "fieldName": "flipped"
+            },
+            {
+              "name": "forceHover",
+              "fieldName": "forceHover"
+            },
+            {
+              "name": "dragOver",
+              "fieldName": "dragOver"
+            },
+            {
+              "name": "hoverEnabled",
+              "fieldName": "hoverEnabled"
             }
           ],
           "superclass": {
@@ -889,7 +1784,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`<pokemon-card .pokemon=${SAMPLE_POKEMON}></pokemon-card>`,\n}"
+          "default": "{\r\n  render: () => html`<pokemon-card .pokemon=${SAMPLE_POKEMON}></pokemon-card>`,\r\n}"
         }
       ],
       "exports": [
@@ -917,17 +1812,17 @@
         {
           "kind": "variable",
           "name": "frontStyles",
-          "default": "css`\n  .containerCard {\n    place-items: center;\n    position: absolute;\n    min-width: 100%;\n    min-height: 100%;\n    backface-visibility: hidden;\n    border-radius: 1em;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    text-align: center;\n    transform: rotateY(0deg);\n    transform-style: preserve-3d;\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\n    overflow: hidden;\n  }\n\n  .containerCard::before {\n    content: \"\";\n    position: absolute;\n    width: 450px;\n    height: 35px;\n    top: 0;\n    right: 35px;\n    transition: 0.1s ease-in-out;\n    background: transparent;\n    transform: rotate(-45deg) translate(0, -100px);\n  }\n\n  .containerCard:hover {\n    overflow: hidden;\n    display: grid;\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\n  }\n\n  .containerCard:hover::before {\n    background: linear-gradient(50deg, #00ff59, #02b3ff);\n    animation: brightness 1.9s;\n  }\n\n  .containerCard .card {\n    position: relative;\n    display: flex;\n    flex-direction: column;\n    width: 15.5rem;\n    height: 21.5rem;\n    background: transparent;\n    border-radius: 0.8em;\n    color: transparent;\n    transition: 0.1s ease-in-out;\n    z-index: 999;\n    overflow: hidden;\n  }\n\n  .containerCard:hover .card {\n    background: #171614;\n    overflow: hidden;\n  }\n\n  .containerCard .card .buttons-container {\n    display: none;\n    position: absolute;\n    top: 0;\n    left: 10%;\n    width: 80%;\n    height: 10%;\n    z-index: 100;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCard:hover .buttons-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCard .card .buttons-container .button {\n    height: 100%;\n    width: 10%;\n  }\n\n  .containerCard .card .buttons-container .button img {\n    width: 100%;\n    height: 100%;\n  }\n\n  .containerCard:hover .image-container {\n    position: relative;\n    margin-top: 0px;\n    display: block;\n    height: 10rem;\n  }\n\n  .containerCard:hover .image-container::before {\n    content: \"\";\n    width: 150%;\n    height: 250%;\n    border-radius: 50%;\n    background: var(--gradient-background);\n    position: absolute;\n    top: -170%;\n    left: -25%;\n    z-index: 1;\n  }\n\n  .containerCard:hover .image-container::after {\n    content: \"\";\n    width: 150%;\n    height: 250%;\n    border-radius: 50%;\n    background: rgba(255, 255, 255, 0.4);\n\n    position: absolute;\n    top: -170%;\n    left: -25%;\n    z-index: 5;\n  }\n\n  .containerCard .card img {\n    position: absolute;\n    max-width: 100%;\n    height: 13rem;\n    transition: 0.3s ease-in-out;\n    top: 35%;\n    left: 0%;\n    z-index: 9999;\n  }\n\n  .containerCard:hover img {\n    position: relative;\n    top: 10%;\n    transition: all 0.3s ease-in-out 0s;\n    z-index: 10;\n    height: 9rem;\n    width: 9rem;\n  }\n\n  .containerCard:hover .back-container {\n    width: 100%;\n    height: 80%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n    align-items: center;\n    z-index: 9;\n  }\n\n  .containerCard .img-back {\n    display: none;\n  }\n\n  .containerCard:hover .img-back {\n    display: block;\n    opacity: 0.5;\n    width: 6rem;\n    height: 7rem;\n  }\n\n  .containerCard .card h2 {\n    display: block;\n    font-weight: 500;\n    text-align: start;\n    width: 90%;\n    margin: 0.5rem;\n    margin-top: 1rem;\n    margin-bottom: 0.3rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #f2f2f2;\n    font-size: 1.2rem;\n  }\n\n  .containerCard .card .info-container {\n    display: none;\n    flex-direction: column;\n    justify-content: space-evenly;\n    align-items: center;\n  }\n\n  .containerCard:hover .card .info-container {\n    display: flex;\n  }\n\n  .containerCard .id-exp-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n  }\n\n  .containerCard .card .poke-id {\n    width: 50%;\n    text-align: left;\n    display: inline-block;\n    font-size: 0.8rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #7a7a7a;\n  }\n\n  .containerCard .card .poke-exp {\n    width: 50%;\n    text-align: right;\n    display: inline-block;\n    font-size: 0.8rem;\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\n    color: #7a7a7a;\n  }\n\n  .containerCard .type-container {\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n    display: flex;\n    flex-direction: row;\n    justify-content: start;\n    gap: 0.2rem;\n  }\n\n  .containerCard .character-container {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    width: 90%;\n    margin: 0 0.5rem 0.5rem;\n  }\n`"
+          "default": "css`\r\n  .containerCard {\r\n    place-items: center;\r\n    position: absolute;\r\n    min-width: 100%;\r\n    min-height: 100%;\r\n    backface-visibility: hidden;\r\n    border-radius: 1em;\r\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\r\n    text-align: center;\r\n    transform: rotateY(0deg);\r\n    transform-style: preserve-3d;\r\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard::before {\r\n    content: \"\";\r\n    position: absolute;\r\n    width: 450px;\r\n    height: 35px;\r\n    top: 0;\r\n    right: 35px;\r\n    transition: 0.1s ease-in-out;\r\n    background: transparent;\r\n    transform: rotate(-45deg) translate(0, -100px);\r\n  }\r\n\r\n  .containerCard:hover, .containerCard.force-hover {\r\n    overflow: hidden;\r\n    display: grid;\r\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\r\n  }\r\n\r\n  .containerCard:hover::before, .containerCard.force-hover::before {\r\n    background: linear-gradient(50deg, #00ff59, #02b3ff);\r\n    animation: brightness 1.9s;\r\n  }\r\n\r\n  .containerCard .card {\r\n    position: relative;\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: 15.5rem;\r\n    height: 21.5rem;\r\n    background: transparent;\r\n    border-radius: 0.8em;\r\n    color: transparent;\r\n    transition: 0.1s ease-in-out;\r\n    z-index: 999;\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard:hover .card, .containerCard.force-hover .card {\r\n    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),\r\n      var(--gradient-background);\r\n    overflow: hidden;\r\n  }\r\n\r\n  .containerCard .card .top-toolbar {\r\n    display: none;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 10%;\r\n    width: 80%;\r\n    height: 10%;\r\n    z-index: 100;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCard:hover .top-toolbar, .containerCard.force-hover .top-toolbar {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCard .card .top-toolbar pokemon-pokedex-button {\r\n    height: 100%;\r\n    width: 10%;\r\n  }\r\n\r\n  .containerCard:hover .image-container, .containerCard.force-hover .image-container {\r\n    position: relative;\r\n    margin-top: 0px;\r\n    display: block;\r\n    height: 10rem;\r\n  }\r\n\r\n  .containerCard:hover .image-container::before, .containerCard.force-hover .image-container::before {\r\n    content: \"\";\r\n    width: 150%;\r\n    height: 250%;\r\n    border-radius: 50%;\r\n    background: var(--gradient-background);\r\n    position: absolute;\r\n    top: -170%;\r\n    left: -25%;\r\n    z-index: 1;\r\n  }\r\n\r\n  .containerCard:hover .image-container::after, .containerCard.force-hover .image-container::after {\r\n    content: \"\";\r\n    width: 150%;\r\n    height: 250%;\r\n    border-radius: 50%;\r\n    background: rgba(255, 255, 255, 0.4);\r\n\r\n    position: absolute;\r\n    top: -170%;\r\n    left: -25%;\r\n    z-index: 5;\r\n  }\r\n\r\n  .containerCard .card img {\r\n    position: absolute;\r\n    max-width: 100%;\r\n    height: 13rem;\r\n    transition: 0.3s ease-in-out;\r\n    top: 35%;\r\n    left: 0%;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .containerCard:hover img, .containerCard.force-hover img {\r\n    position: relative;\r\n    top: 10%;\r\n    transition: all 0.3s ease-in-out 0s;\r\n    z-index: 10;\r\n    height: 9rem;\r\n    width: 9rem;\r\n  }\r\n\r\n  .containerCard:hover .back-container, .containerCard.force-hover .back-container {\r\n    width: 100%;\r\n    height: 80%;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: center;\r\n    align-items: center;\r\n    z-index: 9;\r\n  }\r\n\r\n  .containerCard .img-back {\r\n    display: none;\r\n  }\r\n\r\n  .containerCard:hover .img-back, .containerCard.force-hover .img-back {\r\n    display: block;\r\n    opacity: 0.5;\r\n    width: 6rem;\r\n    height: 7rem;\r\n  }\r\n\r\n  .containerCard .card h2 {\r\n    display: block;\r\n    font-weight: 500;\r\n    text-align: start;\r\n    width: 90%;\r\n    margin: 0.5rem;\r\n    margin-top: 1rem;\r\n    margin-bottom: 0.3rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #f2f2f2;\r\n    font-size: 1.2rem;\r\n  }\r\n\r\n  .containerCard .card .info-container {\r\n    display: none;\r\n    flex-direction: column;\r\n    justify-content: space-evenly;\r\n    align-items: center;\r\n  }\r\n\r\n  .containerCard:hover .card .info-container, .containerCard.force-hover .card .info-container {\r\n    display: flex;\r\n  }\r\n\r\n  .containerCard .id-exp-container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n  }\r\n\r\n  .containerCard .card .poke-id {\r\n    width: 50%;\r\n    text-align: left;\r\n    display: inline-block;\r\n    font-size: 0.8rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #7a7a7a;\r\n  }\r\n\r\n  .containerCard .card .poke-exp {\r\n    width: 50%;\r\n    text-align: right;\r\n    display: inline-block;\r\n    font-size: 0.8rem;\r\n    font-family: \"Franklin Gothic Medium\", \"Arial Narrow\", Arial, sans-serif;\r\n    color: #7a7a7a;\r\n  }\r\n\r\n  .containerCard .type-container {\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: start;\r\n    gap: 0.2rem;\r\n  }\r\n\r\n  .containerCard .character-container {\r\n    display: flex;\r\n    flex-direction: row;\r\n    flex-wrap: wrap;\r\n    width: 90%;\r\n    margin: 0 0.5rem 0.5rem;\r\n  }\r\n`"
         },
         {
           "kind": "variable",
           "name": "backStyles",
-          "default": "css`\n  .containerCardBack {\n    display: grid;\n    place-items: center;\n    position: absolute;\n    backface-visibility: hidden;\n    min-width: 255px;\n    min-height: 355px;\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\n    border-radius: 1em;\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\n    text-align: center;\n    overflow: hidden;\n    transform: rotateY(180deg);\n    transform-style: preserve-3d;\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\n  }\n  .containerCardBack .card {\n    display: block;\n    place-items: center;\n    width: 247px;\n    height: 347px;\n    background: #171614;\n    border-radius: 0.8em;\n    z-index: 1;\n    color: transparent;\n    align-content: center;\n    transition: 1s ease;\n  }\n  .containerCardBack h5 {\n    color: #306db4;\n    font-size: 20px;\n    margin-bottom: 6px;\n    margin-top: 10px;\n  }\n\n  .containerCardBack h6 {\n    color: #fff;\n    font-size: 15px;\n    margin-bottom: 6px;\n    margin-top: 10px;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    margin-left: 5%;\n    margin-right: 5%;\n  }\n  canvas {\n    margin-top: 5%;\n    width: 100%;\n    height: 100%;\n  }\n  .containerCardBack .card .buttons-container {\n    display: none;\n    position: absolute;\n    top: 5%;\n    left: 10%;\n    width: 80%;\n    height: 10%;\n    z-index: 100;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCardBack:hover .buttons-container {\n    display: flex;\n    flex-direction: row;\n    justify-content: space-between;\n    align-items: center;\n    transition: 2s ease-in-out;\n  }\n\n  .containerCardBack .card .buttons-container .button {\n    height: 100%;\n    width: 10%;\n  }\n\n  .containerCardBack .card .buttons-container .button img {\n    width: 100%;\n    height: 100%;\n  }\n`"
+          "default": "css`\r\n  .containerCardBack {\r\n    display: grid;\r\n    place-items: center;\r\n    position: absolute;\r\n    backface-visibility: hidden;\r\n    min-width: 255px;\r\n    min-height: 355px;\r\n    background: linear-gradient(50deg, #2a5a3b, #1e4886);\r\n    border-radius: 1em;\r\n    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);\r\n    text-align: center;\r\n    overflow: hidden;\r\n    transform: rotateY(180deg);\r\n    transform-style: preserve-3d;\r\n    transition: 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);\r\n  }\r\n  .containerCardBack .card {\r\n    display: block;\r\n    place-items: center;\r\n    width: 247px;\r\n    height: 347px;\r\n    background: linear-gradient(160deg, rgba(23, 22, 20, 0.8), rgba(23, 22, 20, 0.55)),\r\n      var(--gradient-background);\r\n    border-radius: 0.8em;\r\n    z-index: 1;\r\n    color: transparent;\r\n    align-content: center;\r\n    transition: 1s ease;\r\n  }\r\n  .containerCardBack h5 {\r\n    color: #f2f2f2;\r\n    font-size: 13px;\r\n    font-weight: 700;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.08em;\r\n    margin-bottom: 6px;\r\n    margin-top: 10px;\r\n  }\r\n\r\n  .containerCardBack h6 {\r\n    color: #fff;\r\n    font-size: 15px;\r\n    margin-bottom: 6px;\r\n    margin-top: 10px;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    margin-left: 5%;\r\n    margin-right: 5%;\r\n  }\r\n  pokemon-type-matchups {\r\n    margin-top: 8%;\r\n    width: 90%;\r\n  }\r\n  .containerCardBack .card .top-toolbar {\r\n    display: none;\r\n    position: absolute;\r\n    top: 5%;\r\n    left: 10%;\r\n    width: 80%;\r\n    height: 10%;\r\n    z-index: 100;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCardBack:hover .top-toolbar {\r\n    display: flex;\r\n    flex-direction: row;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    transition: 2s ease-in-out;\r\n  }\r\n\r\n  .containerCardBack .card .top-toolbar pokemon-pokedex-button {\r\n    height: 100%;\r\n    width: 10%;\r\n  }\r\n`"
         },
         {
           "kind": "variable",
           "name": "sharedStyles",
-          "default": "css`\n  :host {\n    user-select: none;\n    height: 100%;\n    margin: 0 1rem;\n  }\n\n  .scaff {\n    display: inline-block;\n    position: relative;\n    min-width: 16rem;\n    min-height: 22rem;\n    overflow: inherit;\n    background: transparent;\n    border-radius: 1em;\n    cursor: url(assets/poke1.png), auto;\n    transition: 0.3 all;\n  }\n\n  .scaff.flipped > .containerCard {\n    transform: rotateY(-180deg);\n  }\n\n  .scaff.flipped > .containerCardBack {\n    transform: rotateY(0deg);\n  }\n\n  @keyframes brightness {\n    100% {\n      transform: rotate(-45deg) translate(0, 450px);\n    }\n  }\n`"
+          "default": "css`\r\n  :host {\r\n    user-select: none;\r\n    margin: 0 1rem;\r\n  }\r\n\r\n  .scaff {\r\n    display: inline-block;\r\n    position: relative;\r\n    min-width: 16rem;\r\n    min-height: 22rem;\r\n    overflow: inherit;\r\n    background: transparent;\r\n    border-radius: 1em;\r\n    cursor: url(assets/poke1.png), auto;\r\n    transition: 0.3s all;\r\n  }\r\n\r\n  /* Mientras se arrastra el ícono de la pokedex sobre la card, se anula el\r\n     :hover para que no se abra/expanda mientras se suelta el ícono. */\r\n  .scaff.drag-over .containerCard,\r\n  .scaff.drag-over .containerCardBack {\r\n    pointer-events: none;\r\n  }\r\n\r\n  /* Se activa desde listar-pokemon (IntersectionObserver, único responsable\r\n     de esto — ya no hay ningún view-timeline/scroll-driven animation en\r\n     paralelo peleando por el mismo estado) cuando la card está mayormente\r\n     fuera del área visible del scroll: apaga el :hover (para que la fila\r\n     apenas asomada en el borde inferior no muestre su info recortada) y la\r\n     atenúa/encoge en el lugar, sin mover su posición — eso lo sigue\r\n     moviendo únicamente el scroll nativo. */\r\n  .scaff.hover-disabled .containerCard,\r\n  .scaff.hover-disabled .containerCardBack {\r\n    pointer-events: none;\r\n  }\r\n\r\n  .scaff.hover-disabled {\r\n    opacity: 0.3;\r\n    transform: scale(0.85);\r\n  }\r\n\r\n  .scaff.flipped > .containerCard {\r\n    transform: rotateY(-180deg);\r\n  }\r\n\r\n  .scaff.flipped > .containerCardBack {\r\n    transform: rotateY(0deg);\r\n  }\r\n\r\n  @keyframes brightness {\r\n    100% {\r\n      transform: rotate(-45deg) translate(0, 450px);\r\n    }\r\n  }\r\n`"
         }
       ],
       "exports": [
@@ -959,22 +1854,107 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-card/pokemon-flip-buttons.js",
+      "path": "src/components/pokemon-card/pokemon-favorite-button.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PokemonFlipButtons",
-          "members": [],
+          "name": "PokemonFavoriteButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#toggle",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "pokemonId",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "privacy": "public",
+              "attribute": "pokemon-id"
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "privacy": "public",
+              "attribute": "active"
+            },
+            {
+              "kind": "field",
+              "name": "_onChange",
+              "default": "() => {\n      this.active = favoritesStore.isFavorite(this.pokemonId);\n    }"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "pokemon-id",
+              "fieldName": "pokemonId"
+            },
+            {
+              "name": "active",
+              "fieldName": "active"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-favorite-button",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonFavoriteButton",
+          "declaration": {
+            "name": "PokemonFavoriteButton",
+            "module": "src/components/pokemon-card/pokemon-favorite-button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-favorite-button",
+          "declaration": {
+            "name": "PokemonFavoriteButton",
+            "module": "src/components/pokemon-card/pokemon-favorite-button.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/pokemon-pokedex-button.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonPokedexButton",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#onClick",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            }
+          ],
           "events": [
             {
               "name": "pokedex-click",
-              "type": {
-                "text": "CustomEvent"
-              }
-            },
-            {
-              "name": "flip-click",
               "type": {
                 "text": "CustomEvent"
               }
@@ -984,32 +1964,32 @@
             "name": "LitElement",
             "package": "lit"
           },
-          "tagName": "pokemon-flip-buttons",
+          "tagName": "pokemon-pokedex-button",
           "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PokemonFlipButtons",
+          "name": "PokemonPokedexButton",
           "declaration": {
-            "name": "PokemonFlipButtons",
-            "module": "src/components/pokemon-card/pokemon-flip-buttons.js"
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-card/pokemon-pokedex-button.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "pokemon-flip-buttons",
+          "name": "pokemon-pokedex-button",
           "declaration": {
-            "name": "PokemonFlipButtons",
-            "module": "src/components/pokemon-card/pokemon-flip-buttons.js"
+            "name": "PokemonPokedexButton",
+            "module": "src/components/pokemon-card/pokemon-pokedex-button.js"
           }
         }
       ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-card/pokemon-flip-buttons.stories.js",
+      "path": "src/components/pokemon-card/pokemon-pokedex-button.stories.js",
       "declarations": [
         {
           "kind": "variable",
@@ -1017,7 +1997,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`\n    <pokemon-flip-buttons\n      @pokedex-click=${() => console.log(\"pokedex-click\")}\n      @flip-click=${() => console.log(\"flip-click\")}\n    ></pokemon-flip-buttons>\n  `,\n}"
+          "default": "{\n  render: () => html`\n    <div style=\"width: 2rem; height: 2rem;\">\n      <pokemon-pokedex-button\n        @pokedex-click=${() => console.log(\"pokedex-click\")}\n      ></pokemon-pokedex-button>\n    </div>\n  `,\n}"
         }
       ],
       "exports": [
@@ -1025,7 +2005,7 @@
           "kind": "js",
           "name": "default",
           "declaration": {
-            "module": "src/components/pokemon-card/pokemon-flip-buttons.stories.js"
+            "module": "src/components/pokemon-card/pokemon-pokedex-button.stories.js"
           }
         },
         {
@@ -1033,7 +2013,7 @@
           "name": "Default",
           "declaration": {
             "name": "Default",
-            "module": "src/components/pokemon-card/pokemon-flip-buttons.stories.js"
+            "module": "src/components/pokemon-card/pokemon-pokedex-button.stories.js"
           }
         }
       ]
@@ -1117,7 +2097,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  args: { icon: \"weight-outline\", label: \"Weight\", value: \"6.9 Kg\" },\n  render: ({ icon, label, value }) =>\n    html`<pokemon-stat-item icon=${icon} label=${label} value=${value}></pokemon-stat-item>`,\n}"
+          "default": "{\r\n  args: { icon: \"weight-outline\", label: \"Weight\", value: \"6.9 Kg\" },\r\n  render: ({ icon, label, value }) =>\r\n    html`<pokemon-stat-item icon=${icon} label=${label} value=${value}></pokemon-stat-item>`,\r\n}"
         },
         {
           "kind": "variable",
@@ -1125,7 +2105,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  args: { icon: \"tapemeasure\", label: \"Height\", value: \"0.7 Mts\" },\n  render: Weight.render,\n}"
+          "default": "{\r\n  args: { icon: \"tapemeasure\", label: \"Height\", value: \"0.7 Mts\" },\r\n  render: Weight.render,\r\n}"
         }
       ],
       "exports": [
@@ -1156,108 +2136,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/components/pokemon-card/pokemon-stats-chart.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "PokemonStatsChart",
-          "members": [
-            {
-              "kind": "method",
-              "name": "#draw"
-            },
-            {
-              "kind": "field",
-              "name": "pokemon",
-              "type": {
-                "text": "object"
-              },
-              "default": "{}",
-              "privacy": "public",
-              "attribute": "pokemon"
-            },
-            {
-              "kind": "field",
-              "name": "visible",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "visible"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "pokemon",
-              "fieldName": "pokemon"
-            },
-            {
-              "name": "visible",
-              "fieldName": "visible"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "pokemon-stats-chart",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "PokemonStatsChart",
-          "declaration": {
-            "name": "PokemonStatsChart",
-            "module": "src/components/pokemon-card/pokemon-stats-chart.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "pokemon-stats-chart",
-          "declaration": {
-            "name": "PokemonStatsChart",
-            "module": "src/components/pokemon-card/pokemon-stats-chart.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/components/pokemon-card/pokemon-stats-chart.stories.js",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "Default",
-          "type": {
-            "text": "object"
-          },
-          "default": "{\n  render: () => html`\n    <div style=\"width: 300px; height: 300px;\">\n      <pokemon-stats-chart .pokemon=${SAMPLE_POKEMON} .visible=${true}></pokemon-stats-chart>\n    </div>\n  `,\n}"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "default",
-          "declaration": {
-            "module": "src/components/pokemon-card/pokemon-stats-chart.stories.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "Default",
-          "declaration": {
-            "name": "Default",
-            "module": "src/components/pokemon-card/pokemon-stats-chart.stories.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/components/pokemon-card/pokemon-type-badge.js",
       "declarations": [
         {
@@ -1266,7 +2144,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  normal: [\"#f48b1fff\", \"#f3b81aff\"],\n  fire: [\"#f37021ff\", \"#f3b81aff\"],\n  water: [\"#0b87b3ff\", \"#20afdfff\"],\n  electric: [\"#f3961fff\", \"#f3b81aff\"],\n  grass: [\"#459f46ff\", \"#57b947ff\"],\n  ice: [\"#20afdfff\", \"#66cef6ff\"],\n  fighting: [\"#8e191bff\", \"#b81f25ff\"],\n  poison: [\"#8e191bff\", \"#b81f25ff\"],\n  ground: [\"#5b3513ff\", \"#77421aff\"],\n  flying: [\"#0b87b3ff\", \"#20afdfff\"],\n  psychic: [\"#b11f83ff\", \"#c03995ff\"],\n  bug: [\"#459f46ff\", \"#57b947ff\"],\n  rock: [\"#917f6cff\", \"#a69f96ff\"],\n  ghost: [\"#15110cff\", \"#403b35ff\"],\n  dragon: [\"#459f46ff\", \"#57b947ff\"],\n  dark: [\"#360928ff\", \"#712158ff\"],\n  steel: [\"#352514ff\", \"#523e28ff\"],\n  fairy: [\"#f7ac36ff\", \"#f3b81aff\"],\n  unknown: [\"#15110cff\", \"#403b35ff\"],\n}"
+          "default": "{\r\n  normal: [\"#f48b1fff\", \"#f3b81aff\"],\r\n  fire: [\"#f37021ff\", \"#f3b81aff\"],\r\n  water: [\"#0b87b3ff\", \"#20afdfff\"],\r\n  electric: [\"#f3961fff\", \"#f3b81aff\"],\r\n  grass: [\"#459f46ff\", \"#57b947ff\"],\r\n  ice: [\"#20afdfff\", \"#66cef6ff\"],\r\n  fighting: [\"#8e191bff\", \"#b81f25ff\"],\r\n  poison: [\"#8e191bff\", \"#b81f25ff\"],\r\n  ground: [\"#5b3513ff\", \"#77421aff\"],\r\n  flying: [\"#0b87b3ff\", \"#20afdfff\"],\r\n  psychic: [\"#b11f83ff\", \"#c03995ff\"],\r\n  bug: [\"#459f46ff\", \"#57b947ff\"],\r\n  rock: [\"#917f6cff\", \"#a69f96ff\"],\r\n  ghost: [\"#15110cff\", \"#403b35ff\"],\r\n  dragon: [\"#459f46ff\", \"#57b947ff\"],\r\n  dark: [\"#360928ff\", \"#712158ff\"],\r\n  steel: [\"#352514ff\", \"#523e28ff\"],\r\n  fairy: [\"#f7ac36ff\", \"#f3b81aff\"],\r\n  unknown: [\"#15110cff\", \"#403b35ff\"],\r\n}"
         },
         {
           "kind": "function",
@@ -1357,7 +2235,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  args: { type: \"fire\" },\n  render: ({ type }) => html`<pokemon-type-badge .type=${type}></pokemon-type-badge>`,\n}"
+          "default": "{\r\n  args: { type: \"fire\" },\r\n  render: ({ type }) => html`<pokemon-type-badge .type=${type}></pokemon-type-badge>`,\r\n}"
         }
       ],
       "exports": [
@@ -1380,59 +2258,103 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/services/api/poke-api.js",
+      "path": "src/components/pokemon-card/pokemon-type-matchups.js",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "PokeApi",
+          "name": "PokemonTypeMatchups",
           "members": [
             {
               "kind": "method",
-              "name": "#request",
+              "name": "#renderChip",
               "parameters": [
                 {
-                  "name": "url"
+                  "name": "{ type, multiplier }"
+                },
+                {
+                  "name": "accentColor"
                 }
               ]
             },
             {
-              "kind": "method",
-              "name": "getCount",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getPage",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "getPokemon",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
+              "kind": "field",
+              "name": "type",
+              "privacy": "public",
+              "attribute": "type"
             }
-          ]
+          ],
+          "attributes": [
+            {
+              "name": "type",
+              "fieldName": "type"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-matchups",
+          "customElement": true
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "PokeApi",
+          "name": "PokemonTypeMatchups",
           "declaration": {
-            "name": "PokeApi",
-            "module": "src/services/api/poke-api.js"
+            "name": "PokemonTypeMatchups",
+            "module": "src/components/pokemon-card/pokemon-type-matchups.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-matchups",
+          "declaration": {
+            "name": "PokemonTypeMatchups",
+            "module": "src/components/pokemon-card/pokemon-type-matchups.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/pokemon-card/type-effectiveness.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "TYPE_EFFECTIVENESS",
+          "type": {
+            "text": "object"
+          },
+          "default": "{\n  normal: { rock: 0.5, ghost: 0, steel: 0.5 },\n  fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },\n  water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },\n  electric: { water: 2, electric: 0.5, grass: 0.5, ground: 0, flying: 2, dragon: 0.5 },\n  grass: {\n    fire: 0.5,\n    water: 2,\n    grass: 0.5,\n    poison: 0.5,\n    ground: 2,\n    flying: 0.5,\n    bug: 0.5,\n    rock: 2,\n    dragon: 0.5,\n    steel: 0.5,\n  },\n  ice: { fire: 0.5, water: 0.5, grass: 2, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },\n  fighting: {\n    normal: 2,\n    ice: 2,\n    poison: 0.5,\n    flying: 0.5,\n    psychic: 0.5,\n    bug: 0.5,\n    rock: 2,\n    ghost: 0,\n    dark: 2,\n    steel: 2,\n    fairy: 0.5,\n  },\n  poison: { grass: 2, poison: 0.5, ground: 0.5, rock: 0.5, ghost: 0.5, steel: 0, fairy: 2 },\n  ground: { fire: 2, electric: 2, grass: 0.5, poison: 2, flying: 0, bug: 0.5, rock: 2, steel: 2 },\n  flying: { electric: 0.5, grass: 2, fighting: 2, bug: 2, rock: 0.5, steel: 0.5 },\n  psychic: { fighting: 2, poison: 2, psychic: 0.5, dark: 0, steel: 0.5 },\n  bug: {\n    fire: 0.5,\n    grass: 2,\n    fighting: 0.5,\n    poison: 0.5,\n    flying: 0.5,\n    psychic: 2,\n    ghost: 0.5,\n    dark: 2,\n    steel: 0.5,\n    fairy: 0.5,\n  },\n  rock: { fire: 2, ice: 2, fighting: 0.5, ground: 0.5, flying: 2, bug: 2, steel: 0.5 },\n  ghost: { normal: 0, psychic: 2, ghost: 2, dark: 0.5 },\n  dragon: { dragon: 2, steel: 0.5, fairy: 0 },\n  dark: { fighting: 0.5, psychic: 2, ghost: 2, dark: 0.5, fairy: 0.5 },\n  steel: { fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2 },\n  fairy: { fire: 0.5, fighting: 2, poison: 0.5, dragon: 2, dark: 2, steel: 0.5 },\n}"
+        },
+        {
+          "kind": "function",
+          "name": "getTypeMatchups",
+          "parameters": [
+            {
+              "name": "defenderTypes"
+            }
+          ],
+          "description": "Calcula, para uno o dos tipos defensores, contra qué tipos atacantes es\ndébil (multiplicador > 1) y contra cuáles resiste (multiplicador < 1,\nincluyendo inmunidad = 0). Combina ambos tipos multiplicando."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "TYPE_EFFECTIVENESS",
+          "declaration": {
+            "name": "TYPE_EFFECTIVENESS",
+            "module": "src/components/pokemon-card/type-effectiveness.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "getTypeMatchups",
+          "declaration": {
+            "name": "getTypeMatchups",
+            "module": "src/components/pokemon-card/type-effectiveness.js"
           }
         }
       ]
@@ -1448,13 +2370,11 @@
           "members": [
             {
               "kind": "field",
-              "name": "visibleContent",
+              "name": "_hoverObserver",
               "type": {
-                "text": "boolean"
+                "text": "null"
               },
-              "default": "false",
-              "privacy": "public",
-              "attribute": "visibleContent"
+              "default": "null"
             },
             {
               "kind": "field",
@@ -1467,10 +2387,6 @@
             {
               "name": "pokemons",
               "fieldName": "pokemons"
-            },
-            {
-              "name": "visibleContent",
-              "fieldName": "visibleContent"
             }
           ],
           "superclass": {
@@ -1510,7 +2426,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{\n  render: () => html`<listar-pokemon .pokemons=${SAMPLE_POKEMONS}></listar-pokemon>`,\n}"
+          "default": "{\r\n  render: () => html`<listar-pokemon .pokemons=${SAMPLE_POKEMONS}></listar-pokemon>`,\r\n}"
         }
       ],
       "exports": [
@@ -1533,6 +2449,213 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/pokemon-list/pokemon-type-filter.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokemonTypeFilter",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#toggle",
+              "parameters": [
+                {
+                  "name": "type"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#clear"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "privacy": "public",
+              "attribute": "selected"
+            }
+          ],
+          "events": [
+            {
+              "name": "types-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "selected",
+              "fieldName": "selected"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "pokemon-type-filter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokemonTypeFilter",
+          "declaration": {
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-list/pokemon-type-filter.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "pokemon-type-filter",
+          "declaration": {
+            "name": "PokemonTypeFilter",
+            "module": "src/components/pokemon-list/pokemon-type-filter.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/api/poke-api.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokeApi",
+          "members": [
+            {
+              "kind": "method",
+              "name": "#request",
+              "parameters": [
+                {
+                  "name": "url"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonCount"
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ offset, limit }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemon",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonByType",
+              "parameters": [
+                {
+                  "name": "typeName"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonFullEntry",
+              "parameters": [
+                {
+                  "name": "query"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokeApi",
+          "declaration": {
+            "name": "PokeApi",
+            "module": "src/services/api/poke-api.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/services/data-managers/pokedex-entry-data-manager.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PokedexEntryDataManager",
+          "members": [
+            {
+              "kind": "method",
+              "name": "getFullEntry",
+              "parameters": [
+                {
+                  "name": "{ query }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#formatPokedexEntry",
+              "parameters": [
+                {
+                  "name": "pokemon"
+                },
+                {
+                  "name": "species"
+                },
+                {
+                  "name": "evolutions"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#extractEvolutionLine",
+              "parameters": [
+                {
+                  "name": "chain"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "api",
+              "default": "api"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "PokedexEntryDataManager",
+          "declaration": {
+            "name": "PokedexEntryDataManager",
+            "module": "src/services/data-managers/pokedex-entry-data-manager.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/services/data-managers/pokemon-data-manager.js",
       "declarations": [
         {
@@ -1542,19 +2665,32 @@
           "members": [
             {
               "kind": "method",
-              "name": "getResultsCount",
-              "parameters": [
-                {
-                  "name": "url"
-                }
-              ]
+              "name": "getResultsCount"
             },
             {
               "kind": "method",
               "name": "getPokemonPage",
               "parameters": [
                 {
-                  "name": "{ baseUrl, page, resultsPerPage }"
+                  "name": "{ page, resultsPerPage }"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getPokemonByIds",
+              "parameters": [
+                {
+                  "name": "ids"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getFilteredPokemonPage",
+              "parameters": [
+                {
+                  "name": "{ types, page, resultsPerPage }"
                 }
               ]
             },
@@ -1571,6 +2707,16 @@
               "kind": "field",
               "name": "api",
               "default": "api"
+            },
+            {
+              "kind": "field",
+              "name": "pageCache",
+              "default": "new Map()"
+            },
+            {
+              "kind": "field",
+              "name": "typeFilterCache",
+              "default": "new Map()"
             }
           ]
         }
