@@ -12,7 +12,7 @@ export const HighStats = {
   render: () =>
     withScreenBackground(html`
       <pokedex-view-stats
-        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, speed: 100 } }}
+        .pokemon=${{ stats: { hp: 106, attack: 130, defense: 90, special_attack: 80, special_defense: 90, speed: 100 } }}
       ></pokedex-view-stats>
     `),
 };
@@ -22,7 +22,7 @@ export const LowStats = {
   render: () =>
     withScreenBackground(html`
       <pokedex-view-stats
-        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, speed: 65 } }}
+        .pokemon=${{ stats: { hp: 39, attack: 52, defense: 43, special_attack: 60, special_defense: 50, speed: 65 } }}
       ></pokedex-view-stats>
     `),
 };

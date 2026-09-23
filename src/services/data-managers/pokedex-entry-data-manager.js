@@ -54,6 +54,8 @@ export class PokedexEntryDataManager {
         hp: pokemon.stats[0]?.base_stat || 0,
         attack: pokemon.stats[1]?.base_stat || 0,
         defense: pokemon.stats[2]?.base_stat || 0,
+        special_attack: pokemon.stats[3]?.base_stat || 0,
+        special_defense: pokemon.stats[4]?.base_stat || 0,
         speed: pokemon.stats[5]?.base_stat || 0,
       }
     };
