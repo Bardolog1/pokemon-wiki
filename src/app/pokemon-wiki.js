@@ -3,9 +3,12 @@ import "../components/banner-title/banner-title.js";
 import "../components/pokemon-list/pokemon-list.js";
 import "../components/pokemon-list/pokemon-type-filter.js";
 import "../components/pagination/pagination.js";
+import "../components/pagination/page-range-info.js";
 import "../components/navbar-buttons/navbar-buttons.js";
+import "../components/toolbar/page-toolbar.js";
 import { PokemonDataManager } from "../services/data-managers/pokemon-data-manager.js";
 import { favoritesStore } from "../services/favorites-store.js";
+import { computeResultsRange } from "./results-range.js";
 
 const events = [
   "number-click",
@@ -157,61 +160,6 @@ export class PokemonWiki extends LitElement {
         display: none;
       }
 
-      .toolbar-row {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-      }
-
-      .tour-trigger {
-        width: 2.2rem;
-        height: 2.2rem;
-        border-radius: 50%;
-        border: none;
-        background: rgba(255, 255, 255, 0.6);
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background 0.15s ease;
-      }
-
-      .tour-trigger:hover {
-        background: rgba(255, 255, 255, 0.85);
-      }
-
-      .favorites-toggle {
-        background: rgba(255, 255, 255, 0.6);
-        border: none;
-        border-radius: 100px;
-        padding: 0.5rem 1.2rem;
-        font-size: 0.9rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s ease;
-      }
-
-      .favorites-toggle:hover {
-        background: rgba(255, 255, 255, 0.85);
-      }
-
-      .favorites-toggle.active {
-        background: #ffcb04;
-      }
-
-      /* Mismo lenguaje visual que .favorites-toggle/.tour-trigger (píldora
-         translúcida blanca, texto oscuro) en vez de texto plano blanco con
-         sombra — así no se pierde contra el cielo claro del fondo. */
-      .page-info {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.6);
-        color: #1c2e28;
-        border-radius: 100px;
-        padding: 0.3rem 0.9rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin: 0.1rem 0 0;
-      }
-
       .empty-favorites {
         color: #fff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
@@ -322,31 +270,15 @@ export class PokemonWiki extends LitElement {
     }
   }
 
-  // Mientras un fetch filtrado está en camino, filteredTotal todavía no se
-  // actualizó (arranca en 0/valor anterior) — sin este fallback a
-  // this.elements, el paginador recibiría un results=0 transitorio que
-  // rompe permanentemente visiblePages/currentPage (ver calcPages: el
-  // clamp que aplica ese 0 nunca se revierte cuando llegan los datos
-  // reales).
-  get _resultsCount() {
-    if (this.selectedTypes.length > 0) {
-      return this.filteredTotal || this.elements || 0;
-    }
-    return this.elements || 0;
-  }
-
-  get _totalPages() {
-    if (!this.visibleResults) return 0;
-    return Math.ceil(this._resultsCount / this.visibleResults);
-  }
-
-  get _rangeStart() {
-    if (this._resultsCount === 0) return 0;
-    return (this.currentPage - 1) * this.visibleResults + 1;
-  }
-
-  get _rangeEnd() {
-    return Math.min(this.currentPage * this.visibleResults, this._resultsCount);
+  // Cálculo del rango mostrado en la cabecera — ver results-range.js.
+  get _range() {
+    return computeResultsRange({
+      selectedTypes: this.selectedTypes,
+      filteredTotal: this.filteredTotal,
+      elements: this.elements,
+      currentPage: this.currentPage,
+      visibleResults: this.visibleResults,
+    });
   }
 
   // Carga driver.js recién cuando se pide el tour, para no sumarlo al
@@ -374,43 +306,31 @@ export class PokemonWiki extends LitElement {
         ></pokemon-type-filter>
 
         <div class="top-bar">
-          <div class="toolbar-row">
-            <button
-              type="button"
-              class="favorites-toggle ${this.favoritesOnly ? "active" : ""}"
-              @click="${this.toggleFavoritesOnly}"
-              aria-pressed="${this.favoritesOnly}"
-            >
-              ★ ${this.favoritesOnly ? "Ver todos" : "Mis favoritos"}
-            </button>
-
-            <button
-              type="button"
-              class="tour-trigger"
-              @click="${this._startTour}"
-              aria-label="Ver tutorial de la app"
-              title="Ver tutorial"
-            >
-              ?
-            </button>
-          </div>
+          <page-toolbar
+            .favoritesOnly="${this.favoritesOnly}"
+            @favorites-toggle-click="${this.toggleFavoritesOnly}"
+            @tour-click="${this._startTour}"
+          ></page-toolbar>
 
           <pagination-nav
             id="paginator"
             class="${this.favoritesOnly ? "hidden" : ""}"
             pages="${this.pages}"
-            results="${this._resultsCount}"
+            results="${this._range.resultsCount}"
             visible-pages="${this.visiblePages}"
             current-page="${this.currentPage}"
             visible-results="${this.visibleResults}"
           ></pagination-nav>
 
-          ${!this.favoritesOnly && this._resultsCount > 0
+          ${!this.favoritesOnly && this._range.resultsCount > 0
             ? html`
-                <p class="page-info">
-                  Mostrando ${this._rangeStart}–${this._rangeEnd} de ${this._resultsCount} · Página
-                  ${this.currentPage} de ${this._totalPages}
-                </p>
+                <page-range-info
+                  .rangeStart="${this._range.rangeStart}"
+                  .rangeEnd="${this._range.rangeEnd}"
+                  .total="${this._range.resultsCount}"
+                  .currentPage="${this.currentPage}"
+                  .totalPages="${this._range.totalPages}"
+                ></page-range-info>
               `
             : ""}
 
