@@ -6,7 +6,6 @@ export default {
   component: "favorites-empty",
 };
 
-// Shown instead of the card grid when "Mis favoritos" is active and empty.
 export const Default = {
   render: () => html`<favorites-empty></favorites-empty>`,
 };

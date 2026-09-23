@@ -20,7 +20,7 @@ export class PokemonPokedexButton extends LitElement {
     }
   `;
 
-  // stopPropagation: el clic burbujearía a la card entera y dispararía también el giro.
+  // stopPropagation: si no, el clic llega a la card y dispara también el giro.
   #onClick(e) {
     e.stopPropagation();
     this.dispatchEvent(new CustomEvent("pokedex-click", { bubbles: true, composed: true }));

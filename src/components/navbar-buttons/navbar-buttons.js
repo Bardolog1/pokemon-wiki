@@ -29,8 +29,7 @@ export class NavbarButtons extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Precarga la imagen del drag una sola vez para que esté decodificada al arrastrar;
-  // si no, el navegador puede capturar un frame a medio cargar.
+  // Precarga: si no está decodificada, el drag image puede capturarse a medio cargar.
   _createDragImage() {
     const img = document.createElement("img");
     img.src = "assets/NicePng_pokedex-png_2285786.png";
@@ -50,13 +49,10 @@ export class NavbarButtons extends LitElement {
     this.isOpen = !this.isOpen;
   }
 
-  // Evita que un clic dentro de la Pokédex cierre el modal.
   stopPropagation(e) {
     e.stopPropagation();
   }
 
-  // Firefox exige setData para iniciar el arrastre. Reemplaza el ghost nativo (botón completo,
-  // semitransparente) por la imagen precargada en _createDragImage.
   _handleDragStart(e) {
     e.dataTransfer.setData("text/plain", "pokedex");
     e.dataTransfer.effectAllowed = "copy";
@@ -66,7 +62,6 @@ export class NavbarButtons extends LitElement {
     }
   }
 
-  // Clic en el ícono de una card y soltar el ícono de la pokedex sobre ella emiten el mismo "render-pokedex".
   async _handleRenderPokedex(e) {
     this.isOpen = true;
     await this.updateComplete;

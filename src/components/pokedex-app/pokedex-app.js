@@ -46,7 +46,6 @@ export class PokedexApp extends LitElement {
     super.disconnectedCallback();
   }
 
-  // Narra la entrada actual (ver pokedex-voice.js). Actualmente no se invoca.
   speakEntry() {
     if (!this.isOn || !this.pokemon) return;
     this.isSpeaking = true;
@@ -57,7 +56,6 @@ export class PokedexApp extends LitElement {
     });
   }
 
-  // Botón rojo bajo la pantalla; mientras suena, el lente azul parpadea (animación "blinking").
   playCry() {
     if (!this.isOn || !this.pokemon?.cry || this.isPlayingCry) return;
 
@@ -86,7 +84,6 @@ export class PokedexApp extends LitElement {
     }
   }
 
-  // Abre la Pokédex ya cargada con un Pokémon puntual (la invoca navbar-buttons).
   openWithPokemon(pokemon) {
     this.isOpen = true;
     this.isOn = true;
@@ -142,7 +139,6 @@ export class PokedexApp extends LitElement {
     try {
       this.pokemon = await this.entryDataManager.getFullEntry({ query });
       this.searchValue = "";
-      // Narración por voz desactivada.
       // this.speakEntry();
     } catch (err) {
       this.error = true;
@@ -191,7 +187,6 @@ export class PokedexApp extends LitElement {
     screen.scrollBy(direction === "down" ? 40 : -40);
   }
 
-  // pokedex-dpad no interpreta direcciones: izq/der cambian de vista, arriba/abajo hacen scroll.
   onDpadClick(e) {
     const { direction } = e.detail;
     if (direction === "left" || direction === "right") {

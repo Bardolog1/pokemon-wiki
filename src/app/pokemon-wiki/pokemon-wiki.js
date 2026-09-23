@@ -12,7 +12,6 @@ import { favoritesStore } from "../../services/favorites-store.js";
 import { computeResultsRange } from "./results-range.js";
 import { styles } from "./pokemon-wiki.styles.js";
 
-// Carta fantasma para búsquedas sin resultado; pokemon-card la pinta con "?".
 const NOT_FOUND_CARD = { notFound: true, id: 0, name: "Pokémon no encontrado", type: [] };
 
 const events = [
@@ -86,7 +85,7 @@ export class PokemonWiki extends LitElement {
     this.filteredTotal = 0;
     this.searchQuery = "";
     this.searchNotFound = false;
-    // Token compartido: solo la última carga de lista gana, así una respuesta lenta no pisa una acción más nueva.
+    // Solo la última carga gana: una respuesta lenta no debe pisar una acción más nueva.
     this._requestId = 0;
     this._onFavoritesChange = () => {
       if (this.favoritesOnly) this._loadFavorites();
@@ -169,7 +168,6 @@ export class PokemonWiki extends LitElement {
     }
   }
 
-  // Filtro por tipo (OR). Excluyente con "Mis favoritos" para no combinar dos fuentes de datos.
   _onTypesChange(e) {
     this.selectedTypes = e.detail;
     this.favoritesOnly = false;
@@ -185,10 +183,8 @@ export class PokemonWiki extends LitElement {
     this.searchNotFound = false;
   }
 
-  // Reemplaza la lista por el resultado único y apaga favoritos/tipos.
   async _onSearchSubmit(e) {
     const { query, raw } = e.detail;
-    // Se guarda el texto original para el input; la consulta normalizada solo va a la API.
     this.searchQuery = raw;
     this.favoritesOnly = false;
     this.selectedTypes = [];
@@ -202,7 +198,6 @@ export class PokemonWiki extends LitElement {
       this.renderRoot.getElementById("list").pokemons = this.pokemonList;
     } catch (error) {
       if (requestId !== this._requestId) return;
-      // Ante un error de red/servidor se sale del modo búsqueda para mantener coherentes lista y paginador.
       this._resetSearch();
       this.error = error.message;
     }
@@ -247,7 +242,6 @@ export class PokemonWiki extends LitElement {
     }
   }
 
-  // Cálculo del rango mostrado en la cabecera — ver results-range.js.
   get _range() {
     return computeResultsRange({
       selectedTypes: this.selectedTypes,
@@ -258,7 +252,6 @@ export class PokemonWiki extends LitElement {
     });
   }
 
-  // driver.js se carga bajo demanda para no inflar el bundle inicial.
   async _startTour() {
     await this.updateComplete;
     const { startAppTour } = await import("../app-tour/app-tour.js");

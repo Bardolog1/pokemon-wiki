@@ -1,5 +1,3 @@
-// Efectividad de tipos (atacante -> { defensor: multiplicador }); solo se listan los distintos de 1.
-// Datos estables desde la Gen 6 (con Fairy).
 export const TYPE_EFFECTIVENESS = {
   normal: { rock: 0.5, ghost: 0, steel: 0.5 },
   fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
@@ -57,9 +55,6 @@ export const TYPE_EFFECTIVENESS = {
 
 const ALL_TYPES = Object.keys(TYPE_EFFECTIVENESS);
 
-/**
- * Debilidades y resistencias (inmunidad = 0) de uno o dos tipos defensores; combina ambos multiplicando.
- */
 export function getTypeMatchups(defenderTypes) {
   const types = (defenderTypes || []).filter((t) => ALL_TYPES.includes(t));
   if (types.length === 0) return { weaknesses: [], resistances: [] };

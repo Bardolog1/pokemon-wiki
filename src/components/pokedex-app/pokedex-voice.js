@@ -1,6 +1,3 @@
-// Narración por voz separada de pokedex-app: texto puro más un efecto aislado (SpeechSynthesis).
-
-// Arma el texto narrado: tipo, estadísticas, dato curioso y línea evolutiva. Pura, testeable sin SpeechSynthesis.
 export function buildNarrationText(pokemon) {
   const { name, type, stats, description, evolutions } = pokemon;
   const typeText = (type || []).join(" y ");
@@ -18,8 +15,6 @@ export function buildNarrationText(pokemon) {
   ].join(" ");
 }
 
-// Cancela la narración en curso y arranca otra. pitch/rate son lo único que expone
-// SpeechSynthesisUtterance para acercarse a un tono sintético.
 export function speakPokemonEntry(pokemon, { onEnd } = {}) {
   if (!window.speechSynthesis) return;
 

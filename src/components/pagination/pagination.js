@@ -55,7 +55,7 @@ export class Pagination extends LitElement {
       props.has("visibleResults") ||
       props.has("visiblePages")
     ) {
-      // `pages` siempre se deriva de results/visibleResults: calcPages conserva un valor ya definido y no lo recalcularía.
+      // calcPages conserva un valor ya definido: `pages` debe derivarse siempre de results/visibleResults.
       const next = calcPages({
         results: this.results,
         pages: 0,

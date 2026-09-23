@@ -1,6 +1,5 @@
 import { html } from "lit";
 
-// Sin el :host de pokedex-app las custom properties no se heredan; se declaran aquí para ver los colores reales.
 export const DEX_VARS_STYLE = `
   --dex-red: #e32230;
   --dex-border: #222;
@@ -23,8 +22,6 @@ export function withDexBackground(content) {
   `;
 }
 
-// Las vistas internas heredan fondo y color de .main-screen.is-on (pokedex-screen.js);
-// este wrapper reproduce ese contexto.
 export function withScreenBackground(content) {
   return html`
     <div

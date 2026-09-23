@@ -63,7 +63,6 @@ export class PokemonTypeFilter extends LitElement {
       border-color: #ffcb04;
     }
 
-    /* Con selección activa, los no seleccionados van en escala de grises; sin selección, todos a color. */
     .chips.has-selection .chip:not([aria-pressed="true"]) {
       filter: grayscale(1);
       opacity: 0.6;

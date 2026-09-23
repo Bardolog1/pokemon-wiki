@@ -17,7 +17,6 @@ export class PokedexEntryDataManager {
       }
     }
 
-    // PokeApi resuelve pokemon -> especie -> cadena de evolución.
     const { pokemon, species, evolutionChain } = await this.api.getPokemonFullEntry(query);
     const evolutions = this.#extractEvolutionLine(evolutionChain.chain);
 

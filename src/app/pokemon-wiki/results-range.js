@@ -1,6 +1,3 @@
-// Rango de resultados/páginas de la cabecera; puro para testearlo sin montar Lit.
-// Mientras un fetch filtrado está en curso usa `elements` como respaldo: un total=0 llegaría al paginador
-// y calcPages lo fijaría para siempre.
 export function computeResultsRange({
   selectedTypes,
   filteredTotal,

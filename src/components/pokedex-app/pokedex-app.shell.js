@@ -1,6 +1,5 @@
 import { html } from "lit";
 
-// Markup estático sin bindings a `this`: se crea una vez a nivel de módulo, no en cada render.
 export const SHELL_SVG_INTERIOR = html`
   <svg viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg">
     <path

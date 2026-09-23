@@ -6,8 +6,6 @@ export default {
   component: "pokemon-search",
 };
 
-// Collapsed magnifier; click it to expand into the input. Enter submits
-// (search-submit); clearing the text or pressing Esc emits search-clear.
 export const Collapsed = {
   render: () => html`<pokemon-search></pokemon-search>`,
 };

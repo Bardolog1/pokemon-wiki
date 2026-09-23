@@ -31,7 +31,6 @@ export class PokemonDataManager {
     return details.map((detail) => this.#toPokemon(detail));
   }
 
-  // Búsqueda exacta por nombre o número. null = no existe (404); otros fallos se propagan.
   async searchPokemon(query) {
     try {
       const detail = await this.api.getPokemon(query);
@@ -42,8 +41,7 @@ export class PokemonDataManager {
     }
   }
 
-  // Unión (OR) de los tipos dados, paginada localmente: /type/{name} no soporta offset/limit,
-  // así que solo se piden los detalles de la página actual.
+  // /type/{name} no soporta offset/limit: se pagina localmente.
   async getFilteredPokemonPage({ types, page, resultsPerPage }) {
     const cacheKey = types.slice().sort().join(",");
     let names = this.typeFilterCache.get(cacheKey);
