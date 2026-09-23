@@ -35,6 +35,15 @@ export function startAppTour(pokemonWikiEl) {
     return getPokedexApp()?.shadowRoot?.querySelector(selector) ?? null;
   }
 
+  // El D-pad, el numpad y los botones PREV/NEXT viven en su propio
+  // componente (pokedex-dpad, pokedex-numpad, pokedex-nav-buttons), cada
+  // uno con su propio shadow root — un nivel más profundo que el resto de
+  // pokedexShadow(). componentSelector selecciona ese componente dentro del
+  // shadow de pokedex-app; innerSelector busca adentro de SU shadow root.
+  function pokedexDeepShadow(componentSelector, innerSelector) {
+    return pokedexShadow(componentSelector)?.shadowRoot?.querySelector(innerSelector) ?? null;
+  }
+
   async function openPokedex() {
     if (!navbar) return;
     navbar.isOpen = true;
@@ -114,28 +123,28 @@ export function startAppTour(pokemonWikiEl) {
       },
     },
     {
-      element: () => pokedexShadow(".grid-buttons"),
+      element: () => pokedexDeepShadow("pokedex-numpad", ".grid-buttons"),
       popover: {
         title: "Teclado numérico",
         description: "Escribe el número del Pokémon que quieras buscar.",
       },
     },
     {
-      element: () => pokedexShadow(".middle-controls .white-btns"),
+      element: () => pokedexDeepShadow("pokedex-numpad", ".white-btns"),
       popover: {
         title: "DEL y GO",
         description: "DEL borra el último número que escribiste. GO busca el Pokémon con el número que escribiste.",
       },
     },
     {
-      element: () => pokedexShadow(".yellow-btn"),
+      element: () => pokedexDeepShadow("pokedex-numpad", ".yellow-btn"),
       popover: {
         title: "Reiniciar",
         description: "Limpia la búsqueda actual y vuelve a la pantalla de inicio.",
       },
     },
     {
-      element: () => pokedexShadow(".d-pad"),
+      element: () => pokedexDeepShadow("pokedex-dpad", ".d-pad"),
       popover: {
         title: "Cruceta direccional",
         description:
@@ -150,7 +159,7 @@ export function startAppTour(pokemonWikiEl) {
       },
     },
     {
-      element: () => pokedexShadow(".bottom-controls"),
+      element: () => pokedexDeepShadow("pokedex-nav-buttons", ".bottom-controls"),
       popover: {
         title: "Anterior / Siguiente",
         description: "Navega al Pokémon anterior o siguiente sin tener que escribir su número.",
@@ -159,7 +168,15 @@ export function startAppTour(pokemonWikiEl) {
     // A partir de acá se cierra la pokedex (stepRequirements en el índice
     // de este paso = closePokedex) y volvemos a la página principal.
     {
-      element: () => root.querySelector(".favorites-toggle"),
+      element: () => root.querySelector("pokemon-type-filter"),
+      popover: {
+        title: "Filtrar por tipo",
+        description:
+          'Haz clic en uno o más tipos para mostrar solo esos Pokémon. Con "Ver todos" limpias el filtro.',
+      },
+    },
+    {
+      element: () => root.querySelector("page-toolbar")?.shadowRoot?.querySelector(".favorites-toggle"),
       popover: {
         title: "Favoritos",
         description:
@@ -237,10 +254,12 @@ export function startAppTour(pokemonWikiEl) {
 
   const POKEDEX_FIRST_STEP = 2;
   const POKEDEX_LAST_STEP = 9;
-  const HOVER_FIRST_STEP = 13;
-  const HOVER_LAST_STEP = 17;
-  const FLIP_FIRST_STEP = 18;
-  const FLIP_LAST_STEP = 19;
+  // Se corrieron +1 por el nuevo paso del filtro por tipo, insertado justo
+  // antes del paso de favoritos.
+  const HOVER_FIRST_STEP = 14;
+  const HOVER_LAST_STEP = 18;
+  const FLIP_FIRST_STEP = 19;
+  const FLIP_LAST_STEP = 20;
 
   // Calcula y aplica el estado exacto que le corresponde a un índice de
   // paso, sea que se llegue a él avanzando o retrocediendo — así "Anterior"
